@@ -1,0 +1,73 @@
+{
+  "devDependencies": {
+    "@commitlint/config-conventional": "16.2.1",
+    "@google/semantic-release-replace-plugin": "1.1.0",
+    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/exec": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/gitlab": "9.1.2",
+    "commitlint": "16.2.3",
+    "conventional-changelog-conventionalcommits": "4.6.3",
+    "cz-conventional-changelog": "3.3.0",
+    "husky": "7.0.4",
+    "semantic-release": "19.0.2"
+  },
+  "scripts": {
+    "postinstall": "husky install",
+    "semantic-release": "semantic-release"
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@google/semantic-release-replace-plugin",
+        {
+          "replacements": [
+            {
+              "files": [
+                "gradle.properties"
+              ],
+              "from": "version\\:\\s?.*",
+              "to": "version: ${nextRelease.version}",
+              "results": [
+                {
+                  "file": "helm/Chart.yaml",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}",
+          "assets": [
+            "helm/Chart.yaml",
+            "CHANGELOG.md"
+          ]
+        }
+      ],
+      "@semantic-release/gitlab"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}

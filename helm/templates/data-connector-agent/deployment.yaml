@@ -1,0 +1,37 @@
+{{ $component := .Values.components.dataConnectorAgent }}
+{{ if $component.enabled }}
+
+{{ $name := $component.name }}
+{{ $config := $component.configuration }}
+{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+    spec:
+      automountServiceAccountToken: true
+      imagePullSecrets:
+        - name: strmprivacy-docker-registry
+      containers:
+        - name: agent
+          image: {{ $image }}
+          env:
+            {{ include "installationDetails" . }}
+            - name: APP_NAMESPACE
+              value: {{ .Values.namespace }}
+
+
+      serviceAccountName: {{ $name }}
+
+{{ end }}

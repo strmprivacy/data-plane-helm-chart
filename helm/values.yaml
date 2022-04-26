@@ -1,0 +1,122 @@
+disableLivenessChecks: true
+namespace: strmprivacy
+
+registry:
+  url: "europe-west4-docker.pkg.dev"
+  base:
+    prefix: "stream-machine-production"
+    path: "docker-public"
+
+  # Fill out the value below or download a prefilled values.yaml from the Console
+  imagePullSecret: ""
+
+license:
+  # Fill out the values below or download a prefilled values.yaml from the Console
+  installationId: ""
+  installationClientId: ""
+  installationClientSecret: ""
+
+api:
+  host: "api.strmprivacy.io"
+  port: 443
+  authUrl: "https://accounts.strmprivacy.io"
+
+kafka:
+  enabled: false
+  fullnameOverride: "kafka"
+
+redis:
+  enabled: false
+  fullnameOverride: "redis-hallo"
+  global:
+    redis:
+
+postgresql:
+  enabled: false
+  fullnameOverride: "postgres"
+
+components:
+  eventGateway:
+    enabled: true
+    image:
+      name: "events/event-gateway"
+      version: "v0.57.1"
+    replicas: 1
+    configuration:
+      # Comma separated string
+      kafkaBootstrapServers:
+      redisHost:
+      redisUser:
+      redisPassword:
+
+      # Application port, traffic goes via Envoy to the application
+      appPort: "8081"
+      envoy:
+        port: "8080"
+        adminPort: "9000"
+        jwtAudience:
+
+  webSocket:
+    enabled: true
+    image:
+      name: "events/web-socket"
+      version: "v1.16.0"
+    name: web-socket
+    replicas: 1
+    configuration:
+      # Comma separated string
+      kafkaBootstrapServers:
+      # Application port, traffic goes via Envoy to the application
+      appPort: "8081"
+      envoy:
+        port: "8080"
+        adminPort: "9000"
+        jwtAudience:
+
+  batchJobAgent:
+    enabled: true
+    image:
+      name: "management/entity-agents/batch-jobs-agent"
+      version: "v1.12.1"
+    name: batch-jobs-agent
+    configuration:
+      postgres:
+        host:
+        port:
+        user:
+        password:
+        database:
+
+
+  batchExportersAgent:
+    enabled: true
+    name: batch-exporters-agent
+    image:
+      name: "management/entity-agents/batch-exporters-agent"
+      version: "v1.12.0"
+    configuration:
+      # Comma separated string
+      kafkaBootstrapServers:
+
+  streamsAgent:
+    enabled: true
+    image:
+      name: "management/entity-agents/streams-agent"
+      version: "v1.14.0"
+    configuration:
+      redisSecret:
+        name:
+        key:
+
+  dataConnectorAgent:
+    enabled: true
+    name: data-connectors-agent
+    image:
+      name: "management/entity-agents/data-connectors-agent"
+      version: "v1.3.0"
+    configuration:
+
+  decrypterConfig:
+    enabled: true
+    kafkaBootstrapServers:
+    redisHost:

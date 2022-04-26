@@ -1,0 +1,16 @@
+{{ $component := .Values.components.webSocket }}
+{{ if $component.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-socket-envoy-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    strmprivacy.io/app: web-socket
+  annotations:
+    strmprivacy.io/version: {{ .Chart.Version }}
+
+data:
+  "envoy.yaml": |-
+{{ tpl (.Files.Get "resources/web-socket/envoy.yaml") . | nindent 4 }}
+{{ end }}

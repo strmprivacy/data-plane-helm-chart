@@ -1,0 +1,46 @@
+{{ $component := .Values.components.batchJobAgent }}
+{{ if $component.enabled }}
+
+{{ $name := .Values.components.batchJobAgent.name }}
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Values.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Values.namespace }}
+rules:
+  - apiGroups:
+      - ""
+      - batch
+    resources:
+      - jobs
+      - configmaps
+    verbs:
+      - list
+      - create
+      - update
+      - patch
+      - get
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Values.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ .Values.namespace }}
+
+{{ end }}

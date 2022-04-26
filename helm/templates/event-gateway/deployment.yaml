@@ -1,0 +1,116 @@
+{{ $component := .Values.components.eventGateway }}
+{{ if $component.enabled }}
+{{ $config := $component.configuration }}
+{{ $kafka := .Values.kafka}}
+{{ $bootstrap := $config.kafkaBootstrapServers |
+          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+{{ $redis := $config.redisHost |
+      default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}
+{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-gateway
+  namespace: {{ .Values.namespace }}
+  labels:
+    strmprivacy.io/app: event-gateway
+spec:
+  replicas: {{ $component.replicas }}
+  selector:
+    matchLabels:
+      strmprivacy.io/app: event-gateway
+  template:
+    metadata:
+      labels:
+        strmprivacy.io/app: event-gateway
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    strmprivacy.io/app: event-gateway
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      imagePullSecrets:
+        - name: strmprivacy-docker-registry
+      containers:
+        - name: event-gateway
+          image: {{ $image }}
+          ports:
+            - containerPort: {{ $config.appPort }}
+          env:
+            {{ include "installationDetails" .}}
+            - name: STRM_GATEWAY_PORT
+              value: "{{ $config.appPort }}"
+            - name: STRM_BOOTSTRAP_SERVERS
+              value: {{ $bootstrap }}
+            - name: STRM_REDIS_HOST
+              value: {{ $redis }}
+            - name: STRM_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  # TODO verify if this name is correct with different Redis names
+                  name: {{ .Values.redis.fullnameOverride }}
+          {{ if not .Values.disableLivenessChecks }}
+          livenessProbe:
+            httpGet:
+              path: /is-alive
+              port: {{ $config.appPort }}
+              scheme: HTTP
+            failureThreshold: 3
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: /ready
+              port: {{ $config.appPort }}
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          {{ end }}
+
+        - name: event-gateway-envoy
+          image: envoyproxy/envoy:v1.21-latest
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sleep
+                  - "20"
+          ports:
+            - containerPort: {{ $config.envoy.port }}
+              name: envoy-proxy
+              protocol: TCP
+            - containerPort: {{ $config.envoy.adminPort }}
+              name: envoy-admin
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: envoy-admin
+              scheme: HTTP
+            initialDelaySeconds: 6
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          volumeMounts:
+            - mountPath: /etc/envoy
+              mountPropagation: None
+              name: envoy-conf
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: envoy-conf
+          configMap:
+            name: event-gateway-envoy-config
+            optional: false
+{{ end }}

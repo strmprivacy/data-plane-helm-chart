@@ -1,0 +1,45 @@
+{{ $component := .Values.components.streamsAgent }}
+{{ if $component.enabled }}
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: streams-agent
+  namespace: {{ .Values.namespace }}
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: streams-agent
+  namespace: {{ .Values.namespace }}
+rules:
+  - apiGroups:
+      - ""
+      - apps
+    resources:
+      - configmaps
+      - deployments
+    verbs:
+      - list
+      - create
+      - update
+      - patch
+      - get
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: streams-agent-customers
+  namespace: {{ .Values.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: streams-agent
+subjects:
+  - kind: ServiceAccount
+    name: streams-agent
+    namespace: {{ .Values.namespace }}
+
+{{ end }}

@@ -1,0 +1,40 @@
+{{ $component := .Values.components.batchExportersAgent }}
+{{ if $component.enabled }}
+
+{{ $name := $component.name }}
+{{ $config := $component.configuration }}
+{{ $kafka := .Values.kafka}}
+{{ $bootstrap := $config.kafkaBootstrapServers |
+          default (printf "%s-headless.%s.svc.cluster.local:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{$name}}
+  namespace: {{.Values.namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      strmprivacy.io/app: {{$name}}
+  template:
+    metadata:
+      labels:
+        strmprivacy.io/app: {{$name}}
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: {{$name}}
+      imagePullSecrets:
+        - name: strmprivacy-docker-registry
+      containers:
+        - name: agent
+          env:
+          {{ include "installationDetails"  . }}
+            - name: APP_NAMESPACE
+              value: {{ .Values.namespace }}
+            - name: STRM_BOOTSTRAP_SERVERS
+              value: {{ $bootstrap }}
+          image: {{ $image }}
+
+{{ end }}

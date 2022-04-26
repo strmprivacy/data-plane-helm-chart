@@ -1,0 +1,20 @@
+{{ $component := .Values.components.eventGateway }}
+{{ if $component.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-gateway
+  namespace: {{ .Values.namespace }}
+  labels:
+    strmprivacy.io/app: event-gateway
+    strmprivacy.io/version: {{ .Chart.Version }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      name: http
+      targetPort: envoy-proxy
+
+  selector:
+    strmprivacy.io/app: event-gateway
+{{ end }}

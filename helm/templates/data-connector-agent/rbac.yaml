@@ -1,0 +1,47 @@
+{{ $component := .Values.components.dataConnectorAgent }}
+{{ if $component.enabled }}
+
+{{ $name := $component.name }}
+{{ $config := $component.configuration }}
+
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Values.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Values.namespace }}
+rules:
+  - apiGroups:
+      - ""
+      - apps
+    resources:
+      - secrets
+    verbs:
+      - list
+      - create
+      - update
+      - patch
+      - get
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "{{ $name }}-customers"
+  namespace: {{.Values.namespace}}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{.Values.namespace}}
+
+{{ end }}

@@ -1,0 +1,45 @@
+{{ $component := .Values.components.streamsAgent }}
+{{ if $component.enabled }}
+{{ $config := $component.configuration }}
+{{ $kafka := .Values.kafka}}
+{{ $bootstrap := $config.kafkaBootstrapServers |
+          default (printf "%s-headless.%s.svc.cluster.local:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+{{ $redisSecretName := $config.redisSecret.name | default (printf "%s" .Values.redis.fullnameOverride) }}
+{{ $redisSecretKey := $config.redisSecret.key | default "redis-password" }}
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streams-agent
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      strmprivacy.io/app: streams-agent
+  template:
+    metadata:
+      labels:
+        strmprivacy.io/app: streams-agent
+    spec:
+      automountServiceAccountToken: true
+      imagePullSecrets:
+        - name: strmprivacy-docker-registry
+      containers:
+        - name: streams-agent
+          image: {{$image}}
+          env:
+            {{ include "installationDetails" .}}
+            - name: APP_DECRYPTER_NAMESPACE
+              value: {{ .Values.namespace }}
+            - name: STRM_BOOTSTRAP_SERVERS
+              value: {{ $bootstrap }}
+            - name: STRM_REDIS_SECRET_NAME
+              value: {{ $redisSecretName }}
+            - name: STRM_REDIS_SECRET_KEY
+              value: {{ $redisSecretKey }}
+      serviceAccountName: streams-agent
+
+{{ end }}
