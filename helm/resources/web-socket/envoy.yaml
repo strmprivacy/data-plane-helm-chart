@@ -67,9 +67,9 @@ static_resources:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
                       providers:
                         google-jwt:
-                          issuer: 'https://securetoken.google.com/{{ .Values.components.webSocket.configuration.envoy.jwtAudience }}'
+                          issuer: 'https://securetoken.google.com/{{ .Values.registry.base.prefix }}'
                           audiences:
-                            - {{ .Values.components.webSocket.configuration.envoy.jwtAudience }}
+                            - {{ .Values.registry.base.prefix }}
                           forward: true
                           remote_jwks:
                             http_uri:
