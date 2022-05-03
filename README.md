@@ -21,7 +21,7 @@ included versions of these prerequisites, please contact STRM Privacy, so we can
 ## Installation instructions
 
 1. [Create an account](https://console.strmprivacy.io) or log in to the STRM console
-2. Upgrade to a paid plan to unlock self-deployment or request a trial and demo through go [@] strmprivacy.io
+2. Request a trial and demo for self-hosted installations through go [@] strmprivacy.io
 3. Once upgraded to support self-hosted installations, please navigate to
 the [console](https://console.strmprivacy.io) and follow the instructions for setting up your self-hosted installation
 on the home page. You can find the required credentials and copy them in the `values.yaml` file, or download the fully
