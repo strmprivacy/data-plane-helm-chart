@@ -24,7 +24,7 @@ jobs:
           echo "${STRM_HELM_CHART_SA}" > credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS=credentials.json
           helm plugin install https://github.com/hayorov/helm-gcs.git
-          helm gcs init gs://stream-machine-development-helm-chart 
-          helm repo add helm-bucket gs://stream-machine-development-helm-chart
+          helm gcs init gs://stream-machine-development-helm-chart/data-plane
+          helm repo add helm-bucket gs://stream-machine-development-helm-chart/data-plane
           helm package helm
           helm gcs push strm-0.1.0.tgz helm-bucket --force
