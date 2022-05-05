@@ -56,8 +56,7 @@
             "CHANGELOG.md"
           ]
         }
-      ],
-      "@semantic-release/gitlab"
+      ]
     ]
   },
   "config": {
