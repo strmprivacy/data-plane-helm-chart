@@ -1,0 +1,31 @@
+name: Publish
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.8.1
+      - name: write tarball
+        env:
+          STRM_HELM_CHART_SA: ${{ secrets.STRM_HELM_CHART_SA }}
+        run: |
+          tag_name=$(echo "${GITHUB_REF##*/}" | sed 's/v//g')
+          echo "${STRM_HELM_CHART_SA}" > credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=credentials.json
+          helm plugin install https://github.com/hayorov/helm-gcs.git
+          helm gcs init gs://stream-machine-production-helm-chart/data-plane
+          helm repo add helm-bucket gs://stream-machine-production-helm-chart/data-plane
+          helm package helm
+          helm gcs push strm-${tag_name}.tgz helm-bucket
