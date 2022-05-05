@@ -27,6 +27,7 @@ jobs:
         env:
           STRM_HELM_CHART_SA: ${{ secrets.STRM_HELM_CHART_SA }}
         run: |
+          tag_name=$(echo "${GITHUB_REF##*/}" | sed 's/v//g')
           echo "${STRM_HELM_CHART_SA}" > credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS=credentials.json
           helm plugin install https://github.com/hayorov/helm-gcs.git
@@ -34,4 +35,4 @@ jobs:
           helm repo add helm-bucket gs://stream-machine-production-helm-chart/data-plane
           helm package helm
           npm run semantic-release -- --repository-url "$(git config --get remote.origin.url)"
-          helm gcs push strm-*.tgz helm-bucket
+          helm gcs push strm-${tag_name}.tgz helm-bucket
