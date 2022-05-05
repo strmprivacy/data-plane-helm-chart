@@ -30,7 +30,7 @@
           "replacements": [
             {
               "files": [
-                "gradle.properties"
+                "helm/Chart.yaml"
               ],
               "from": "version\\:\\s?.*",
               "to": "version: ${nextRelease.version}",
