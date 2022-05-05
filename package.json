@@ -32,8 +32,8 @@
               "files": [
                 "helm/Chart.yaml"
               ],
-              "from": "version\\:\\s?.*",
-              "to": "version: ${nextRelease.version}",
+              "from": "\nversion\\:\\s?.*",
+              "to": "\nversion: ${nextRelease.version}",
               "results": [
                 {
                   "file": "helm/Chart.yaml",
