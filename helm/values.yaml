@@ -1,4 +1,4 @@
-disableLivenessChecks: true
+enableLivenessChecks: false
 namespace: strmprivacy
 
 registry:
@@ -115,6 +115,15 @@ components:
       name: "management/entity-agents/data-connectors-agent"
       version: "v1.3.0"
     configuration:
+
+  confluentSchemaProxy:
+    enabled: true
+    name: confluent-schema-proxy
+    image:
+      name: "management/entity-agents/confluent-schema-proxy"
+      version: "v1.2.0"
+    configuration:
+
 
   decrypterConfig:
     enabled: true

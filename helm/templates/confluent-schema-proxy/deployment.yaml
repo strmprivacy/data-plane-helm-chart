@@ -1,0 +1,56 @@
+{{ $component := .Values.components.confluentSchemaProxy }}
+{{ if $component.enabled }}
+{{ $config := $component.configuration }}
+{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: confluent-schema-proxy
+  namespace: {{ .Values.namespace }}
+  labels:
+    strmprivacy.io/app: confluent-schema-proxy
+spec:
+  replicas: {{ $component.replicas }}
+  selector:
+    matchLabels:
+      strmprivacy.io/app: confluent-schema-proxy
+  template:
+    metadata:
+      labels:
+        strmprivacy.io/app: confluent-schema-proxy
+    spec:
+      imagePullSecrets:
+        - name: strmprivacy-docker-registry
+      containers:
+        - name: confluent-schema-proxy
+          image: {{ $image }}
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            {{ include "installationDetails" .}}
+          {{ if .Values.enableLivenessChecks }}
+          livenessProbe:
+            httpGet:
+              path: /is-alive
+              port: 8080
+              scheme: HTTP
+            failureThreshold: 3
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: /is-alive
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          {{ end }}
+
+{{ end }}

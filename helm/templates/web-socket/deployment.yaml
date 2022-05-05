@@ -41,7 +41,7 @@ spec:
           ports:
             - containerPort: {{ $config.appPort }}
               protocol: TCP
-          {{ if not .Values.disableLivenessChecks }}
+          {{ if .Values.enableLivenessChecks }}
           readinessProbe:
             failureThreshold: 3
             httpGet:
