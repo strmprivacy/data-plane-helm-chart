@@ -55,7 +55,7 @@ spec:
                   key: redis-password
                   # TODO verify if this name is correct with different Redis names
                   name: {{ .Values.redis.fullnameOverride }}
-          {{ if not .Values.disableLivenessChecks }}
+          {{ if .Values.enableLivenessChecks }}
           livenessProbe:
             httpGet:
               path: /is-alive
