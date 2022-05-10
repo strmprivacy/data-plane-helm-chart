@@ -28,8 +28,30 @@ on the home page. You can find the required credentials and copy them in the `va
 generated `values.yaml` to get you started even faster. Installation can be done as follows:
   1. Create a namespace that matches the name in the `values.yaml`, the default is `strmprivacy` (all resources will be
    created in this namespace)
-  2. Run `helm install strmprivacy helm --namespace strmprivacy` from the root of this repository (this chart will be
+  2. Run `helm install strmprivacy helm --namespace strmprivacy --values values.yaml` from the root of this repository (this chart will be
    published to a Helm repository for even easier installation)
+
+Typical values.yaml
+
+```
+registry:
+  imagePullSecret: "ewog..."
+
+license:
+  installationId: "f4ceaa3..."
+  installationClientId: "ins..."
+  installationClientSecret: "tii..."
+
+kafka:
+  enabled: true
+
+redis:
+  enabled: true
+
+postgresql:
+  enabled: true
+
+```
 
 Do not hesitate to [contact us](https://docs.strmprivacy.io/docs/latest/contact/) if you need assistance!
 
