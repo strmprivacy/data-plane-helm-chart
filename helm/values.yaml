@@ -40,7 +40,7 @@ components:
     enabled: true
     image:
       name: "events/event-gateway"
-      version: "v0.57.1"
+      version: "v0.60.0"
     replicas: 1
     configuration:
       # Comma separated string
@@ -60,7 +60,7 @@ components:
     enabled: true
     image:
       name: "events/web-socket"
-      version: "v1.16.0"
+      version: "v1.17.0"
     name: web-socket
     replicas: 1
     configuration:
@@ -77,7 +77,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/batch-jobs-agent"
-      version: "v1.12.1"
+      version: "v1.13.0"
     name: batch-jobs-agent
     configuration:
       postgres:
@@ -93,7 +93,7 @@ components:
     name: batch-exporters-agent
     image:
       name: "management/entity-agents/batch-exporters-agent"
-      version: "v1.12.0"
+      version: "v1.13.0"
     configuration:
       # Comma separated string
       kafkaBootstrapServers:
@@ -102,7 +102,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/streams-agent"
-      version: "v1.14.0"
+      version: "v1.15.0"
     configuration:
       redisSecret:
         name:
@@ -113,7 +113,7 @@ components:
     name: data-connectors-agent
     image:
       name: "management/entity-agents/data-connectors-agent"
-      version: "v1.3.0"
+      version: "v1.3.1"
     configuration:
 
   confluentSchemaProxy:
