@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.0.0...v1.1.0) (2022-05-10)
+
+
+### Features
+
+* docs and version upgrades ([0c2e370](https://github.com/strmprivacy/data-plane-helm-chart/commit/0c2e370b617b33361976da14bd8e81850dc02c48))
+
 # 1.0.0 (2022-05-05)
 
 
