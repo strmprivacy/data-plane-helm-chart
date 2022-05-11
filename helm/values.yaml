@@ -124,6 +124,13 @@ components:
       version: "v1.2.0"
     configuration:
 
+  esrProxy:
+    enabled: true
+    name: esr-proxy
+    image:
+      name: "management/esr-proxy"
+      version: "v0.1.0"
+    configuration:
 
   decrypterConfig:
     enabled: true
