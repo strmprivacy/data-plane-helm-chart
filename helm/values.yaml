@@ -129,8 +129,9 @@ components:
     name: esr-proxy
     image:
       name: "management/esr-proxy"
-      version: "v0.1.0"
+      version: "v1.0.2"
     configuration:
+      kafkaBootstrapServers:
 
   decrypterConfig:
     enabled: true
