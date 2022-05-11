@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.1.0...v1.2.0) (2022-05-11)
+
+
+### Features
+
+* esr proxy added ([b492c4d](https://github.com/strmprivacy/data-plane-helm-chart/commit/b492c4de74e491aa80fd36b56dcb0e7e27996094))
+* esr-proxy ([3f5b1a0](https://github.com/strmprivacy/data-plane-helm-chart/commit/3f5b1a0ff98cf5e0f369d2025e07e99ed4ee7e44))
+
 # [1.1.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.0.0...v1.1.0) (2022-05-10)
 
 

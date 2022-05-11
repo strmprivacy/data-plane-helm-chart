@@ -84,7 +84,7 @@ components:
         host:
         port:
         user:
-        password:
+        password: ""
         database:
 
 
