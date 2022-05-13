@@ -27,7 +27,7 @@ kafka:
 
 redis:
   enabled: false
-  fullnameOverride: "redis-hallo"
+  fullnameOverride: "redis-strm"
   global:
     redis:
 
@@ -84,7 +84,7 @@ components:
         host:
         port:
         user:
-        password:
+        password: ""
         database:
 
 
