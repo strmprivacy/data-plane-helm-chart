@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.2.0...v1.3.0) (2022-05-13)
+
+
+### Features
+
+* create postgres secret with custom password ([#10](https://github.com/strmprivacy/data-plane-helm-chart/issues/10)) ([aacce1d](https://github.com/strmprivacy/data-plane-helm-chart/commit/aacce1d727bcf917d27159f3845a4a1d9d13792a))
+
 # [1.2.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.1.0...v1.2.0) (2022-05-11)
 
 
