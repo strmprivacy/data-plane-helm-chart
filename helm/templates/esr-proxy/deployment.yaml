@@ -1,0 +1,36 @@
+{{ $component := .Values.components.esrProxy }}
+{{ if $component.enabled }}
+{{ $config := $component.configuration }}
+{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+{{ $kafka := .Values.kafka}}
+{{ $bootstrap := $config.kafkaBootstrapServers |
+          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esr-proxy
+  namespace: {{ .Values.namespace }}
+  labels:
+    strmprivacy.io/app: esr-proxy
+spec:
+  replicas: {{ $component.replicas }}
+  selector:
+    matchLabels:
+      strmprivacy.io/app: esr-proxy
+  template:
+    metadata:
+      labels:
+        strmprivacy.io/app: esr-proxy
+    spec:
+      imagePullSecrets:
+        - name: strmprivacy-docker-registry
+      containers:
+        - name: esr-proxy
+          image: {{ $image }}
+          env:
+            - name: APP_BOOTSTRAP_SERVERS
+              value: {{ $bootstrap }}
+            {{ include "installationDetails" .}}
+
+{{ end }}

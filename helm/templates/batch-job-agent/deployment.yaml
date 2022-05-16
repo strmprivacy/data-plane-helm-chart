@@ -46,8 +46,13 @@ spec:
               value: "{{ $postgres.fullnameOverride }}-password"
             - name: STRM_DATABASE_CONNECTION_HOST
               value: "{{$postgresHost}}"
+
+            # bitnami_postgres is exported in the Chart.yaml value, and should allow
+            # us to use .Values.bitnami_postgres.postgresql to find the actual port
+            # but this doesn't work when postgresql is not enabled.
+            # I haven't found a work-around to make Helm actually work with this
             - name: STRM_DATABASE_CONNECTION_PORT
-              value: "{{$config.postgres.port | default $postgres.containerPorts.postgresql }}"
+              value: "{{$config.postgres.port | default 5432}}"
             - name: STRM_DRY_RUN_MODE
               value: "false"
 
