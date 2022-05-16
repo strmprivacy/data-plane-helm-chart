@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.3.0...v1.4.0) (2022-05-16)
+
+
+### Bug Fixes
+
+* update ci node version ([1bf85b6](https://github.com/strmprivacy/data-plane-helm-chart/commit/1bf85b6fa2a671ca28176716f331dcd1e482c578))
+
+
+### Features
+
+* update github ci ([e31ed95](https://github.com/strmprivacy/data-plane-helm-chart/commit/e31ed953bdfc568faf5ff0ed75fc9205bc1f610f))
+
 # [1.3.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.2.0...v1.3.0) (2022-05-13)
 
 
