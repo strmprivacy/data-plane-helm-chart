@@ -1,12 +1,15 @@
-name: Publish
+name: Build
 
 on:
   release:
     types:
       - created
 
+permissions:
+  contents: write
+
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
