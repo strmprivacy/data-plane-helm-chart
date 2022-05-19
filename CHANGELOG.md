@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.4.0...v1.4.1) (2022-05-19)
+
+
+### Bug Fixes
+
+* add semantic release for github ([3acf603](https://github.com/strmprivacy/data-plane-helm-chart/commit/3acf6033154f48a045ee8b5eb7edd26fb44b5938))
+
 # [1.4.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.3.0...v1.4.0) (2022-05-16)
 
 
