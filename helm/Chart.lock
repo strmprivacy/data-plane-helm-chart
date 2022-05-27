@@ -1,12 +1,15 @@
 dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 11.1.13
+  version: 11.1.29
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 16.7.0
 - name: kafka
   repository: https://charts.bitnami.com/bitnami
-  version: 16.2.0
-digest: sha256:e8ad4a21fb061c619cbc34e42cdda0831c8b496e86a8d4ed09cf01bb3885ab7f
-generated: "2022-04-01T15:42:30.298889+02:00"
+  version: 16.2.14
+- name: kube-prometheus-stack
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 35.3.1
+digest: sha256:f0dd5d8cd5897b5c6b382c75113aac0fc282b52f9e8839375f8a7697aa370708
+generated: "2022-05-27T15:17:02.016650291+02:00"

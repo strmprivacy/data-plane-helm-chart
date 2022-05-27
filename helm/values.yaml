@@ -21,6 +21,10 @@ api:
   port: 443
   authUrl: "https://accounts.strmprivacy.io"
 
+prometheus:
+  enabled: true
+  grafana.enabled: false
+
 kafka:
   enabled: false
   fullnameOverride: "kafka"
@@ -137,3 +141,4 @@ components:
     enabled: true
     kafkaBootstrapServers:
     redisHost:
+
