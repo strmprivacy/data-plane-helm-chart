@@ -41,6 +41,7 @@ spec:
           image: {{ $image }}
           ports:
             - containerPort: {{ $config.appPort }}
+              name: http
           env:
             {{ include "installationDetails" .}}
             - name: STRM_GATEWAY_PORT

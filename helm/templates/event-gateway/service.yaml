@@ -14,7 +14,16 @@ spec:
     - port: 80
       name: http
       targetPort: envoy-proxy
+    - name: metrics
+      port: 8081
+      protocol: TCP
+      targetPort: http
+    - name: envoy-metrics
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
 
   selector:
     strmprivacy.io/app: event-gateway
 {{ end }}
+

@@ -36,3 +36,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: ~16.2.0
     condition: kafka.enabled
+  - name: kube-prometheus-stack
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
+    version: ~35.3.1
