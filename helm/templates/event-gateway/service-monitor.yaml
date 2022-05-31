@@ -4,12 +4,31 @@ kind: ServiceMonitor
 metadata:
   labels:
     strmprivacy.io/app: event-gateway
-    release: strmprivacy
+    release: {{ .Release.Name }}
   name: event-gateway-service-monitor
   namespace: {{ .Values.namespace }}
 spec:
   endpoints:
     - port: metrics
+  jobLabel: event-gateway
+  selector:
+    matchLabels:
+      strmprivacy.io/app: event-gateway
+
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    strmprivacy.io/app: event-gateway
+    release: {{ .Release.Name }}
+  name: event-gateway-envoy-service-monitor
+  namespace: {{ .Values.namespace }}
+spec:
+  endpoints:
+  - path: /stats/prometheus
+    port: envoy-metrics
   jobLabel: event-gateway
   selector:
     matchLabels:
