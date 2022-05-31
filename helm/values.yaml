@@ -23,7 +23,6 @@ api:
 
 prometheus:
   enabled: true
-  grafana.enabled: false
 
 kafka:
   enabled: false
