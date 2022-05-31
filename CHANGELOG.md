@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.4.1...v1.5.0) (2022-05-31)
+
+
+### Bug Fixes
+
+* missing dependent charts ([#15](https://github.com/strmprivacy/data-plane-helm-chart/issues/15)) ([fe66af2](https://github.com/strmprivacy/data-plane-helm-chart/commit/fe66af2d9143ce189d05d3050ef80bbe29c4ede8))
+
+
+### Features
+
+* service-monitor event-gateway ([#14](https://github.com/strmprivacy/data-plane-helm-chart/issues/14)) ([3400c30](https://github.com/strmprivacy/data-plane-helm-chart/commit/3400c30f63798a2a888da2cc2ca41c980d1d2ea6))
+
 ## [1.4.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.4.0...v1.4.1) (2022-05-19)
 
 
