@@ -36,5 +36,19 @@ spec:
             - name: STRM_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
           image: {{ $image }}
+          {{ if .Values.kafkaSecurityConfig.enabled }}
+          volumeMounts:
+            - mountPath: /var/truststore
+              name: client-truststore
+          {{ end }}
+      volumes:
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+        - name: client-truststore
+          secret:
+            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+            optional: false
+        {{ end }}
+
+
 
 {{ end }}

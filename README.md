@@ -62,3 +62,9 @@ while using the chart, please check whether the issue you encounter has already 
 feel free to create an issue.
 
 Pull requests are greatly appreciated.
+
+# Running with SASL/PLAIN+TLS Kafka cluster
+
+Create a secret with a content as follows
+
+    kubectl create secret generic client-truststore-jks --from-file=client.truststore.jks=tls/kafka.client.truststore.jks

@@ -141,3 +141,11 @@ components:
     kafkaBootstrapServers:
     redisHost:
 
+kafkaSecurityConfig:
+  enabled: false
+  securityProtocol:
+  # on local file system
+  sslTruststoreSecretName: "tls/kafka.client.truststore.jks"
+  sslTruststorePassword:
+  userName:
+  password:
