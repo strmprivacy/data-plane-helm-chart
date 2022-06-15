@@ -1,0 +1,720 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://raw.githubusercontent.com/strmprivacy/data-plane-helm-chart/master/helm/values.schema.json",
+  "type": "object",
+  "default": {},
+  "required": [
+    "enableLivenessChecks",
+    "namespace",
+    "registry",
+    "license",
+    "api",
+    "prometheus",
+    "kafka",
+    "redis",
+    "postgresql",
+    "components"
+  ],
+  "properties": {
+    "enableLivenessChecks": {
+      "type": "boolean",
+      "default": false
+    },
+    "namespace": {
+      "type": "string",
+      "default": ""
+    },
+    "registry": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "url",
+        "base",
+        "imagePullSecret"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "default": ""
+        },
+        "base": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "prefix",
+            "path"
+          ],
+          "properties": {
+            "prefix": {
+              "type": "string",
+              "default": ""
+            },
+            "path": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        },
+        "imagePullSecret": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "installationType",
+        "installationId",
+        "installationClientId",
+        "installationClientSecret"
+      ],
+      "properties": {
+        "installationType": {
+          "type": "string",
+          "default": "",
+          "enum": ["SELF_HOSTED", "AWS_MARKETPLACE"]
+        },
+        "installationId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "installationClientId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "installationClientSecret": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "api": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "host",
+        "port",
+        "authUrl"
+      ],
+      "properties": {
+        "host": {
+          "type": "string",
+          "default": ""
+        },
+        "port": {
+          "type": "integer",
+          "default": 0
+        },
+        "authUrl": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "prometheus": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "kafka": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "enabled",
+        "fullnameOverride"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "fullnameOverride": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "redis": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "enabled",
+        "fullnameOverride",
+        "global"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "fullnameOverride": {
+          "type": "string",
+          "default": ""
+        },
+        "global": {
+          "type": "object",
+          "default": {},
+          "required": [],
+          "properties": {
+            "redis": {
+              "type": ["object", "null"],
+              "default": null
+            }
+          }
+        }
+      }
+    },
+    "postgresql": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "enabled",
+        "fullnameOverride"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "fullnameOverride": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "components": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "eventGateway",
+        "webSocket",
+        "batchJobAgent",
+        "batchExportersAgent",
+        "streamsAgent",
+        "dataConnectorAgent",
+        "confluentSchemaProxy",
+        "esrProxy",
+        "decrypterConfig"
+      ],
+      "properties": {
+        "eventGateway": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "image",
+            "replicas",
+            "configuration"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "replicas": {
+              "type": "integer",
+              "default": 0
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "appPort",
+                "envoy"
+              ],
+              "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
+                },
+                "redisHost": {
+                  "type": ["string", "null"],
+                  "default": null
+                },
+                "redisUser": {
+                  "type": ["string", "null"],
+                  "default": null
+                },
+                "redisPassword": {
+                  "type": ["string", "null"],
+                  "default": null
+                },
+                "appPort": {
+                  "type": "string",
+                  "default": ""
+                },
+                "envoy": {
+                  "type": "object",
+                  "default": {},
+                  "required": [
+                    "port",
+                    "adminPort"
+                  ],
+                  "properties": {
+                    "port": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "adminPort": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "jwtAudience": {
+                      "type": ["string", "null"],
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "webSocket": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "image",
+            "name",
+            "replicas",
+            "configuration"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "name": {
+              "type": "string",
+              "default": ""
+            },
+            "replicas": {
+              "type": "integer",
+              "default": 0
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "appPort",
+                "envoy"
+              ],
+              "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
+                },
+                "appPort": {
+                  "type": "string",
+                  "default": ""
+                },
+                "envoy": {
+                  "type": "object",
+                  "default": {},
+                  "required": [
+                    "port",
+                    "adminPort"
+                  ],
+                  "properties": {
+                    "port": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "adminPort": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "jwtAudience": {
+                      "type": ["string", "null"],
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "batchJobAgent": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "image",
+            "name",
+            "configuration"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "name": {
+              "type": "string",
+              "default": ""
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "postgres"
+              ],
+              "properties": {
+                "postgres": {
+                  "type": "object",
+                  "default": {},
+                  "required": [
+                    "password"
+                  ],
+                  "properties": {
+                    "host": {
+                      "type": ["string", "null"],
+                      "default": null
+                    },
+                    "port": {
+                      "type": ["string", "null"],
+                      "default": null
+                    },
+                    "user": {
+                      "type": ["string", "null"],
+                      "default": null
+                    },
+                    "password": {
+                      "type": "string",
+                      "default": ""
+                    },
+                    "database": {
+                      "type": ["string", "null"],
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "batchExportersAgent": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "name",
+            "image",
+            "configuration"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "name": {
+              "type": "string",
+              "default": ""
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [],
+              "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
+                }
+              }
+            }
+          }
+        },
+        "streamsAgent": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "image",
+            "configuration"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "redisSecret"
+              ],
+              "properties": {
+                "redisSecret": {
+                  "type": "object",
+                  "default": {},
+                  "required": [],
+                  "properties": {
+                    "name": {
+                      "type": ["string", "null"],
+                      "default": null
+                    },
+                    "key": {
+                      "type": ["string", "null"],
+                      "default": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "dataConnectorAgent": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "name",
+            "image"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "name": {
+              "type": "string",
+              "default": ""
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "configuration": {
+              "type": ["object", "null"],
+              "default": null
+            }
+          }
+        },
+        "confluentSchemaProxy": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "name",
+            "image"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "name": {
+              "type": "string",
+              "default": ""
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "configuration": {
+              "type": ["object", "null"],
+              "default": null
+            }
+          }
+        },
+        "esrProxy": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "name",
+            "image",
+            "configuration"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "name": {
+              "type": "string",
+              "default": ""
+            },
+            "image": {
+              "type": "object",
+              "default": {},
+              "required": [
+                "name",
+                "version"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": ""
+                },
+                "version": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [],
+              "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
+                }
+              }
+            }
+          }
+        },
+        "decrypterConfig": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "kafkaBootstrapServers": {
+              "type": ["string", "null"],
+              "default": null
+            },
+            "redisHost": {
+              "type": ["string", "null"],
+              "default": null
+            }
+          }
+        }
+      }
+    }
+  }
+}

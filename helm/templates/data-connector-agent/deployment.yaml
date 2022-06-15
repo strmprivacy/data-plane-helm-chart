@@ -27,7 +27,10 @@ spec:
         - name: agent
           image: {{ $image }}
           env:
-            {{ include "installationDetails" . }}
+            {{ include "installationEnvironmentVariables" . }}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}
 

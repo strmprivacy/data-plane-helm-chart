@@ -31,6 +31,9 @@ spec:
           env:
             - name: APP_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
-            {{ include "installationDetails" .}}
+            {{ include "installationEnvironmentVariables" .}}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
 
 {{ end }}

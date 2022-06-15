@@ -8,13 +8,17 @@ registry:
     path: "docker-public"
 
   # Fill out the value below or download a prefilled values.yaml from the Console
+  # Only required when license type is SELF_HOSTED
   imagePullSecret: ""
 
 license:
+  # Through which channel the Helm chart is installed
+  # Possible values: AWS_MARKETPLACE, SELF_HOSTED
+  installationType: AWS_MARKETPLACE
   # Fill out the values below or download a prefilled values.yaml from the Console
-  installationId: ""
-  installationClientId: ""
-  installationClientSecret: ""
+  installationId: "<installation_id>"
+  installationClientId: "<client_id>"
+  installationClientSecret: "<client_secret>"
 
 api:
   host: "api.strmprivacy.io"

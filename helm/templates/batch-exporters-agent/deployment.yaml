@@ -30,11 +30,14 @@ spec:
       containers:
         - name: agent
           env:
-          {{ include "installationDetails"  . }}
+          {{ include "installationEnvironmentVariables"  . }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}
             - name: STRM_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
+          {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+          {{ include "selfHostedEnvironmentVariables" .}}
+          {{ end }}
           image: {{ $image }}
 
 {{ end }}

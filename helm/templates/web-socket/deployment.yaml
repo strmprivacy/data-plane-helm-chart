@@ -32,7 +32,10 @@ spec:
         - name: web-socket
           image: {{ $image }}
           env:
-            {{ include "installationDetails" .}}
+            {{ include "installationEnvironmentVariables" .}}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
             - name: STRM_EGRESSPORT
               value: "{{ $config.appPort }}"
             - name: STRM_BOOTSTRAP_SERVERS

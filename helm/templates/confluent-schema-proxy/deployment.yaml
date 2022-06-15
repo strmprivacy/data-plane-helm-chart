@@ -29,7 +29,10 @@ spec:
             - containerPort: 8080
               name: http
           env:
-            {{ include "installationDetails" .}}
+            {{ include "installationEnvironmentVariables" .}}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
           {{ if .Values.enableLivenessChecks }}
           livenessProbe:
             httpGet:

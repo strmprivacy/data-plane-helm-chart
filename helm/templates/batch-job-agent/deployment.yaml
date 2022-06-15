@@ -33,7 +33,10 @@ spec:
         - name: agent
           image: {{ $image }}
           env:
-            {{ include "installationDetails" .}}
+            {{ include "installationEnvironmentVariables" .}}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
             - name: STRM_ENTITY_NAMESPACE
               value: {{ .Values.namespace }}
             - name: STRM_DATABASE_NAME

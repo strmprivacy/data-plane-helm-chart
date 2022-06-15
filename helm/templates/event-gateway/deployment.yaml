@@ -43,7 +43,7 @@ spec:
             - containerPort: {{ $config.appPort }}
               name: http
           env:
-            {{ include "installationDetails" .}}
+            {{ include "installationEnvironmentVariables" .}}
             - name: STRM_GATEWAY_PORT
               value: "{{ $config.appPort }}"
             - name: STRM_BOOTSTRAP_SERVERS
@@ -56,6 +56,9 @@ spec:
                   key: redis-password
                   # TODO verify if this name is correct with different Redis names
                   name: {{ .Values.redis.fullnameOverride }}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
           {{ if .Values.enableLivenessChecks }}
           livenessProbe:
             httpGet:

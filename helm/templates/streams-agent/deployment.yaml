@@ -31,7 +31,10 @@ spec:
         - name: streams-agent
           image: {{$image}}
           env:
-            {{ include "installationDetails" .}}
+            {{ include "installationEnvironmentVariables" .}}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
             - name: APP_DECRYPTER_NAMESPACE
               value: {{ .Values.namespace }}
             - name: STRM_BOOTSTRAP_SERVERS
