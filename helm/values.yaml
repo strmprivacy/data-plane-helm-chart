@@ -80,7 +80,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/batch-jobs-agent"
-      version: "v1.13.0"
+      version: "v1.13.1"
     name: batch-jobs-agent
     configuration:
       postgres:
