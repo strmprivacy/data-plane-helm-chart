@@ -84,7 +84,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/batch-jobs-agent"
-      version: "v1.13.1"
+      version: "v1.14.0"
     name: batch-jobs-agent
     configuration:
       postgres:
@@ -100,7 +100,7 @@ components:
     name: batch-exporters-agent
     image:
       name: "management/entity-agents/batch-exporters-agent"
-      version: "v1.13.0"
+      version: "v1.14.0"
     configuration:
       # Comma separated string
       kafkaBootstrapServers:
@@ -109,7 +109,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/streams-agent"
-      version: "v1.16.0"
+      version: "v1.17.0"
     configuration:
       redisSecret:
         name:
