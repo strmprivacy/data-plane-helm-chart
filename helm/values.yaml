@@ -14,8 +14,7 @@ registry:
 
 license:
   # Through which channel the Helm chart is installed
-  # Possible values: AWS_MARKETPLACE, SELF_HOSTED
-  installationType: AWS_MARKETPLACE
+  installationType: SELF_HOSTED
   # Fill out the values below or download a prefilled values.yaml from the Console
   installationId: "<installation_id>"
   installationClientId: "<client_id>"
