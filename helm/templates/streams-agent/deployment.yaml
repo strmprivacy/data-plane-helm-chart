@@ -4,10 +4,12 @@
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $config.kafkaBootstrapServers |
           default (printf "%s-headless.%s.svc.cluster.local:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
-{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
 {{ $redisSecretName := $config.redisSecret.name | default (printf "%s" .Values.redis.fullnameOverride) }}
 {{ $redisSecretKey := $config.redisSecret.key | default "redis-password" }}
-
+{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
+(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
+(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
+}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -25,8 +27,10 @@ spec:
         strmprivacy.io/app: streams-agent
     spec:
       automountServiceAccountToken: true
+      {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:
         - name: strmprivacy-docker-registry
+      {{ end }}
       containers:
         - name: streams-agent
           image: {{$image}}

@@ -3,7 +3,10 @@
 
 {{ $name := $component.name }}
 {{ $config := $component.configuration }}
-{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
+(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
+(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
+}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -21,8 +24,10 @@ spec:
         app: {{ $name }}
     spec:
       automountServiceAccountToken: true
+      {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:
         - name: strmprivacy-docker-registry
+      {{ end }}
       containers:
         - name: agent
           image: {{ $image }}
