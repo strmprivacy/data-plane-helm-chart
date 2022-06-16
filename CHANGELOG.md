@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.6.0...v1.7.0) (2022-06-16)
+
+
+### Features
+
+* **strm-1247:** push helm chart to AWS ECR for marketplace installations ([e038300](https://github.com/strmprivacy/data-plane-helm-chart/commit/e038300f0ff08349c1e1af6646f708621f67711b))
+
 # [1.6.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.5.0...v1.6.0) (2022-06-16)
 
 
