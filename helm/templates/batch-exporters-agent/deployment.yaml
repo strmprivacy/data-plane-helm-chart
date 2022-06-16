@@ -6,7 +6,10 @@
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $config.kafkaBootstrapServers |
           default (printf "%s-headless.%s.svc.cluster.local:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
-{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
+(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
+(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
+}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -25,16 +28,21 @@ spec:
     spec:
       automountServiceAccountToken: true
       serviceAccountName: {{$name}}
+      {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:
         - name: strmprivacy-docker-registry
+      {{ end }}
       containers:
         - name: agent
           env:
-          {{ include "installationDetails"  . }}
+          {{ include "installationEnvironmentVariables"  . }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}
             - name: STRM_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
+          {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+          {{ include "selfHostedEnvironmentVariables" .}}
+          {{ end }}
           image: {{ $image }}
 
 {{ end }}

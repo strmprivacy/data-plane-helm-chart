@@ -6,7 +6,10 @@
           default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
 {{ $redis := $config.redisHost |
       default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}
-{{ $image :=  (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version) }}
+{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
+(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
+(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
+}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -34,8 +37,10 @@ spec:
                     strmprivacy.io/app: event-gateway
                 topologyKey: kubernetes.io/hostname
               weight: 100
+      {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:
         - name: strmprivacy-docker-registry
+      {{ end }}
       containers:
         - name: event-gateway
           image: {{ $image }}
@@ -43,7 +48,7 @@ spec:
             - containerPort: {{ $config.appPort }}
               name: http
           env:
-            {{ include "installationDetails" .}}
+            {{ include "installationEnvironmentVariables" .}}
             - name: STRM_GATEWAY_PORT
               value: "{{ $config.appPort }}"
             - name: STRM_BOOTSTRAP_SERVERS
@@ -56,6 +61,9 @@ spec:
                   key: redis-password
                   # TODO verify if this name is correct with different Redis names
                   name: {{ .Values.redis.fullnameOverride }}
+            {{ if eq .Values.license.installationType "SELF_HOSTED" }}
+            {{ include "selfHostedEnvironmentVariables" .}}
+            {{ end }}
           {{ if .Values.enableLivenessChecks }}
           livenessProbe:
             httpGet:

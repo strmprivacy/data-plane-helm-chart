@@ -3,18 +3,22 @@ namespace: strmprivacy
 
 registry:
   url: "europe-west4-docker.pkg.dev"
+  awsMarketplaceUrl: "709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy"
   base:
     prefix: "stream-machine-production"
     path: "docker-public"
 
   # Fill out the value below or download a prefilled values.yaml from the Console
+  # Only required when license type is SELF_HOSTED
   imagePullSecret: ""
 
 license:
+  # Through which channel the Helm chart is installed
+  installationType: SELF_HOSTED
   # Fill out the values below or download a prefilled values.yaml from the Console
-  installationId: ""
-  installationClientId: ""
-  installationClientSecret: ""
+  installationId: "<installation_id>"
+  installationClientId: "<client_id>"
+  installationClientSecret: "<client_secret>"
 
 api:
   host: "api.strmprivacy.io"

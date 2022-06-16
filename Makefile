@@ -40,7 +40,7 @@ wipe: check_clean
 	kubectl delete namespace ${namespace}
 
 check_clean:
-	@echo "We're going to wipe these and uinstall helm"
+	@echo "We're going to wipe these and uninstall helm"
 	kubectl get pvc
 	kubectl get secrets
 	@echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
