@@ -1,3 +1,13 @@
+# [1.6.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.5.0...v1.6.0) (2022-06-16)
+
+
+### Features
+
+* **strm-1272:** add installation type; enable/disable parts based on installation type ([f489626](https://github.com/strmprivacy/data-plane-helm-chart/commit/f489626200ca2b72176fc8da7fbd8aa9882406e2))
+* **strm-1272:** add values schema; add environment variable for installation type ([4c90e65](https://github.com/strmprivacy/data-plane-helm-chart/commit/4c90e651e53752d2fa906ea212f6beeb7d7af175))
+* **strm-1272:** toggle image and imagepullsecrets based on installation type ([4ac670c](https://github.com/strmprivacy/data-plane-helm-chart/commit/4ac670cefec76cb5d228860cb49cbae039f39913))
+* **strm-1272:** update default installation type to SELF_HOSTED ([51a359c](https://github.com/strmprivacy/data-plane-helm-chart/commit/51a359c9123fdd33b0aa182cead19dda595af515))
+
 # [1.5.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.4.1...v1.5.0) (2022-05-31)
 
 
