@@ -1,3 +1,10 @@
+## [1.7.5](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.4...v1.7.5) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** changed permissions for AWS ECR publisher creds ([eb9ff84](https://github.com/strmprivacy/data-plane-helm-chart/commit/eb9ff84c224ebfba83e73f7dabc3d9c1c30e0358))
+
 ## [1.7.4](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.3...v1.7.4) (2022-06-17)
 
 
