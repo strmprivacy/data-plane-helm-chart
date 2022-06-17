@@ -1,3 +1,10 @@
+## [1.7.4](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.3...v1.7.4) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** try it with the aws cli ([2c56aec](https://github.com/strmprivacy/data-plane-helm-chart/commit/2c56aec46dec1710d27c08c0bc4eeabb54f7cf1e))
+
 ## [1.7.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.2...v1.7.3) (2022-06-17)
 
 
