@@ -26,11 +26,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_MARKETPLACE_ECR_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_MARKETPLACE_ECR_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registries: "709825985650"
       - name: write tarball
         env:
           STRM_HELM_CHART_SA: ${{ secrets.STRM_HELM_CHART_SA }}
@@ -45,6 +40,6 @@ jobs:
           
           helm package helm
           helm gcs push strm-${tag_name}.tgz helm-bucket
-          
-          echo "${{ steps.login-ecr.outputs.docker_password_709825985650_dkr_ecr_us_east_1_amazonaws_com }}" | helm registry login --username AWS --password-stdin "709825985650.dkr.ecr.us-east-1.amazonaws.com"
+               
+          aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin "709825985650.dkr.ecr.us-east-1.amazonaws.com"
           helm push strm-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/
