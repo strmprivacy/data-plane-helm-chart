@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.1...v1.7.2) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** change to correct oci path ([a3a9120](https://github.com/strmprivacy/data-plane-helm-chart/commit/a3a9120272ed5725858c7f9e854ce41a76a23706))
+
 ## [1.7.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.0...v1.7.1) (2022-06-17)
 
 
