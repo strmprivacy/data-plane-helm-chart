@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.2...v1.7.3) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** aWS ECR is picky when publishing Helm charts ([a7007cf](https://github.com/strmprivacy/data-plane-helm-chart/commit/a7007cf5d66b30d5c4c0d201978050ca55a1d73e))
+
 ## [1.7.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.1...v1.7.2) (2022-06-17)
 
 
