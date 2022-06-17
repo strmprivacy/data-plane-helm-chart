@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.0...v1.7.1) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** helm chart command does not exist ([45a22be](https://github.com/strmprivacy/data-plane-helm-chart/commit/45a22be99a1bf1deb9776ad767808f72f74e30ec))
+
 # [1.7.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.6.0...v1.7.0) (2022-06-16)
 
 
