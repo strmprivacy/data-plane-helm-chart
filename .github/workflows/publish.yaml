@@ -46,5 +46,5 @@ jobs:
           helm package helm
           helm gcs push strm-${tag_name}.tgz helm-bucket
           
-          helm registry login --username AWS --password "${{ steps.login-ecr.outputs.docker_password_709825985650_dkr_ecr_us_east_1_amazonaws_com }}" "709825985650.dkr.ecr.us-east-1.amazonaws.com"
-          helm push strm-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy
+          echo "${{ steps.login-ecr.outputs.docker_password_709825985650_dkr_ecr_us_east_1_amazonaws_com }}" | helm registry login --username AWS --password-stdin "709825985650.dkr.ecr.us-east-1.amazonaws.com"
+          helm push strm-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/
