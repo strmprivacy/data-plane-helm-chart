@@ -47,7 +47,4 @@ jobs:
           helm gcs push strm-${tag_name}.tgz helm-bucket
           
           helm registry login --username AWS --password "${{ steps.login-ecr.outputs.docker_password_709825985650_dkr_ecr_us_east_1_amazonaws_com }}" "709825985650.dkr.ecr.us-east-1.amazonaws.com"
-          helm chart save helm 709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/strm-privacy-data-plane:${tag_name}
-          helm chart push 709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/strm-privacy-data-plane:${tag_name}
-          
-          
+          helm push strm-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/strm-privacy-data-plane
