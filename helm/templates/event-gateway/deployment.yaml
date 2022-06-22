@@ -2,7 +2,7 @@
 {{ if $component.enabled }}
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
+{{ $bootstrap := $kafka.bootstrapServers |
           default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $redis := $config.redisHost |
       default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}

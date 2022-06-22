@@ -2,7 +2,7 @@
 {{ if $component.enabled }}
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
+{{ $bootstrap := $kafka.bootstrapServers |
           default (printf "%s-headless.%s.svc.cluster.local:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $redisSecretName := $config.redisSecret.name | default (printf "%s" .Values.redis.fullnameOverride) }}
 {{ $redisSecretKey := $config.redisSecret.key | default "redis-password" }}
@@ -35,6 +35,7 @@ spec:
         - name: streams-agent
           image: {{$image}}
           env:
+            {{ include "kafkaSecurityEnvironmentVars" .}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
@@ -47,6 +48,18 @@ spec:
               value: {{ $redisSecretName }}
             - name: STRM_REDIS_SECRET_KEY
               value: {{ $redisSecretKey }}
+          {{ if .Values.kafkaSecurityConfig.enabled }}
+          volumeMounts:
+            - mountPath: /var/truststore
+              name: client-truststore
+      {{ end }}
       serviceAccountName: streams-agent
+      volumes:
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+        - name: client-truststore
+          secret:
+            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+            optional: false
+  {{ end }}
 
-{{ end }}
+  {{ end }}

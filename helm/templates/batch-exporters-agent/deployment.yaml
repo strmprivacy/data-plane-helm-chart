@@ -4,7 +4,7 @@
 {{ $name := $component.name }}
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
+{{ $bootstrap := $kafka.bootstrapServers |
           default (printf "%s-headless.%s.svc.cluster.local:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
 (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
@@ -35,6 +35,7 @@ spec:
       containers:
         - name: agent
           env:
+          {{ include "kafkaSecurityEnvironmentVars" .}}
           {{ include "installationEnvironmentVariables"  . }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}

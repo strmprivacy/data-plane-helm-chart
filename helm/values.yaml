@@ -31,6 +31,7 @@ prometheus:
 kafka:
   enabled: false
   fullnameOverride: "kafka"
+  bootstrapServers: test-kafka-0.test-kafka-headless.sasl-plain.svc.cluster.local:9092
   port: "9092"
 
 redis:
@@ -51,8 +52,6 @@ components:
       version: "v0.60.1"
     replicas: 1
     configuration:
-      # Comma separated string
-      kafkaBootstrapServers:
       redisHost:
       redisUser:
       redisPassword:
@@ -72,8 +71,6 @@ components:
     name: web-socket
     replicas: 1
     configuration:
-      # Comma separated string
-      kafkaBootstrapServers:
       # Application port, traffic goes via Envoy to the application
       appPort: "8081"
       envoy:
@@ -103,8 +100,6 @@ components:
       name: "management/entity-agents/batch-exporters-agent"
       version: "v1.14.0"
     configuration:
-      # Comma separated string
-      kafkaBootstrapServers:
 
   streamsAgent:
     enabled: true
@@ -139,11 +134,9 @@ components:
       name: "management/esr-proxy"
       version: "v1.1.0"
     configuration:
-      kafkaBootstrapServers:
 
   decrypterConfig:
     enabled: true
-    kafkaBootstrapServers:
     redisHost:
 
 kafkaSecurityConfig:

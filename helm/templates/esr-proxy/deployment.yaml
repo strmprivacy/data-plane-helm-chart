@@ -2,7 +2,7 @@
 {{ if $component.enabled }}
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
+{{ $bootstrap := $kafka.bootstrapServers |
           default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
 (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
