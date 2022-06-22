@@ -15,4 +15,51 @@ metadata:
 data:
   "envoy.yaml": |-
 {{ tpl (.Files.Get "resources/event-gateway/envoy.yaml") . | nindent 4 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: event-gateway
+  namespace: {{ .Values.namespace }}
+  labels:
+    strmprivacy.io/app: event-gateway
+  annotations:
+    strmprivacy.io/version: {{ .Chart.Version }}
+
+data:
+  "application.conf": |-
+    app {
+      kafka {
+        bootstrapServers = "test-kafka-0.test-kafka-headless.sasl-plain.svc.cluster.local:9092"
+        eventProducer {
+            kafkaSecurityConfig {
+                securityProtocol = {{ .Values.kafkaSecurityConfig.securityProtocol }}
+                sslTruststoreLocation = "/var/truststore/client.truststore.jks"
+                sslTruststorePassword = {{ .Values.kafkaSecurityConfig.sslTruststorePassword}}
+                userName = {{ .Values.kafkaSecurityConfig.userName}}
+                password = {{ .Values.kafkaSecurityConfig.password}}
+            }
+        }
+        encryptionKeysProducer {
+            kafkaSecurityConfig {
+                securityProtocol = {{ .Values.kafkaSecurityConfig.securityProtocol }}
+                sslTruststoreLocation = "/var/truststore/client.truststore.jks"
+                sslTruststorePassword = {{ .Values.kafkaSecurityConfig.sslTruststorePassword}}
+                userName = {{ .Values.kafkaSecurityConfig.userName}}
+                password = {{ .Values.kafkaSecurityConfig.password}}
+            }
+        }
+        usageProducer {
+            kafkaSecurityConfig {
+                securityProtocol = {{ .Values.kafkaSecurityConfig.securityProtocol }}
+                sslTruststoreLocation = "/var/truststore/client.truststore.jks"
+                sslTruststorePassword = {{ .Values.kafkaSecurityConfig.sslTruststorePassword}}
+                userName = {{ .Values.kafkaSecurityConfig.userName}}
+                password = {{ .Values.kafkaSecurityConfig.password}}
+            }
+        }
+      }
+    }
+
 {{ end }}

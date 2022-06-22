@@ -4,7 +4,7 @@
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $redis := $config.redisHost |
     default (printf "%s.%s" .Values.redis.fullnameOverride .Values.namespace) }}
 {{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary

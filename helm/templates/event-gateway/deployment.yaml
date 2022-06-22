@@ -3,7 +3,7 @@
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $redis := $config.redisHost |
       default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}
 {{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
@@ -86,6 +86,14 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
           {{ end }}
+          {{ if .Values.kafkaSecurityConfig.enabled }}
+          volumeMounts:
+            - mountPath: /var/truststore
+              name: client-truststore
+            - mountPath: /home/nonroot/application.conf
+              name: application-conf
+              subPath: application.conf
+          {{ end }}
 
         - name: event-gateway-envoy
           image: envoyproxy/envoy:v1.21-latest
@@ -122,4 +130,13 @@ spec:
           configMap:
             name: event-gateway-envoy-config
             optional: false
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+        - name: client-truststore
+          secret:
+            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+            optional: false
+        - name: application-conf
+          configMap:
+            name: event-gateway
+        {{ end }}
 {{ end }}

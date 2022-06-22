@@ -5,7 +5,7 @@
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s-headless.%s.svc.cluster.local:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+          default (printf "%s-headless.%s.svc.cluster.local:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
 (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
 (printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)

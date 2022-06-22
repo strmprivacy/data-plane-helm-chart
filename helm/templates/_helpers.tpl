@@ -51,5 +51,3 @@
             - name: STRM_IMAGE_PULL_SECRET_NAME
               value: "strmprivacy-docker-registry"
 {{ end }}
-
-

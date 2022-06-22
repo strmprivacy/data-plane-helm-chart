@@ -3,7 +3,7 @@
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s-headless.%s.svc.cluster.local:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+          default (printf "%s-headless.%s.svc.cluster.local:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
 {{ $redisSecretName := $config.redisSecret.name | default (printf "%s" .Values.redis.fullnameOverride) }}
 {{ $redisSecretKey := $config.redisSecret.key | default "redis-password" }}
 {{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
