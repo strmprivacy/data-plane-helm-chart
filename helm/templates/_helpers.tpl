@@ -11,6 +11,18 @@
     {{- printf "%s.%s:%d" .Values.kafka.fullnameOverride .Values.namespace (.Values.kafka.service.ports.client | int) }}'
 {{- end }}
 
+{{ define "kafkaSecurityEnvironmentVars" }}
+            - name: STRM_KAFKASEC_PROTOCOL
+              value: {{ .Values.kafkaSecurityConfig.securityProtocol }}
+            - name: STRM_KAFKASEC_TRUSTSTORE
+              value: /var/truststore/client.truststore.jks
+            - name: STRM_KAFKASEC_TRUSTSTORE_PW
+              value: {{ .Values.kafkaSecurityConfig.sslTruststorePassword }}
+            - name: STRM_KAFKASEC_USERNAME
+              value: {{ .Values.kafkaSecurityConfig.userName }}
+            - name: STRM_KAFKASEC_PW
+              value: {{ .Values.kafkaSecurityConfig.password }}
+{{ end }}
 {{ define "installationEnvironmentVariables" }}
             - name: STRM_INSTALLATION_TYPE
               value: {{.Values.license.installationType}}
