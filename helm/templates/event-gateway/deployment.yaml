@@ -86,14 +86,14 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
           {{ end }}
-          {{ if .Values.kafkaSecurityConfig.enabled }}
           volumeMounts:
-            - mountPath: /var/truststore
-              name: client-truststore
             - mountPath: /home/nonroot/application.conf
               name: application-conf
               subPath: application.conf
-          {{ end }}
+            {{ if .Values.kafkaSecurityConfig.enabled }}
+            - mountPath: /var/truststore
+              name: client-truststore
+            {{ end }}
 
         - name: event-gateway-envoy
           image: envoyproxy/envoy:v1.21-latest
@@ -130,13 +130,13 @@ spec:
           configMap:
             name: event-gateway-envoy-config
             optional: false
+        - name: application-conf
+          configMap:
+            name: event-gateway
         {{ if .Values.kafkaSecurityConfig.enabled }}
         - name: client-truststore
           secret:
             secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
             optional: false
-        - name: application-conf
-          configMap:
-            name: event-gateway
         {{ end }}
 {{ end }}

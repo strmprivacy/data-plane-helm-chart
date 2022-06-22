@@ -31,7 +31,6 @@ data:
   "application.conf": |-
     app {
       kafka {
-        bootstrapServers = "test-kafka-0.test-kafka-headless.sasl-plain.svc.cluster.local:9092"
         eventProducer {
             kafkaSecurityConfig {
                 securityProtocol = {{ .Values.kafkaSecurityConfig.securityProtocol }}
