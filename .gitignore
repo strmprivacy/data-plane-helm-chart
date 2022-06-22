@@ -1,1 +1,3 @@
 values.yaml
+strm*.tgz
+.github/workflows/aws.yaml

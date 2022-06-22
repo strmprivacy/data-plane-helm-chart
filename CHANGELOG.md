@@ -1,3 +1,55 @@
+## [1.7.5](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.4...v1.7.5) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** changed permissions for AWS ECR publisher creds ([eb9ff84](https://github.com/strmprivacy/data-plane-helm-chart/commit/eb9ff84c224ebfba83e73f7dabc3d9c1c30e0358))
+
+## [1.7.4](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.3...v1.7.4) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** try it with the aws cli ([2c56aec](https://github.com/strmprivacy/data-plane-helm-chart/commit/2c56aec46dec1710d27c08c0bc4eeabb54f7cf1e))
+
+## [1.7.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.2...v1.7.3) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** aWS ECR is picky when publishing Helm charts ([a7007cf](https://github.com/strmprivacy/data-plane-helm-chart/commit/a7007cf5d66b30d5c4c0d201978050ca55a1d73e))
+
+## [1.7.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.1...v1.7.2) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** change to correct oci path ([a3a9120](https://github.com/strmprivacy/data-plane-helm-chart/commit/a3a9120272ed5725858c7f9e854ce41a76a23706))
+
+## [1.7.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.0...v1.7.1) (2022-06-17)
+
+
+### Bug Fixes
+
+* **strm-1247:** helm chart command does not exist ([45a22be](https://github.com/strmprivacy/data-plane-helm-chart/commit/45a22be99a1bf1deb9776ad767808f72f74e30ec))
+
+# [1.7.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.6.0...v1.7.0) (2022-06-16)
+
+
+### Features
+
+* **strm-1247:** push helm chart to AWS ECR for marketplace installations ([e038300](https://github.com/strmprivacy/data-plane-helm-chart/commit/e038300f0ff08349c1e1af6646f708621f67711b))
+
+# [1.6.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.5.0...v1.6.0) (2022-06-16)
+
+
+### Features
+
+* **strm-1272:** add installation type; enable/disable parts based on installation type ([f489626](https://github.com/strmprivacy/data-plane-helm-chart/commit/f489626200ca2b72176fc8da7fbd8aa9882406e2))
+* **strm-1272:** add values schema; add environment variable for installation type ([4c90e65](https://github.com/strmprivacy/data-plane-helm-chart/commit/4c90e651e53752d2fa906ea212f6beeb7d7af175))
+* **strm-1272:** toggle image and imagepullsecrets based on installation type ([4ac670c](https://github.com/strmprivacy/data-plane-helm-chart/commit/4ac670cefec76cb5d228860cb49cbae039f39913))
+* **strm-1272:** update default installation type to SELF_HOSTED ([51a359c](https://github.com/strmprivacy/data-plane-helm-chart/commit/51a359c9123fdd33b0aa182cead19dda595af515))
+
 # [1.5.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.4.1...v1.5.0) (2022-05-31)
 
 

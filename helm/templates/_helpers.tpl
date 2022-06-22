@@ -1,15 +1,19 @@
 
 {{- define "imagePullSecret" }}
+    {{ if eq .Values.license.installationType "SELF_HOSTED" }}
     {{- $imagePullSecret := .Values.registry.imagePullSecret | required ".Values.registry.imagePullSecret is required, please refer to your installation credentials in the console." -}}
 
     {{- printf "{\"auths\": {\"%s\": {\"username\": \"_json_key_base64\",\"password\": \"%s\",\"email\":\"%s\", \"auth\": \"%s\"}}}" .Values.registry.url $imagePullSecret ($imagePullSecret | b64dec | fromJson).client_email ((printf "_json_key_base64:%s" $imagePullSecret) | b64enc) | b64enc}}
+    {{ end }}
 {{- end }}
 
 {{- define "bootstrapServers" }}
     {{- printf "%s.%s:%d" .Values.kafka.fullnameOverride .Values.namespace (.Values.kafka.service.ports.client | int) }}'
 {{- end }}
 
-{{ define "installationDetails" }}
+{{ define "installationEnvironmentVariables" }}
+            - name: STRM_INSTALLATION_TYPE
+              value: {{.Values.license.installationType}}
             - name: STRM_API_HOST
               value: {{.Values.api.host}}
             - name: STRM_API_PORT
@@ -28,8 +32,6 @@
               value: STRM_AUTH_CLIENT_ID
             - name: STRM_AUTH_CLIENT_SECRET_KUBERNETES_SECRET_KEY
               value: STRM_AUTH_CLIENT_SECRET
-            - name: STRM_IMAGE_PULL_SECRET_NAME
-              value: "strmprivacy-docker-registry"
             - name: STRM_AUTH_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
@@ -43,6 +45,11 @@
                   name: installation-credentials
                   key: STRM_INSTALLATION_ID
                   optional: false
+{{ end }}
+
+{{ define "selfHostedEnvironmentVariables" }}
+            - name: STRM_IMAGE_PULL_SECRET_NAME
+              value: "strmprivacy-docker-registry"
 {{ end }}
 
 

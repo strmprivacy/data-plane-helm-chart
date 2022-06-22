@@ -1,4 +1,4 @@
-name: Build
+name: Publish
 
 on:
   release:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,6 +20,12 @@ jobs:
         uses: azure/setup-helm@v1
         with:
           version: v3.8.1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_MARKETPLACE_ECR_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_MARKETPLACE_ECR_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
       - name: write tarball
         env:
           STRM_HELM_CHART_SA: ${{ secrets.STRM_HELM_CHART_SA }}
@@ -27,8 +33,13 @@ jobs:
           tag_name=$(echo "${GITHUB_REF##*/}" | sed 's/v//g')
           echo "${STRM_HELM_CHART_SA}" > credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS=credentials.json
+          
           helm plugin install https://github.com/hayorov/helm-gcs.git
           helm gcs init gs://stream-machine-production-helm-chart/data-plane
           helm repo add helm-bucket gs://stream-machine-production-helm-chart/data-plane
+          
           helm package helm
           helm gcs push strm-${tag_name}.tgz helm-bucket
+               
+          aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin "709825985650.dkr.ecr.us-east-1.amazonaws.com"
+          helm push strm-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/
