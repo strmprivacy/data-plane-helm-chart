@@ -31,7 +31,6 @@ prometheus:
 kafka:
   enabled: false
   fullnameOverride: "kafka"
-  bootstrapServers: test-kafka-0.test-kafka-headless.sasl-plain.svc.cluster.local:9092
   port: "9092"
 
 redis:
