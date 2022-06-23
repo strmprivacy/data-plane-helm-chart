@@ -18,11 +18,17 @@
               value: /var/truststore/client.truststore.jks
             - name: STRM_KAFKASEC_TRUSTSTORE_PW
               value: {{ .Values.kafkaSecurityConfig.sslTruststorePassword }}
-            - name: STRM_KAFKASEC_USERNAME
-              value: {{ .Values.kafkaSecurityConfig.userName }}
-            - name: STRM_KAFKASEC_PW
-              value: {{ .Values.kafkaSecurityConfig.password }}
 {{ end }}
+
+{{ define "kafkaSecurityCredentials" }}
+    {{ if hasKey . "kafkaAuth" }}
+            - name: STRM_KAFKASEC_USERNAME
+              value: {{ .kafkaAuth.user }}
+            - name: STRM_KAFKASEC_PW
+              value: {{ .kafkaAuth.password }}
+    {{ end }}
+{{ end }}
+
 {{ define "installationEnvironmentVariables" }}
             - name: STRM_INSTALLATION_TYPE
               value: {{.Values.license.installationType}}

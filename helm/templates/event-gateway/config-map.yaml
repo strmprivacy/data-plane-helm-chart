@@ -2,6 +2,7 @@
 {{ if $component.enabled }}
 
 {{ $config := $component.configuration }}
+{{ $kafkaAuth := $config.kafkaAuth }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -36,8 +37,8 @@ data:
                 securityProtocol = {{ .Values.kafkaSecurityConfig.securityProtocol }}
                 sslTruststoreLocation = "/var/truststore/client.truststore.jks"
                 sslTruststorePassword = {{ .Values.kafkaSecurityConfig.sslTruststorePassword}}
-                userName = {{ .Values.kafkaSecurityConfig.userName}}
-                password = {{ .Values.kafkaSecurityConfig.password}}
+                userName = {{ $kafkaAuth.user }}
+                password = {{ $kafkaAuth.password }}
             }
         }
         encryptionKeysProducer {
@@ -45,8 +46,8 @@ data:
                 securityProtocol = {{ .Values.kafkaSecurityConfig.securityProtocol }}
                 sslTruststoreLocation = "/var/truststore/client.truststore.jks"
                 sslTruststorePassword = {{ .Values.kafkaSecurityConfig.sslTruststorePassword}}
-                userName = {{ .Values.kafkaSecurityConfig.userName}}
-                password = {{ .Values.kafkaSecurityConfig.password}}
+                userName = {{ $kafkaAuth.user }}
+                password = {{ $kafkaAuth.password }}
             }
         }
         usageProducer {
@@ -54,8 +55,8 @@ data:
                 securityProtocol = {{ .Values.kafkaSecurityConfig.securityProtocol }}
                 sslTruststoreLocation = "/var/truststore/client.truststore.jks"
                 sslTruststorePassword = {{ .Values.kafkaSecurityConfig.sslTruststorePassword}}
-                userName = {{ .Values.kafkaSecurityConfig.userName}}
-                password = {{ .Values.kafkaSecurityConfig.password}}
+                userName = {{ $kafkaAuth.user }}
+                password = {{ $kafkaAuth.password }}
             }
         }
       }
