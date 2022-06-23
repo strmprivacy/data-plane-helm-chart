@@ -251,6 +251,10 @@
                 "envoy"
               ],
               "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
+                },
                 "redisHost": {
                   "type": ["string", "null"],
                   "default": null
@@ -342,6 +346,10 @@
                 "envoy"
               ],
               "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
+                },
                 "appPort": {
                   "type": "string",
                   "default": ""
@@ -454,7 +462,8 @@
           "required": [
             "enabled",
             "name",
-            "image"
+            "image",
+            "configuration"
           ],
           "properties": {
             "enabled": {
@@ -480,6 +489,17 @@
                 "version": {
                   "type": "string",
                   "default": ""
+                }
+              }
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [],
+              "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
                 }
               }
             }
@@ -630,7 +650,8 @@
           "required": [
             "enabled",
             "name",
-            "image"
+            "image",
+            "configuration"
           ],
           "properties": {
             "enabled": {
@@ -658,6 +679,17 @@
                   "default": ""
                 }
               }
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [],
+              "properties": {
+                "kafkaBootstrapServers": {
+                  "type": ["string", "null"],
+                  "default": null
+                }
+              }
             }
           }
         },
@@ -671,6 +703,10 @@
             "enabled": {
               "type": "boolean",
               "default": false
+            },
+            "kafkaBootstrapServers": {
+              "type": ["string", "null"],
+              "default": null
             },
             "redisHost": {
               "type": ["string", "null"],
