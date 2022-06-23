@@ -36,9 +36,22 @@ spec:
           env:
             - name: APP_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
+            {{ include "kafkaSecurityEnvironmentVars" .}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
             {{ end }}
+          volumeMounts:
+            {{ if .Values.kafkaSecurityConfig.enabled }}
+            - mountPath: /var/truststore
+              name: client-truststore
+      {{ end }}
+      volumes:
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+        - name: client-truststore
+          secret:
+            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+            optional: false
+  {{ end }}
 
-{{ end }}
+  {{ end }}
