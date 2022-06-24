@@ -1,5 +1,6 @@
 {{ $component := .Values.components.esrProxy }}
 {{ if $component.enabled }}
+{{ $name := $component.name }}
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $kafka.bootstrapServers |
@@ -37,7 +38,16 @@ spec:
             - name: APP_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
             {{ include "kafkaSecurityEnvironmentVars" .}}
-            {{ include "kafkaSecurityCredentials" $config }}
+            - name: STRM_KAFKASEC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{$name}}
+                  key: kafka.user
+            - name: STRM_KAFKASEC_PW
+              valueFrom:
+                secretKeyRef:
+                  name: {{$name}}
+                  key: kafka.password
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}

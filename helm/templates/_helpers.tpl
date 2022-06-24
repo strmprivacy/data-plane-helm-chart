@@ -17,7 +17,10 @@
             - name: STRM_KAFKASEC_TRUSTSTORE
               value: /var/truststore/client.truststore.jks
             - name: STRM_KAFKASEC_TRUSTSTORE_PW
-              value: {{ .Values.kafkaSecurityConfig.sslTruststorePassword }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+                  key: truststore.password
 {{ end }}
 
 {{ define "kafkaSecurityCredentials" }}

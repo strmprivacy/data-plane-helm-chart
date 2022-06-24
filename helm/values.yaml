@@ -45,6 +45,7 @@ postgresql:
 
 components:
   eventGateway:
+    name: event-gateway
     enabled: true
     image:
       name: "events/event-gateway"
@@ -110,6 +111,7 @@ components:
         password:
 
   streamsAgent:
+    name: streams-agent
     enabled: true
     image:
       name: "management/entity-agents/streams-agent"
@@ -150,6 +152,7 @@ components:
         password:
 
   decrypterConfig:
+    name: decrypter-config
     enabled: true
     redisHost:
 

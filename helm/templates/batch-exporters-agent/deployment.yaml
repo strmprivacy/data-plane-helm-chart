@@ -36,7 +36,16 @@ spec:
         - name: agent
           env:
           {{ include "kafkaSecurityEnvironmentVars" .}}
-          {{ include "kafkaSecurityCredentials" $config }}
+            - name: STRM_KAFKASEC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{$name}}
+                  key: kafka.user
+            - name: STRM_KAFKASEC_PW
+              valueFrom:
+                secretKeyRef:
+                  name: {{$name}}
+                  key: kafka.password
           {{ include "installationEnvironmentVariables"  . }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}

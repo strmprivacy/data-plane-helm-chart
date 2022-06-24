@@ -131,8 +131,8 @@ spec:
             name: event-gateway-envoy-config
             optional: false
         - name: application-conf
-          configMap:
-            name: event-gateway
+          secret:
+            secretName: event-gateway
         {{ if .Values.kafkaSecurityConfig.enabled }}
         - name: client-truststore
           secret:

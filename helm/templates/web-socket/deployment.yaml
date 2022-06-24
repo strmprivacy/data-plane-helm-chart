@@ -1,6 +1,7 @@
 {{ $component := .Values.components.webSocket }}
 {{ if $component.enabled }}
 
+{{ $name := $component.name }}
 {{ $config := $component.configuration }}
 {{ $kafka := .Values.kafka}}
 {{ $bootstrap := $kafka.bootstrapServers |
@@ -11,6 +12,7 @@
 (printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
 (printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
 }}
+{{ $kafkaAuth := $config.kafkaAuth }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -38,7 +40,16 @@ spec:
           image: {{ $image }}
           env:
             {{ include "kafkaSecurityEnvironmentVars" .}}
-            {{ include "kafkaSecurityCredentials" $config }}
+            - name: STRM_KAFKASEC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{$name}}
+                  key: kafka.user
+            - name: STRM_KAFKASEC_PW
+              valueFrom:
+                secretKeyRef:
+                  name: {{$name}}
+                  key: kafka.password
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
