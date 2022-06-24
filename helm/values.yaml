@@ -155,6 +155,18 @@ components:
     name: decrypter-config
     enabled: true
     redisHost:
+    configuration:
+      kafkaAuth:
+        user:
+        password:
+
+  batchExporterConfig:
+    name: batch-exporter-config
+    enabled: true
+    configuration:
+      kafkaAuth:
+        user:
+        password:
 
 kafkaSecurityConfig:
   enabled: false

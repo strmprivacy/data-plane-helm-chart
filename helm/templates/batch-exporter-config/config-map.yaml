@@ -1,0 +1,16 @@
+{{ $component := .Values.components.batchExporterConfig }}
+{{ if $component.enabled }}
+
+{{ $name := $component.name }}
+{{ $kafka := .Values.kafka}}
+{{ $bootstrap := $kafka.bootstrapServers |
+          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{$name}}
+  namespace: {{.Values.namespace}}
+data:
+  BOOTSTRAP_SERVERS: "{{ $bootstrap }}"
+{{ end }}
