@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.1...v1.8.2) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** secret should be an env var ([53aa973](https://github.com/strmprivacy/data-plane-helm-chart/commit/53aa9739ae4804e68c35e758f5bb348373d16df8))
+
 ## [1.8.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.0...v1.8.1) (2022-06-27)
 
 
