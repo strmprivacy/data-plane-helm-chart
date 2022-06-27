@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.3...v1.8.4) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** assign id to get release step ([1770110](https://github.com/strmprivacy/data-plane-helm-chart/commit/177011035b68480c0d8e834b3a55efcd4803cb73))
+
 ## [1.8.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.2...v1.8.3) (2022-06-27)
 
 
