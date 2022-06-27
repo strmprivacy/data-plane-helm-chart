@@ -40,7 +40,42 @@ jq --null-input \
                "OverrideParameters": [],
                "QuickLaunchEnabled": true,
                "UsageInstructions": "For detailed instructions on how to install the STRM Privacy Data Plane, please see our documentation at https://docs.strmprivacy.io/docs/latest/concepts/ccd/.\n\nPlease note that this product requires an ongoing internet connection to STRM Privacy, as the Control Plane is managed by us. The Control Plane supports your Data Plane and manages, for example, all streams that should exist.\nAll applications of the Data Plane report their heartbeat periodically to STRM Privacy, in order for you to use all tools that STRM Privacy provides, such as the CLI and the Console. ",
-               "Namespace": "strmprivacy"
+               "Namespace": "strmprivacy",
+               "OverrideParameters": [
+                  {
+                    "Key": "license.installationType",
+                    "DefaultValue": "AWS_MARKETPLACE",
+                    "Metadata": {
+                      "Obfuscate": false,
+                      "Label": "Installation Type",
+                      "Description": "Should be AWS_MARKETPLACE, do not change."
+                    }
+                  },
+                  {
+                    "Key": "license.installationId",
+                    "Metadata": {
+                      "Obfuscate": true,
+                      "Label": "Installation ID",
+                      "Description": "The ID of your installation, can be found at https://console.strmprivacy.io/installation/configuration"
+                    }
+                  },
+                  {
+                    "Key": "license.installationClientId",
+                    "Metadata": {
+                      "Obfuscate": true,
+                      "Label": "Installation Client ID",
+                      "Description": "The client ID used to authenticate Data Plane applications with the STRM Privacy Control Plane, can be found at https://console.strmprivacy.io/installation/configuration"
+                    }
+                  },
+                  {
+                    "Key": "license.installationClientSecret",
+                    "Metadata": {
+                      "Obfuscate": true,
+                      "Description": "The client secret used to authenticate Data Plane applications with the STRM Privacy Control Plane, can be found at https://console.strmprivacy.io/installation/configuration",
+                      "Label": "Installation Client Secret"
+                    }
+                  }
+                ]
              }
            },
            "DeliveryOptionTitle": "STRM Privacy Data Plane"
