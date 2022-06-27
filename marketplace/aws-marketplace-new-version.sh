@@ -64,4 +64,4 @@ jq --null-input \
 )
 
 echo "Starting Change Set"
-aws marketplace-catalog start-change-set --catalog "AWSMarketplace" --region us-east-1 --change-set "$CHANGE_SET"
+aws marketplace-catalog start-change-set --change-set-name "Publish version v${HELM_CHART_VERSION}" --catalog "AWSMarketplace" --region us-east-1 --change-set "$CHANGE_SET"
