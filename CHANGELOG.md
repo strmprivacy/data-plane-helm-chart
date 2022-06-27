@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.5...v1.8.0) (2022-06-27)
+
+
+### Features
+
+* **strm-1278:** create new aws version for each release ([d3351c8](https://github.com/strmprivacy/data-plane-helm-chart/commit/d3351c8b265d6b65b686c57486e96fc7d8024ad5))
+
 ## [1.7.5](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.4...v1.7.5) (2022-06-17)
 
 
