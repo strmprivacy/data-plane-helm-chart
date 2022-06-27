@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.4...v1.9.0) (2022-06-27)
+
+
+### Features
+
+* **strm-1278:** add override parameters to version ([24dc610](https://github.com/strmprivacy/data-plane-helm-chart/commit/24dc6108f502226a060a42b56e8f511c9267f930))
+
 ## [1.8.4](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.3...v1.8.4) (2022-06-27)
 
 
