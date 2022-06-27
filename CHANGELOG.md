@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.2...v1.8.3) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** output should be unquoted ([8fa8e74](https://github.com/strmprivacy/data-plane-helm-chart/commit/8fa8e74fea08d97fa0a735fa8eefac6f12b64b2b))
+
 ## [1.8.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.1...v1.8.2) (2022-06-27)
 
 
