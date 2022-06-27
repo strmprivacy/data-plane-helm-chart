@@ -48,6 +48,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: AWS Marketplace Release
+        env:
+          AWS_MARKETPLACE_PRODUCT_ID: ${{ secrets.AWS_MARKETPLACE_PRODUCT_ID }}
         run: |
           VERSION=$(echo "${GITHUB_REF##*/}" | sed 's/v//g')
-          ./marketplace/aws-marketplace-new-version.sh "$VERSION" ${{ steps.get_release.outputs.html_url }} ${{ secrets.AWS_MARKETPLACE_PRODUCT_ID }}
+          ./marketplace/aws-marketplace-new-version.sh "$VERSION" "${{ steps.get_release.outputs.html_url }}" "${AWS_MARKETPLACE_PRODUCT_ID}"
