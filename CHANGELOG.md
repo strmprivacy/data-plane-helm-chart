@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.0...v1.8.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** missing $ breaks script ([b37d432](https://github.com/strmprivacy/data-plane-helm-chart/commit/b37d432fbada453c800f579a9298b9714986bfcd))
+
 # [1.8.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.5...v1.8.0) (2022-06-27)
 
 
