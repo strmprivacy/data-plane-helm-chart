@@ -65,6 +65,5 @@ Pull requests are greatly appreciated.
 
 # Running with SASL/PLAIN+TLS Kafka cluster
 
-Create a secret with a content as follows
-
-    kubectl create secret generic client-truststore-jks --from-file=client.truststore.jks=tls/kafka.client.truststore.jks
+See the [Quickstart](https://docs.strmprivacy.io/docs/latest/quickstart/ccd/#tls-sasl-plain) documentation for how to
+set this up.
