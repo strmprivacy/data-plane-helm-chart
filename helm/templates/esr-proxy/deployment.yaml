@@ -34,7 +34,7 @@ spec:
             - name: APP_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
             {{ include "kafkaSecurityEnvironmentVars" .}}
-            {{- include "kafkaCredentialsEnvironmentVars" $name -}}
+            {{- include "kafkaCredentialsEnvironmentVars" $data -}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}

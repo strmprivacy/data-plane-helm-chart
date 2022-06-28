@@ -31,7 +31,7 @@ spec:
         - name: agent
           env:
           {{ include "kafkaSecurityEnvironmentVars" .}}
-          {{- include "kafkaCredentialsEnvironmentVars" $name -}}
+          {{- include "kafkaCredentialsEnvironmentVars" $data -}}
           {{ include "installationEnvironmentVariables"  . }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}

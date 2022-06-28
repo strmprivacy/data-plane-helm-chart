@@ -12,6 +12,7 @@
 {{- end }}
 
 {{ define "kafkaSecurityEnvironmentVars" }}
+            {{ if .Values.kafkaSecurityConfig.enabled }}
             - name: STRM_KAFKASEC_PROTOCOL
               value: {{ .Values.kafkaSecurityConfig.securityProtocol }}
             - name: STRM_KAFKASEC_TRUSTSTORE
@@ -21,6 +22,7 @@
                 secretKeyRef:
                   name: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
                   key: truststore.password
+            {{ end }}
 {{ end }}
 
 {{ define "installationEnvironmentVariables" }}
@@ -73,18 +75,21 @@
 {{ end }}
 
 {{ define "kafkaCredentialsEnvironmentVars" }}
-            # from template dentialEnvironmentVars
+
+            # from template kafkaCredentialsEnvironmentVars
+            {{ if .component.configuration.kafkaAuth.password }}
 
             - name: STRM_KAFKASEC_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ . }}
+                  name: {{ .component.name }}
                   key: kafka.user
             - name: STRM_KAFKASEC_PW
               valueFrom:
                 secretKeyRef:
-                  name: {{ . }}
+                  name: {{ .component.name }}
                   key: kafka.password
+            {{ end }}
 {{ end }}
 
 
