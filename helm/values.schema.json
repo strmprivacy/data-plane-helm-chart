@@ -626,9 +626,6 @@
         },
         "sslTruststoreSecretName": {
           "type": [ "string", "null"]
-        },
-        "sslTruststorePassword": {
-          "type": [ "string", "null"]
         }
       }
     }
