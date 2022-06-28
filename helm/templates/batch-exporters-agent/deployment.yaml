@@ -2,7 +2,6 @@
 {{ if $component.enabled }}
 
 {{ $name := $component.name }}
-{{ $config := $component.configuration }}
 {{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $data := dict "values" .Values "component" $component }}
 {{ $image := include "image" $data }}

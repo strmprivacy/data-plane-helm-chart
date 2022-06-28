@@ -2,9 +2,7 @@
 {{ if $component.enabled }}
 
 {{ $name := $component.name }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $kafka.bootstrapServers |
-          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 
 apiVersion: v1
 kind: ConfigMap

@@ -2,7 +2,6 @@
 {{ if $component.enabled }}
 
 {{ $name := $component.name }}
-{{ $config := $component.configuration }}
 
 apiVersion: v1
 kind: ServiceAccount

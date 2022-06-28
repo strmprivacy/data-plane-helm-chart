@@ -15,7 +15,6 @@ kind: Deployment
 metadata:
   name: {{$name}}
   namespace: {{ .Values.namespace }}
-
 spec:
   replicas: 1
   selector:

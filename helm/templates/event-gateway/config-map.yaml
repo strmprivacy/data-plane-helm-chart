@@ -1,8 +1,6 @@
 {{ $component := .Values.components.eventGateway }}
 {{ if $component.enabled }}
 
-{{ $config := $component.configuration }}
-{{ $kafkaAuth := $config.kafkaAuth }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
