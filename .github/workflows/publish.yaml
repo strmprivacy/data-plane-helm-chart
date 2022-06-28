@@ -23,10 +23,10 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_MARKETPLACE_ECR_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_MARKETPLACE_ECR_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_MARKETPLACE_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_MARKETPLACE_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: write tarball
+      - name: Push to Helm Chart Repositories
         env:
           STRM_HELM_CHART_SA: ${{ secrets.STRM_HELM_CHART_SA }}
         run: |
@@ -43,3 +43,14 @@ jobs:
                
           aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin "709825985650.dkr.ecr.us-east-1.amazonaws.com"
           helm push strm-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/
+      - name: Get the upload URL for a release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: AWS Marketplace Release
+        env:
+          AWS_MARKETPLACE_PRODUCT_ID: ${{ secrets.AWS_MARKETPLACE_PRODUCT_ID }}
+        run: |
+          VERSION=$(echo "${GITHUB_REF##*/}" | sed 's/v//g')
+          ./marketplace/aws-marketplace-new-version.sh "$VERSION" "${{ steps.get_release.outputs.html_url }}" "${AWS_MARKETPLACE_PRODUCT_ID}"

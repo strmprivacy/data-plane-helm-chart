@@ -1,3 +1,45 @@
+# [1.9.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.4...v1.9.0) (2022-06-27)
+
+
+### Features
+
+* **strm-1278:** add override parameters to version ([24dc610](https://github.com/strmprivacy/data-plane-helm-chart/commit/24dc6108f502226a060a42b56e8f511c9267f930))
+
+## [1.8.4](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.3...v1.8.4) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** assign id to get release step ([1770110](https://github.com/strmprivacy/data-plane-helm-chart/commit/177011035b68480c0d8e834b3a55efcd4803cb73))
+
+## [1.8.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.2...v1.8.3) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** output should be unquoted ([8fa8e74](https://github.com/strmprivacy/data-plane-helm-chart/commit/8fa8e74fea08d97fa0a735fa8eefac6f12b64b2b))
+
+## [1.8.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.1...v1.8.2) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** secret should be an env var ([53aa973](https://github.com/strmprivacy/data-plane-helm-chart/commit/53aa9739ae4804e68c35e758f5bb348373d16df8))
+
+## [1.8.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.0...v1.8.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* **strm-1278:** missing $ breaks script ([b37d432](https://github.com/strmprivacy/data-plane-helm-chart/commit/b37d432fbada453c800f579a9298b9714986bfcd))
+
+# [1.8.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.5...v1.8.0) (2022-06-27)
+
+
+### Features
+
+* **strm-1278:** create new aws version for each release ([d3351c8](https://github.com/strmprivacy/data-plane-helm-chart/commit/d3351c8b265d6b65b686c57486e96fc7d8024ad5))
+
 ## [1.7.5](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.7.4...v1.7.5) (2022-06-17)
 
 

@@ -221,24 +221,7 @@
               "type": "boolean",
               "default": false
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "replicas": {
               "type": "integer",
               "default": 0
@@ -292,7 +275,8 @@
                       "default": null
                     }
                   }
-                }
+                },
+                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
               }
             }
           }
@@ -312,24 +296,7 @@
               "type": "boolean",
               "default": false
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "name": {
               "type": "string",
               "default": ""
@@ -346,6 +313,7 @@
                 "envoy"
               ],
               "properties": {
+                "image": { "$ref": "#/$defs/image"},
                 "kafkaBootstrapServers": {
                   "type": ["string", "null"],
                   "default": null
@@ -394,24 +362,7 @@
               "type": "boolean",
               "default": false
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "name": {
               "type": "string",
               "default": ""
@@ -474,24 +425,7 @@
               "type": "string",
               "default": ""
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "configuration": {
               "type": "object",
               "default": {},
@@ -500,7 +434,8 @@
                 "kafkaBootstrapServers": {
                   "type": ["string", "null"],
                   "default": null
-                }
+                },
+                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
               }
             }
           }
@@ -518,24 +453,7 @@
               "type": "boolean",
               "default": false
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "configuration": {
               "type": "object",
               "default": {},
@@ -543,6 +461,7 @@
                 "redisSecret"
               ],
               "properties": {
+                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" },
                 "redisSecret": {
                   "type": "object",
                   "default": {},
@@ -579,24 +498,7 @@
               "type": "string",
               "default": ""
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "configuration": {
               "type": ["object", "null"],
               "default": null
@@ -620,24 +522,7 @@
               "type": "string",
               "default": ""
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "configuration": {
               "type": ["object", "null"],
               "default": null
@@ -662,29 +547,13 @@
               "type": "string",
               "default": ""
             },
-            "image": {
-              "type": "object",
-              "default": {},
-              "required": [
-                "name",
-                "version"
-              ],
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "default": ""
-                },
-                "version": {
-                  "type": "string",
-                  "default": ""
-                }
-              }
-            },
+            "image": { "$ref": "#/$defs/image"},
             "configuration": {
               "type": "object",
               "default": {},
               "required": [],
               "properties": {
+                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" },
                 "kafkaBootstrapServers": {
                   "type": ["string", "null"],
                   "default": null
@@ -711,6 +580,35 @@
             "redisHost": {
               "type": ["string", "null"],
               "default": null
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [],
+              "properties": {
+                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
+              }
+            }
+          }
+        },
+        "batchExporterConfig": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "configuration": {
+              "type": "object",
+              "default": {},
+              "required": [],
+              "properties": {
+                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
+              }
             }
           }
         }
@@ -731,6 +629,38 @@
         },
         "sslTruststorePassword": {
           "type": [ "string", "null"]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "kafkaAuth": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "user": {
+          "type": [ "string", "null"]
+        },
+        "password": {
+          "type": [ "string", "null"]
+        }
+      }
+    },
+    "image" : {
+      "type": "object",
+      "default": {},
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "default": ""
+        },
+        "version": {
+          "type": "string",
+          "default": ""
         }
       }
     }
