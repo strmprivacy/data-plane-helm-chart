@@ -67,7 +67,7 @@ components:
     enabled: true
     image:
       name: "events/web-socket"
-      version: "v1.17.0"
+      version: "v1.18.0"
     name: web-socket
     replicas: 1
     configuration:
