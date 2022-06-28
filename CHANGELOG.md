@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.9.0...v1.10.0) (2022-06-28)
+
+
+### Features
+
+* enable embedded infra by default ([#18](https://github.com/strmprivacy/data-plane-helm-chart/issues/18)) ([7f687f4](https://github.com/strmprivacy/data-plane-helm-chart/commit/7f687f4f4235717b1a5d1f702e94f217340dccc9))
+
 # [1.9.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.8.4...v1.9.0) (2022-06-27)
 
 

@@ -29,18 +29,18 @@ prometheus:
   enabled: true
 
 kafka:
-  enabled: false
+  enabled: true
   fullnameOverride: "kafka"
   port: "9092"
 
 redis:
-  enabled: false
+  enabled: true
   fullnameOverride: "redis-strm"
   global:
     redis:
 
 postgresql:
-  enabled: false
+  enabled: true
   fullnameOverride: "postgres"
 
 components:
