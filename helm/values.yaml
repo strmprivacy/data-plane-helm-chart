@@ -170,9 +170,7 @@ components:
 
 kafkaSecurityConfig:
   enabled: false
-  securityProtocol:
+  securityProtocol: "PLAINTEXT"
   # on local file system
   sslTruststoreSecretName: "tls/kafka.client.truststore.jks"
   sslTruststorePassword:
-  userName:
-  password:

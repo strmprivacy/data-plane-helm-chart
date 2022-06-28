@@ -715,6 +715,24 @@
           }
         }
       }
+    },
+    "kafkaSecurityConfig": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "securityProtocol": {
+          "type": "string",
+          "enum": ["PLAINTEXT", "SASL_SSL"]
+        },
+        "sslTruststoreSecretName": {
+          "type": [ "string", "null"]
+        },
+        "sslTruststorePassword": {
+          "type": [ "string", "null"]
+        }
+      }
     }
   }
 }
