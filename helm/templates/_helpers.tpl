@@ -23,16 +23,8 @@
                   key: truststore.password
 {{ end }}
 
-{{ define "kafkaSecurityCredentials" }}
-    {{ if hasKey . "kafkaAuth" }}
-            - name: STRM_KAFKASEC_USERNAME
-              value: {{ .kafkaAuth.user }}
-            - name: STRM_KAFKASEC_PW
-              value: {{ .kafkaAuth.password }}
-    {{ end }}
-{{ end }}
-
 {{ define "installationEnvironmentVariables" }}
+            # from template installationEnvironmentVariables
             - name: STRM_INSTALLATION_TYPE
               value: {{.Values.license.installationType}}
             - name: STRM_API_HOST
@@ -69,6 +61,62 @@
 {{ end }}
 
 {{ define "selfHostedEnvironmentVariables" }}
+            # from template selfHostedEnvironmentVariables
             - name: STRM_IMAGE_PULL_SECRET_NAME
               value: "strmprivacy-docker-registry"
 {{ end }}
+
+{{ define "kafkaAuthData" }}
+  # from template kafkaAuthData
+  "kafka.user": {{ .user | default "" | b64enc | quote }}
+  "kafka.password": {{ .password | default "" | b64enc | quote }}
+{{ end }}
+
+{{ define "kafkaCredentialsEnvironmentVars" }}
+            # from template dentialEnvironmentVars
+
+            - name: STRM_KAFKASEC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ . }}
+                  key: kafka.user
+            - name: STRM_KAFKASEC_PW
+              valueFrom:
+                secretKeyRef:
+                  name: {{ . }}
+                  key: kafka.password
+{{ end }}
+
+
+{{ define "client-truststore-volume" }}
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+        # from template client-truststore-volume
+        - name: client-truststore
+          secret:
+            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+            optional: false
+        {{ end }}
+{{ end }}
+
+{{ define "client-truststore-volume-mount" }}
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+            # from template client-truststore-volume-mount
+            - mountPath: /var/truststore
+              name: client-truststore
+        {{ end }}
+{{ end }}
+
+
+
+{{ define "image" -}}
+    {{ eq .values.license.installationType "SELF_HOSTED" | ternary
+    (printf "%s/%s/%s/%s:%s" .values.registry.url .values.registry.base.prefix .values.registry.base.path .component.image.name .component.image.version)
+    (printf "%s/%s:%s" .values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" .component.image.name "${1}") .component.image.version)
+    }}
+{{ end }}
+
+{{- define "kafkaBootstrap" -}}
+{{ $kafka := .Values.kafka}}
+{{- $kafka.bootstrapServers |
+          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+{{end}}

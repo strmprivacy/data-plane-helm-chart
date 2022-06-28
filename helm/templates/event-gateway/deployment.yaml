@@ -1,15 +1,11 @@
 {{ $component := .Values.components.eventGateway }}
 {{ if $component.enabled }}
 {{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $kafka.bootstrapServers |
-          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $config.redisHost |
       default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -90,10 +86,7 @@ spec:
             - mountPath: /home/nonroot/application.conf
               name: application-conf
               subPath: application.conf
-            {{ if .Values.kafkaSecurityConfig.enabled }}
-            - mountPath: /var/truststore
-              name: client-truststore
-            {{ end }}
+          {{- template "client-truststore-volume-mount" . }}
 
         - name: event-gateway-envoy
           image: envoyproxy/envoy:v1.21-latest
@@ -133,10 +126,5 @@ spec:
         - name: application-conf
           secret:
             secretName: event-gateway
-        {{ if .Values.kafkaSecurityConfig.enabled }}
-        - name: client-truststore
-          secret:
-            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
-            optional: false
-        {{ end }}
+        {{- template "client-truststore-volume" . }}
 {{ end }}

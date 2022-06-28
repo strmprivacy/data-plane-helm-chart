@@ -2,15 +2,11 @@
 {{ if $component.enabled }}
 {{ $name := $component.name }}
 {{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $kafka.bootstrapServers |
-          default (printf "%s-headless.%s.svc.cluster.local:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redisSecretName := $config.redisSecret.name | default (printf "%s" .Values.redis.fullnameOverride) }}
 {{ $redisSecretKey := $config.redisSecret.key | default "redis-password" }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -37,16 +33,7 @@ spec:
           image: {{$image}}
           env:
             {{ include "kafkaSecurityEnvironmentVars" .}}
-            - name: STRM_KAFKASEC_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{$name}}
-                  key: kafka.user
-            - name: STRM_KAFKASEC_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{$name}}
-                  key: kafka.password
+            {{- include "kafkaCredentialsEnvironmentVars" $name -}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
@@ -61,16 +48,9 @@ spec:
               value: {{ $redisSecretKey }}
           {{ if .Values.kafkaSecurityConfig.enabled }}
           volumeMounts:
-            - mountPath: /var/truststore
-              name: client-truststore
+          {{- template "client-truststore-volume-mount" . }}
       {{ end }}
       serviceAccountName: streams-agent
       volumes:
-        {{ if .Values.kafkaSecurityConfig.enabled }}
-        - name: client-truststore
-          secret:
-            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
-            optional: false
-  {{ end }}
-
+        {{- template "client-truststore-volume" . }}
   {{ end }}

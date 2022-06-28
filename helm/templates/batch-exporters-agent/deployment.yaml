@@ -3,13 +3,9 @@
 
 {{ $name := $component.name }}
 {{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $kafka.bootstrapServers |
-          default (printf "%s-headless.%s.svc.cluster.local:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $bootstrap := include "kafkaBootstrap" . }}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -36,16 +32,7 @@ spec:
         - name: agent
           env:
           {{ include "kafkaSecurityEnvironmentVars" .}}
-            - name: STRM_KAFKASEC_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{$name}}
-                  key: kafka.user
-            - name: STRM_KAFKASEC_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{$name}}
-                  key: kafka.password
+          {{- include "kafkaCredentialsEnvironmentVars" $name -}}
           {{ include "installationEnvironmentVariables"  . }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}
@@ -55,19 +42,8 @@ spec:
           {{ include "selfHostedEnvironmentVariables" .}}
           {{ end }}
           image: {{ $image }}
-          {{ if .Values.kafkaSecurityConfig.enabled }}
           volumeMounts:
-            - mountPath: /var/truststore
-              name: client-truststore
-          {{ end }}
+          {{- template "client-truststore-volume-mount" . }}
       volumes:
-        {{ if .Values.kafkaSecurityConfig.enabled }}
-        - name: client-truststore
-          secret:
-            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
-            optional: false
-        {{ end }}
-
-
-
+        {{- template "client-truststore-volume" . }}
 {{ end }}

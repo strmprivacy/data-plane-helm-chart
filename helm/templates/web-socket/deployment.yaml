@@ -3,16 +3,11 @@
 
 {{ $name := $component.name }}
 {{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $kafka.bootstrapServers |
-          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $config.redisHost |
     default (printf "%s.%s" .Values.redis.fullnameOverride .Values.namespace) }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
-{{ $kafkaAuth := $config.kafkaAuth }}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -40,16 +35,7 @@ spec:
           image: {{ $image }}
           env:
             {{ include "kafkaSecurityEnvironmentVars" .}}
-            - name: STRM_KAFKASEC_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{$name}}
-                  key: kafka.user
-            - name: STRM_KAFKASEC_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{$name}}
-                  key: kafka.password
+            {{- include "kafkaCredentialsEnvironmentVars" $name -}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
@@ -60,10 +46,7 @@ spec:
               value: {{ $bootstrap }}
 
           volumeMounts:
-            {{ if .Values.kafkaSecurityConfig.enabled }}
-            - mountPath: /var/truststore
-              name: client-truststore
-          {{ end }}
+          {{- template "client-truststore-volume-mount" . }}
           ports:
             - containerPort: {{ $config.appPort }}
               protocol: TCP
@@ -116,11 +99,5 @@ spec:
             name: web-socket-envoy-config
             optional: false
           name: envoy-conf
-        {{ if .Values.kafkaSecurityConfig.enabled }}
-        - name: client-truststore
-          secret:
-            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
-            optional: false
-        {{ end }}
-
+        {{- template "client-truststore-volume" . }}
   {{ end }}
