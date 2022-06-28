@@ -29,17 +29,17 @@ prometheus:
   enabled: true
 
 kafka:
-  enabled: false
+  enabled: true
   fullnameOverride: "kafka"
 
 redis:
-  enabled: false
+  enabled: true
   fullnameOverride: "redis-strm"
   global:
     redis:
 
 postgresql:
-  enabled: false
+  enabled: true
   fullnameOverride: "postgres"
 
 components:
