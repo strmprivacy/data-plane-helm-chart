@@ -136,7 +136,7 @@ components:
     name: esr-proxy
     image:
       name: "management/esr-proxy"
-      version: "v1.1.0"
+      version: "v1.2.0"
     configuration:
       kafkaBootstrapServers:
 
