@@ -45,6 +45,7 @@ spec:
               name: http
           env:
             {{ include "installationEnvironmentVariables" .}}
+            {{ include "kafkaSecurityEnvironmentVars" .}}
             - name: STRM_GATEWAY_PORT
               value: "{{ $config.appPort }}"
             - name: STRM_BOOTSTRAP_SERVERS

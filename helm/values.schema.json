@@ -616,6 +616,7 @@
     },
     "kafkaSecurityConfig": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "enabled": {
           "type": "boolean"
@@ -625,9 +626,6 @@
           "enum": ["PLAINTEXT", "SASL_SSL"]
         },
         "sslTruststoreSecretName": {
-          "type": [ "string", "null"]
-        },
-        "sslTruststorePassword": {
           "type": [ "string", "null"]
         }
       }
