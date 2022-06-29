@@ -47,7 +47,7 @@ components:
     enabled: true
     image:
       name: "events/event-gateway"
-      version: "v0.62.0"
+      version: "v0.63.0"
     replicas: 1
     configuration:
       # Comma separated string
