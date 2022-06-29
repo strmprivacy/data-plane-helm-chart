@@ -120,7 +120,7 @@ components:
     name: data-connectors-agent
     image:
       name: "management/entity-agents/data-connectors-agent"
-      version: "v1.3.1"
+      version: "v1.4.0"
     configuration:
 
   confluentSchemaProxy:
