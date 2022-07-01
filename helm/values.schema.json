@@ -637,10 +637,12 @@
       "additionalProperties": false,
       "properties": {
         "user": {
-          "type": [ "string", "null"]
+          "type": [ "string", "null"],
+          "minLength": 4
         },
         "password": {
-          "type": [ "string", "null"]
+          "type": [ "string", "null"],
+          "minLength": 4
         }
       }
     },
