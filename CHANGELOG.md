@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.10.1...v1.11.0) (2022-07-01)
+
+
+### Features
+
+* **strm-1130:** authenticated Kafka access ([2e73f7d](https://github.com/strmprivacy/data-plane-helm-chart/commit/2e73f7d1e0f72b77b3aea9f31a1dac266c78a5df))
+
 ## [1.10.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.10.0...v1.10.1) (2022-06-29)
 
 
