@@ -1,9 +1,7 @@
 {{ $component := .Values.components.decrypterConfig }}
 {{ if $component.enabled }}
 
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $component.kafkaBootstrapServers |
-          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $component.redisHost |
       default (printf "%s-headless.%s" .Values.redis.fullnameOverride .Values.namespace) }}
 

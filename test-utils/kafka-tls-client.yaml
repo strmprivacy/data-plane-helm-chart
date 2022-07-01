@@ -1,0 +1,57 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-tls-test-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-tls-test-client
+  template:
+    metadata:
+      labels:
+        app: kafka-tls-test-client
+    spec:
+      containers:
+      - command:
+        - sleep
+        - infinity
+        env:
+        - name: STRM_KAFKASEC_TRUSTSTORE
+          value: /var/truststore/client.truststore.jks
+        - name: STRM_KAFKASEC_TRUSTSTORE_PW
+          valueFrom:
+            secretKeyRef:
+              key: truststore.password
+              name: client-truststore-jks
+        image: docker.io/bitnami/kafka:3.2.0-debian-10-r4
+        name: tester
+        volumeMounts:
+        - mountPath: /tmp/truststore
+          name: client-truststore
+        - mountPath: /tmp/client.props
+          name: client-props
+          subPath: client.props
+      volumes:
+      - name: client-truststore
+        secret:
+          optional: false
+          secretName: client-truststore-jks
+      - configMap:
+          name: kafka-tls-test-client
+        name: client-props
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: kafka-tls-test-client
+  name: kafka-tls-test-client
+data:
+  client.props: |
+    security.protocol=SASL_SSL
+    ssl.truststore.location=/tmp/truststore/client.truststore.jks
+    ssl.truststore.password=strmprivacy
+    sasl.mechanism=PLAIN
+    sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required     username="strm-event-gateway"     password="strmprivacy";

@@ -2,7 +2,6 @@
 {{- define "imagePullSecret" }}
     {{ if eq .Values.license.installationType "SELF_HOSTED" }}
     {{- $imagePullSecret := .Values.registry.imagePullSecret | required ".Values.registry.imagePullSecret is required, please refer to your installation credentials in the console." -}}
-
     {{- printf "{\"auths\": {\"%s\": {\"username\": \"_json_key_base64\",\"password\": \"%s\",\"email\":\"%s\", \"auth\": \"%s\"}}}" .Values.registry.url $imagePullSecret ($imagePullSecret | b64dec | fromJson).client_email ((printf "_json_key_base64:%s" $imagePullSecret) | b64enc) | b64enc}}
     {{ end }}
 {{- end }}
@@ -11,7 +10,22 @@
     {{- printf "%s.%s:%d" .Values.kafka.fullnameOverride .Values.namespace (.Values.kafka.service.ports.client | int) }}'
 {{- end }}
 
+{{ define "kafkaSecurityEnvironmentVars" }}
+            {{ if .Values.kafkaSecurityConfig.enabled }}
+            - name: STRM_KAFKASEC_PROTOCOL
+              value: {{ .Values.kafkaSecurityConfig.securityProtocol }}
+            - name: STRM_KAFKASEC_TRUSTSTORE
+              value: /var/truststore/client.truststore.jks
+            - name: STRM_KAFKASEC_TRUSTSTORE_PW
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+                  key: truststore.password
+            {{ end }}
+{{ end }}
+
 {{ define "installationEnvironmentVariables" }}
+            # from template installationEnvironmentVariables
             - name: STRM_INSTALLATION_TYPE
               value: {{.Values.license.installationType}}
             - name: STRM_API_HOST
@@ -48,8 +62,65 @@
 {{ end }}
 
 {{ define "selfHostedEnvironmentVariables" }}
+            # from template selfHostedEnvironmentVariables
             - name: STRM_IMAGE_PULL_SECRET_NAME
               value: "strmprivacy-docker-registry"
 {{ end }}
 
+{{ define "kafkaAuthData" }}
+  # from template kafkaAuthData
+  "kafka.user": {{ .user | default "" | b64enc | quote }}
+  "kafka.password": {{ .password | default "" | b64enc | quote }}
+{{ end }}
 
+{{ define "kafkaCredentialsEnvironmentVars" }}
+
+            # from template kafkaCredentialsEnvironmentVars
+            {{ if .component.configuration.kafkaAuth.password }}
+
+            - name: STRM_KAFKASEC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .component.name }}
+                  key: kafka.user
+            - name: STRM_KAFKASEC_PW
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .component.name }}
+                  key: kafka.password
+            {{ end }}
+{{ end }}
+
+
+{{ define "clientTruststoreVolume" }}
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+        # from template client-truststore-volume
+        - name: client-truststore
+          secret:
+            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+            optional: false
+        {{ end }}
+{{ end }}
+
+{{ define "clientTruststoreVolumeMount" }}
+        {{ if .Values.kafkaSecurityConfig.enabled }}
+            # from template client-truststore-volume-mount
+            - mountPath: /var/truststore
+              name: client-truststore
+        {{ end }}
+{{ end }}
+
+
+
+{{ define "image" -}}
+    {{ eq .values.license.installationType "SELF_HOSTED" | ternary
+    (printf "%s/%s/%s/%s:%s" .values.registry.url .values.registry.base.prefix .values.registry.base.path .component.image.name .component.image.version)
+    (printf "%s/%s:%s" .values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" .component.image.name "${1}") .component.image.version)
+    }}
+{{ end }}
+
+{{- define "kafkaBootstrap" -}}
+{{ $kafka := .Values.kafka}}
+{{- $kafka.bootstrapServers |
+          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+{{end}}

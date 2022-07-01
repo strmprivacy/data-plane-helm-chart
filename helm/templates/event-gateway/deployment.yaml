@@ -1,15 +1,10 @@
 {{ $component := .Values.components.eventGateway }}
 {{ if $component.enabled }}
 {{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $config.redisHost |
       default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $image := include "image" (dict "values" .Values "component" $component ) }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -49,6 +44,7 @@ spec:
               name: http
           env:
             {{ include "installationEnvironmentVariables" .}}
+            {{ include "kafkaSecurityEnvironmentVars" .}}
             - name: STRM_GATEWAY_PORT
               value: "{{ $config.appPort }}"
             - name: STRM_BOOTSTRAP_SERVERS
@@ -86,6 +82,11 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
           {{ end }}
+          volumeMounts:
+            - mountPath: /home/nonroot/application.conf
+              name: application-conf
+              subPath: application.conf
+          {{- template "clientTruststoreVolumeMount" . }}
 
         - name: event-gateway-envoy
           image: envoyproxy/envoy:v1.21-latest
@@ -122,4 +123,8 @@ spec:
           configMap:
             name: event-gateway-envoy-config
             optional: false
+        - name: application-conf
+          secret:
+            secretName: event-gateway
+        {{- template "clientTruststoreVolume" . }}
 {{ end }}

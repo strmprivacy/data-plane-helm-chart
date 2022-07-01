@@ -1,3 +1,4 @@
-values.yaml
+/values*.yaml
 strm*.tgz
 .github/workflows/aws.yaml
+/manifests*.yaml

@@ -31,6 +31,7 @@ prometheus:
 kafka:
   enabled: true
   fullnameOverride: "kafka"
+  port: "9092"
 
 redis:
   enabled: true
@@ -44,14 +45,16 @@ postgresql:
 
 components:
   eventGateway:
+    name: event-gateway
     enabled: true
     image:
       name: "events/event-gateway"
       version: "v0.64.0"
     replicas: 1
     configuration:
-      # Comma separated string
-      kafkaBootstrapServers:
+      kafkaAuth:
+        user:
+        password:
       redisHost:
       redisUser:
       redisPassword:
@@ -71,8 +74,9 @@ components:
     name: web-socket
     replicas: 1
     configuration:
-      # Comma separated string
-      kafkaBootstrapServers:
+      kafkaAuth:
+        user:
+        password:
       # Application port, traffic goes via Envoy to the application
       appPort: "8081"
       envoy:
@@ -102,15 +106,20 @@ components:
       name: "management/entity-agents/batch-exporters-agent"
       version: "v1.16.1"
     configuration:
-      # Comma separated string
-      kafkaBootstrapServers:
+      kafkaAuth:
+        user:
+        password:
 
   streamsAgent:
+    name: streams-agent
     enabled: true
     image:
       name: "management/entity-agents/streams-agent"
       version: "v1.19.0"
     configuration:
+      kafkaAuth:
+        user:
+        password:
       redisSecret:
         name:
         key:
@@ -138,10 +147,29 @@ components:
       name: "management/esr-proxy"
       version: "v1.2.2"
     configuration:
-      kafkaBootstrapServers:
+      kafkaAuth:
+        user:
+        password:
 
   decrypterConfig:
+    name: decrypter-config
     enabled: true
-    kafkaBootstrapServers:
     redisHost:
+    configuration:
+      kafkaAuth:
+        user:
+        password:
 
+  batchExporterConfig:
+    name: batch-exporter-config
+    enabled: true
+    configuration:
+      kafkaAuth:
+        user:
+        password:
+
+kafkaSecurityConfig:
+  enabled: false
+  securityProtocol: "PLAINTEXT"
+  # on local file system
+  sslTruststoreSecretName: "client-truststore-jks"

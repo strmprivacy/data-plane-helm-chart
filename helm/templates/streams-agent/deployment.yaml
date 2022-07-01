@@ -1,15 +1,12 @@
 {{ $component := .Values.components.streamsAgent }}
 {{ if $component.enabled }}
+{{ $name := $component.name }}
 {{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s-headless.%s.svc.cluster.local:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redisSecretName := $config.redisSecret.name | default (printf "%s" .Values.redis.fullnameOverride) }}
 {{ $redisSecretKey := $config.redisSecret.key | default "redis-password" }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -35,6 +32,8 @@ spec:
         - name: streams-agent
           image: {{$image}}
           env:
+            {{ include "kafkaSecurityEnvironmentVars" .}}
+            {{- include "kafkaCredentialsEnvironmentVars" $data -}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
@@ -47,6 +46,9 @@ spec:
               value: {{ $redisSecretName }}
             - name: STRM_REDIS_SECRET_KEY
               value: {{ $redisSecretKey }}
+          volumeMounts:
+          {{- template "clientTruststoreVolumeMount" . }}
       serviceAccountName: streams-agent
-
-{{ end }}
+      volumes:
+        {{- template "clientTruststoreVolume" . }}
+  {{ end }}

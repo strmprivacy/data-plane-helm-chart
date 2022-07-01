@@ -1,13 +1,10 @@
 {{ $component := .Values.components.esrProxy }}
 {{ if $component.enabled }}
-{{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+
+{{ $name := $component.name }}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -36,9 +33,14 @@ spec:
           env:
             - name: APP_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
+            {{ include "kafkaSecurityEnvironmentVars" .}}
+            {{- include "kafkaCredentialsEnvironmentVars" $data -}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
             {{ end }}
-
-{{ end }}
+          volumeMounts:
+          {{- template "clientTruststoreVolumeMount" . }}
+      volumes:
+        {{- template "clientTruststoreVolume" . }}
+  {{ end }}

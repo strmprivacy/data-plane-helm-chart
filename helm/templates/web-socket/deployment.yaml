@@ -1,16 +1,13 @@
 {{ $component := .Values.components.webSocket }}
 {{ if $component.enabled }}
 
+{{ $name := $component.name }}
 {{ $config := $component.configuration }}
-{{ $kafka := .Values.kafka}}
-{{ $bootstrap := $config.kafkaBootstrapServers |
-          default (printf "%s.%s:%d" $kafka.fullnameOverride .Values.namespace ($kafka.service.ports.client | int)) }}
+{{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $config.redisHost |
     default (printf "%s.%s" .Values.redis.fullnameOverride .Values.namespace) }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -37,6 +34,8 @@ spec:
         - name: web-socket
           image: {{ $image }}
           env:
+            {{ include "kafkaSecurityEnvironmentVars" .}}
+            {{- include "kafkaCredentialsEnvironmentVars" $data -}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
@@ -46,6 +45,8 @@ spec:
             - name: STRM_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
 
+          volumeMounts:
+          {{- template "clientTruststoreVolumeMount" . }}
           ports:
             - containerPort: {{ $config.appPort }}
               protocol: TCP
@@ -98,5 +99,5 @@ spec:
             name: web-socket-envoy-config
             optional: false
           name: envoy-conf
-
-{{ end }}
+        {{- template "clientTruststoreVolume" . }}
+  {{ end }}

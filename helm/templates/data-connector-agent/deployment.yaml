@@ -2,11 +2,8 @@
 {{ if $component.enabled }}
 
 {{ $name := $component.name }}
-{{ $config := $component.configuration }}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $data := dict "values" .Values "component" $component }}
+{{ $image := include "image" $data }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -38,8 +35,5 @@ spec:
             {{ end }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}
-
-
       serviceAccountName: {{ $name }}
-
 {{ end }}

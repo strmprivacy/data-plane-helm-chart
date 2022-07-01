@@ -55,6 +55,11 @@ postgresql:
 
 Do not hesitate to [contact us](https://docs.strmprivacy.io/docs/latest/contact/) if you need assistance!
 
+### Running with SASL/PLAIN+TLS Kafka cluster
+
+See the [Quickstart](https://docs.strmprivacy.io/docs/latest/quickstart/ccd/#tls-sasl-plain) documentation for how to
+set this up.
+
 ## Contributing
 
 The chart is considered to be an alpha version. If you encounter issues
@@ -62,3 +67,4 @@ while using the chart, please check whether the issue you encounter has already 
 feel free to create an issue.
 
 Pull requests are greatly appreciated.
+

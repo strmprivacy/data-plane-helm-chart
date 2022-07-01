@@ -6,10 +6,7 @@
 {{- $name := $component.name }}
 {{- $postgresHost := $config.postgres.host |
       default (printf "%s.%s" $postgres.fullnameOverride .Values.namespace) -}}
-{{ $image := eq .Values.license.installationType "SELF_HOSTED" | ternary
-(printf "%s/%s/%s/%s:%s" .Values.registry.url .Values.registry.base.prefix .Values.registry.base.path $component.image.name $component.image.version)
-(printf "%s/%s:%s" .Values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" $component.image.name "${1}") $component.image.version)
-}}
+{{ $image := include "image" (dict "values" .Values "component" $component ) }}
 
 
 apiVersion: apps/v1
@@ -17,7 +14,6 @@ kind: Deployment
 metadata:
   name: {{$name}}
   namespace: {{ .Values.namespace }}
-
 spec:
   replicas: 1
   selector:
