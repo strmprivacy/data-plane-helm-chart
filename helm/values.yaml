@@ -109,7 +109,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/streams-agent"
-      version: "v1.18.0"
+      version: "v1.19.0"
     configuration:
       redisSecret:
         name:
