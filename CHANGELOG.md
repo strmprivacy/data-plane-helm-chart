@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.10.0...v1.10.1) (2022-06-29)
+
+
+### Bug Fixes
+
+* disable quicklaunch as it does not work after several attempts ([7ea0305](https://github.com/strmprivacy/data-plane-helm-chart/commit/7ea0305c18123f13c060603c5f7c4223e447fe92))
+
 # [1.10.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.9.0...v1.10.0) (2022-06-28)
 
 
