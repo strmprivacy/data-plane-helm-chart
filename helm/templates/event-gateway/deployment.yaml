@@ -4,8 +4,7 @@
 {{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $config.redisHost |
       default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}
-{{ $data := dict "values" .Values "component" $component }}
-{{ $image := include "image" $data }}
+{{ $image := include "image" (dict "values" .Values "component" $component ) }}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -87,7 +86,7 @@ spec:
             - mountPath: /home/nonroot/application.conf
               name: application-conf
               subPath: application.conf
-          {{- template "client-truststore-volume-mount" . }}
+          {{- template "clientTruststoreVolumeMount" . }}
 
         - name: event-gateway-envoy
           image: envoyproxy/envoy:v1.21-latest
@@ -127,5 +126,5 @@ spec:
         - name: application-conf
           secret:
             secretName: event-gateway
-        {{- template "client-truststore-volume" . }}
+        {{- template "clientTruststoreVolume" . }}
 {{ end }}

@@ -2,7 +2,6 @@
 {{- define "imagePullSecret" }}
     {{ if eq .Values.license.installationType "SELF_HOSTED" }}
     {{- $imagePullSecret := .Values.registry.imagePullSecret | required ".Values.registry.imagePullSecret is required, please refer to your installation credentials in the console." -}}
-
     {{- printf "{\"auths\": {\"%s\": {\"username\": \"_json_key_base64\",\"password\": \"%s\",\"email\":\"%s\", \"auth\": \"%s\"}}}" .Values.registry.url $imagePullSecret ($imagePullSecret | b64dec | fromJson).client_email ((printf "_json_key_base64:%s" $imagePullSecret) | b64enc) | b64enc}}
     {{ end }}
 {{- end }}
@@ -93,7 +92,7 @@
 {{ end }}
 
 
-{{ define "client-truststore-volume" }}
+{{ define "clientTruststoreVolume" }}
         {{ if .Values.kafkaSecurityConfig.enabled }}
         # from template client-truststore-volume
         - name: client-truststore
@@ -103,7 +102,7 @@
         {{ end }}
 {{ end }}
 
-{{ define "client-truststore-volume-mount" }}
+{{ define "clientTruststoreVolumeMount" }}
         {{ if .Values.kafkaSecurityConfig.enabled }}
             # from template client-truststore-volume-mount
             - mountPath: /var/truststore

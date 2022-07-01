@@ -1,8 +1,7 @@
 {{ $component := .Values.components.confluentSchemaProxy }}
 {{ if $component.enabled }}
 {{ $config := $component.configuration }}
-{{ $data := dict "values" .Values "component" $component }}
-{{ $image := include "image" $data }}
+{{ $image := include "image" (dict "values" .Values "component" $component ) }}
 
 apiVersion: apps/v1
 kind: Deployment

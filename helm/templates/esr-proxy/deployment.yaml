@@ -40,7 +40,7 @@ spec:
             {{ include "selfHostedEnvironmentVariables" .}}
             {{ end }}
           volumeMounts:
-          {{- template "client-truststore-volume-mount" . }}
+          {{- template "clientTruststoreVolumeMount" . }}
       volumes:
-        {{- template "client-truststore-volume" . }}
+        {{- template "clientTruststoreVolume" . }}
   {{ end }}

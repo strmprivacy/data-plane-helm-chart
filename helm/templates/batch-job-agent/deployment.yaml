@@ -6,8 +6,7 @@
 {{- $name := $component.name }}
 {{- $postgresHost := $config.postgres.host |
       default (printf "%s.%s" $postgres.fullnameOverride .Values.namespace) -}}
-{{ $data := dict "values" .Values "component" $component }}
-{{ $image := include "image" $data }}
+{{ $image := include "image" (dict "values" .Values "component" $component ) }}
 
 
 apiVersion: apps/v1

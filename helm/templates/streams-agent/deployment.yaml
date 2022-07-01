@@ -46,11 +46,9 @@ spec:
               value: {{ $redisSecretName }}
             - name: STRM_REDIS_SECRET_KEY
               value: {{ $redisSecretKey }}
-          {{ if .Values.kafkaSecurityConfig.enabled }}
           volumeMounts:
-          {{- template "client-truststore-volume-mount" . }}
-      {{ end }}
+          {{- template "clientTruststoreVolumeMount" . }}
       serviceAccountName: streams-agent
       volumes:
-        {{- template "client-truststore-volume" . }}
+        {{- template "clientTruststoreVolume" . }}
   {{ end }}

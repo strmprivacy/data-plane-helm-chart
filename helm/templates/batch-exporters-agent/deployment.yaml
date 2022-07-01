@@ -42,7 +42,7 @@ spec:
           {{ end }}
           image: {{ $image }}
           volumeMounts:
-          {{- template "client-truststore-volume-mount" . }}
+          {{- template "clientTruststoreVolumeMount" . }}
       volumes:
-        {{- template "client-truststore-volume" . }}
+        {{- template "clientTruststoreVolume" . }}
 {{ end }}

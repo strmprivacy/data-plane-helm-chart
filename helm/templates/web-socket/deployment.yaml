@@ -46,7 +46,7 @@ spec:
               value: {{ $bootstrap }}
 
           volumeMounts:
-          {{- template "client-truststore-volume-mount" . }}
+          {{- template "clientTruststoreVolumeMount" . }}
           ports:
             - containerPort: {{ $config.appPort }}
               protocol: TCP
@@ -99,5 +99,5 @@ spec:
             name: web-socket-envoy-config
             optional: false
           name: envoy-conf
-        {{- template "client-truststore-volume" . }}
+        {{- template "clientTruststoreVolume" . }}
   {{ end }}
