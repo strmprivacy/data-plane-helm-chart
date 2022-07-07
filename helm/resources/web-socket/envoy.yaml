@@ -22,13 +22,13 @@ static_resources:
                   - upgrade_type: websocket
                 access_log:
                   - name: envoy.access_loggers.file
-#                    filter:
-#                      status_code_filter:
-#                        comparison:
-#                          op: GE
-#                          value:
-#                            default_value: 500
-#                            runtime_key: access_log.access_error.status
+                    filter:
+                      status_code_filter:
+                        comparison:
+                          op: GE
+                          value:
+                            default_value: 500
+                            runtime_key: access_log.access_error.status
                     typed_config:
                       "@type": "type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog"
                       path: /dev/stdout
@@ -45,7 +45,7 @@ static_resources:
                               - name: ":method"
                                 exact_match: "GET"
                           route:
-                            cluster: egress
+                            cluster: web_socket
                             prefix_rewrite: "/is-alive"
                         - match:
                             prefix: "/"
@@ -53,7 +53,7 @@ static_resources:
                               - name: ":method"
                                 exact_match: "GET"
                           route:
-                            cluster: egress
+                            cluster: web_socket
                 http_filters:
                   - name: envoy.filters.http.health_check
                     typed_config:
@@ -66,16 +66,14 @@ static_resources:
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
                       providers:
-                        google-jwt:
-                          issuer: 'https://securetoken.google.com/{{ .Values.registry.base.prefix }}'
-                          audiences:
-                            - {{ .Values.registry.base.prefix }}
-                          forward: true
+                        accounts-streams-jwt:
+                          issuer: 'https://{{ .Values.api.authHost }}/auth/realms/streams'
+                          payload_in_metadata: jwt_payload
                           remote_jwks:
                             http_uri:
-                              uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com
-                              cluster: jwt.www.googleapis.com|443
-                              timeout: 30s
+                              uri: "https://{{ .Values.api.authHost }}/auth/realms/streams/protocol/openid-connect/certs"
+                              cluster: {{ .Values.api.authHost }}
+                              timeout: 3s
                             cache_duration: 300s
                       rules:
                         - match:
@@ -89,7 +87,7 @@ static_resources:
                               - name: ":method"
                                 exact_match: "GET"
                           requires:
-                            provider_name: "google-jwt"
+                            provider_name: "accounts-streams-jwt"
                   - name: envoy.filters.http.router
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -97,19 +95,19 @@ static_resources:
                       suppress_envoy_headers: true
                       upstream_log:
                         - name: envoy.upstream_loggers.file
-#                          filter:
-#                            status_code_filter:
-#                              comparison:
-#                                op: GE
-#                                value:
-#                                  default_value: 500
-#                                  runtime_key: upstream_log.access_error.status
+                          filter:
+                            status_code_filter:
+                              comparison:
+                                op: GE
+                                value:
+                                  default_value: 500
+                                  runtime_key: upstream_log.access_error.status
                           typed_config:
                             "@type": "type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog"
                             path: /dev/stdout
 
   clusters:
-    - name: egress
+    - name: web_socket
       type: LOGICAL_DNS
       dns_lookup_family: V4_ONLY
       connect_timeout: 2s
@@ -122,7 +120,7 @@ static_resources:
               header_key_format:
                 proper_case_words: {}
       load_assignment:
-        cluster_name: egress
+        cluster_name: web_socket
         endpoints:
           - lb_endpoints:
               - endpoint:
@@ -144,21 +142,21 @@ static_resources:
                     socket_address:
                       address: localhost
                       port_value: {{ .Values.components.webSocket.configuration.appPort }}
-    - name: jwt.www.googleapis.com|443
-      type: LOGICAL_DNS
-      dns_lookup_family: V4_ONLY
-      connect_timeout: 20s
-      lb_policy: ROUND_ROBIN
-      load_assignment:
-        cluster_name: jwt.www.googleapis.com|443
-        endpoints:
-          - lb_endpoints:
-              - endpoint:
-                  address:
-                    socket_address:
-                      address: www.googleapis.com
-                      port_value: 443
-      transport_socket:
-        name: envoy.transport_sockets.tls
-        typed_config:
-          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    - name: {{ .Values.api.authHost }}
+        type: LOGICAL_DNS
+        dns_lookup_family: V4_ONLY
+        connect_timeout: 20s
+        lb_policy: ROUND_ROBIN
+        load_assignment:
+          cluster_name: {{ .Values.api.authHost }}
+          endpoints:
+            - lb_endpoints:
+                - endpoint:
+                    address:
+                      socket_address:
+                        address: {{ .Values.api.authHost }}
+                        port_value: 443
+        transport_socket:
+          name: envoy.transport_sockets.tls
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext

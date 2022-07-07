@@ -33,7 +33,7 @@
             - name: STRM_API_PORT
               value: "{{.Values.api.port }}"
             - name: STRM_AUTH_URL
-              value: {{ .Values.api.authUrl }}
+              value: "https://{{ .Values.api.authHost }}"
             - name: STRM_AUTH_CLIENT_ID
               valueFrom:
                 secretKeyRef:

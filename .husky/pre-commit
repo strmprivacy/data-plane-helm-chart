@@ -3,4 +3,4 @@
 
 #mandatory flag --rerun-tasks, otherwise build will be successful second run without making changes
 # once we have some more meat in the chart, add `--strict`
-helm lint helm --with-subcharts
+helm lint helm --with-subcharts --set registry.imagePullSecret="dummy"
