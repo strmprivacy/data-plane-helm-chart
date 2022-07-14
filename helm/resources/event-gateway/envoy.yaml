@@ -80,8 +80,15 @@ static_resources:
                             http_uri:
                               uri: "https://{{ .Values.api.authHost }}/auth/realms/streams/protocol/openid-connect/certs"
                               cluster: {{ .Values.api.authHost }}
-                              timeout: 3s
-                            cache_duration: 300s
+                              timeout: 5s
+                            cache_duration: 600s
+                            async_fetch:
+                              fast_listener: false
+                            retry_policy:
+                              retry_back_off:
+                                base_interval: 0.01s
+                                max_interval: 20s
+                              num_retries: 10
                       rules:
                         - match:
                             path: "/event"
@@ -90,6 +97,31 @@ static_resources:
                                 exact_match: "POST"
                           requires:
                             provider_name: "accounts-streams-jwt"
+                  - name: envoy.lua
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+                      inline_code: |
+                        function envoy_on_request(request_handle)
+                          local auth = request_handle:streamInfo():dynamicMetadata():get("envoy.filters.http.jwt_authn")
+
+                          -- unset client id header
+                          request_handle:headers():remove("strm-client-id")
+
+                          if auth
+                          then
+                            if auth["jwt_payload"[].clientId
+                            then
+                              -- Keycloak Users Realm JWTs
+                              request_handle:headers():add("strm-client-id", auth["jwt_payload"[].clientId)
+                            else
+                              local content = "{\"error\": \"Client ID is missing in the provided JWT\"}"
+                              request_handle:logWarn("Client ID is missing in provided JWT.")
+                              request_handle:respond({[":status"[] = "401",
+                                  ["content-type"[] = "application/json"
+                                  }, content)
+                            end  
+                          end
+                        end
                   - name: envoy.filters.http.router
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
