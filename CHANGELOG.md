@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.11.0...v1.12.0) (2022-07-15)
+
+
+### Features
+
+* **strm-1332:** update jwks endpoints for event gateway and web socket ([#20](https://github.com/strmprivacy/data-plane-helm-chart/issues/20)) ([3f4affc](https://github.com/strmprivacy/data-plane-helm-chart/commit/3f4affc5dd2d3c8a2a03c0e74619fb5fb9d7b3c6))
+
 # [1.11.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.10.1...v1.11.0) (2022-07-01)
 
 
