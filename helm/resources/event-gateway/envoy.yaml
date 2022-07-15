@@ -73,17 +73,22 @@ static_resources:
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
                       providers:
-                        google-jwt:
-                          issuer: 'https://securetoken.google.com/{{ .Values.registry.base.prefix }}'
-                          audiences:
-                            - {{ .Values.registry.base.prefix }}
-                          forward: true
+                        accounts-streams-jwt:
+                          issuer: 'https://{{ .Values.api.authHost }}/auth/realms/streams'
+                          payload_in_metadata: jwt_payload
                           remote_jwks:
                             http_uri:
-                              uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com
-                              cluster: jwt.www.googleapis.com|443
-                              timeout: 30s
-                            cache_duration: 300s
+                              uri: "https://{{ .Values.api.authHost }}/auth/realms/streams/protocol/openid-connect/certs"
+                              cluster: {{ .Values.api.authHost }}
+                              timeout: 5s
+                            cache_duration: 600s
+                            async_fetch:
+                              fast_listener: false
+                            retry_policy:
+                              retry_back_off:
+                                base_interval: 0.01s
+                                max_interval: 20s
+                              num_retries: 10
                       rules:
                         - match:
                             path: "/event"
@@ -91,7 +96,32 @@ static_resources:
                               - name: ":method"
                                 exact_match: "POST"
                           requires:
-                            provider_name: "google-jwt"
+                            provider_name: "accounts-streams-jwt"
+                  - name: envoy.lua
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+                      inline_code: |
+                        function envoy_on_request(request_handle)
+                          local auth = request_handle:streamInfo():dynamicMetadata():get("envoy.filters.http.jwt_authn")
+
+                          -- unset client id header
+                          request_handle:headers():remove("strm-client-id")
+
+                          if auth
+                          then
+                            if auth["jwt_payload"].clientId
+                            then
+                              -- Keycloak Users Realm JWTs
+                              request_handle:headers():add("strm-client-id", auth["jwt_payload"].clientId)
+                            else
+                              local content = "{\"error\": \"Client ID is missing in the provided JWT\"}"
+                              request_handle:logWarn("Client ID is missing in provided JWT.")
+                              request_handle:respond({[":status"] = "401",
+                                  ["content-type"] = "application/json"
+                                  }, content)
+                            end
+                          end
+                        end
                   - name: envoy.filters.http.router
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -125,19 +155,19 @@ static_resources:
                     socket_address:
                       address: 127.0.0.1
                       port_value: {{ .Values.components.eventGateway.configuration.appPort }}
-    - name: jwt.www.googleapis.com|443
+    - name: {{ .Values.api.authHost }}
       type: LOGICAL_DNS
       dns_lookup_family: V4_ONLY
       connect_timeout: 20s
       lb_policy: ROUND_ROBIN
       load_assignment:
-        cluster_name: jwt.www.googleapis.com|443
+        cluster_name: {{ .Values.api.authHost }}
         endpoints:
           - lb_endpoints:
               - endpoint:
                   address:
                     socket_address:
-                      address: www.googleapis.com
+                      address: {{ .Values.api.authHost }}
                       port_value: 443
       transport_socket:
         name: envoy.transport_sockets.tls

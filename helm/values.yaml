@@ -23,7 +23,7 @@ license:
 api:
   host: "api.strmprivacy.io"
   port: 443
-  authUrl: "https://accounts.strmprivacy.io"
+  authHost: "accounts.strmprivacy.io"
 
 prometheus:
   enabled: true
