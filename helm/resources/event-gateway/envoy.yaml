@@ -109,17 +109,17 @@ static_resources:
 
                           if auth
                           then
-                            if auth["jwt_payload"[].clientId
+                            if auth["jwt_payload"].clientId
                             then
                               -- Keycloak Users Realm JWTs
-                              request_handle:headers():add("strm-client-id", auth["jwt_payload"[].clientId)
+                              request_handle:headers():add("strm-client-id", auth["jwt_payload"].clientId)
                             else
                               local content = "{\"error\": \"Client ID is missing in the provided JWT\"}"
                               request_handle:logWarn("Client ID is missing in provided JWT.")
-                              request_handle:respond({[":status"[] = "401",
-                                  ["content-type"[] = "application/json"
+                              request_handle:respond({[":status"] = "401",
+                                  ["content-type"] = "application/json"
                                   }, content)
-                            end  
+                            end
                           end
                         end
                   - name: envoy.filters.http.router
@@ -156,20 +156,20 @@ static_resources:
                       address: 127.0.0.1
                       port_value: {{ .Values.components.eventGateway.configuration.appPort }}
     - name: {{ .Values.api.authHost }}
-        type: LOGICAL_DNS
-        dns_lookup_family: V4_ONLY
-        connect_timeout: 20s
-        lb_policy: ROUND_ROBIN
-        load_assignment:
-          cluster_name: {{ .Values.api.authHost }}
-          endpoints:
-            - lb_endpoints:
-                - endpoint:
-                    address:
-                      socket_address:
-                        address: {{ .Values.api.authHost }}
-                        port_value: 443
-        transport_socket:
-          name: envoy.transport_sockets.tls
-          typed_config:
-            "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+      type: LOGICAL_DNS
+      dns_lookup_family: V4_ONLY
+      connect_timeout: 20s
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: {{ .Values.api.authHost }}
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: {{ .Values.api.authHost }}
+                      port_value: 443
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext

@@ -161,20 +161,20 @@ static_resources:
                       address: 127.0.0.1
                       port_value: {{ .Values.components.webSocket.configuration.appPort }}
     - name: {{ .Values.api.authHost }}
-        type: LOGICAL_DNS
-        dns_lookup_family: V4_ONLY
-        connect_timeout: 20s
-        lb_policy: ROUND_ROBIN
-        load_assignment:
-          cluster_name: {{ .Values.api.authHost }}
-          endpoints:
-            - lb_endpoints:
-                - endpoint:
-                    address:
-                      socket_address:
-                        address: {{ .Values.api.authHost }}
-                        port_value: 443
-        transport_socket:
-          name: envoy.transport_sockets.tls
-          typed_config:
-            "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+      type: LOGICAL_DNS
+      dns_lookup_family: V4_ONLY
+      connect_timeout: 20s
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: {{ .Values.api.authHost }}
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: {{ .Values.api.authHost }}
+                      port_value: 443
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
