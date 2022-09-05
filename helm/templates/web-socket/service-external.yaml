@@ -1,5 +1,5 @@
 {{ $component := .Values.components.webSocket }}
-{{ if $component.enabled and .Values.services.loadbalancer.enabled }}
+{{ if and $component.enabled .Values.services.loadbalancer.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
