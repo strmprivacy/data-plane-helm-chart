@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.12.0...v1.13.0) (2022-09-05)
+
+
+### Features
+
+* **strm-1586:** allow routing traffic via load balancer ([b8ead9d](https://github.com/strmprivacy/data-plane-helm-chart/commit/b8ead9d2896f88480b433e571524301a1d5097a7))
+
 # [1.12.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.11.0...v1.12.0) (2022-07-15)
 
 
