@@ -50,7 +50,7 @@ services:
     internal: false
 
   # For routing traffic in the cluster
-  cluster_ip:
+  clusterIp:
     enabled: true
 
 components:
