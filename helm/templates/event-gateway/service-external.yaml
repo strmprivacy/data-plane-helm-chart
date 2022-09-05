@@ -1,0 +1,26 @@
+{{ $component := .Values.components.eventGateway }}
+{{ if $component.enabled and .Values.services.loadbalancer.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-gateway-external
+  namespace: {{ .Values.namespace }}
+  {{ if .Values.services.loadbalancer.internal }}
+  annotations:
+    {{ if eq .Values.license.installationType "AWS_MARKETPLACE" }}
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    {{ end }}
+  {{ end }}
+  labels:
+    strmprivacy.io/app: event-gateway
+    strmprivacy.io/version: {{ .Chart.Version }}
+spec:
+  type: LoadBalancer
+  selector:
+    strmprivacy.io/app: event-gateway
+  ports:
+    - port: 80
+      name: http
+      targetPort: envoy-proxy
+{{ end }}
+

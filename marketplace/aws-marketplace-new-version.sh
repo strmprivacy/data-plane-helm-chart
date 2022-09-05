@@ -73,6 +73,24 @@ jq --null-input \
                       "Description": "The client secret used to authenticate Data Plane applications with the STRM Privacy Control Plane, can be found at https://console.strmprivacy.io/installation/configuration",
                       "Label": "Installation Client Secret"
                     }
+                  },
+                  {
+                    "Key": "services.loadbalancer.enabled",
+                    "Metadata": {
+                      "Obfuscate": false,
+                      "DefaultValue": "false",
+                      "Description": "Should Kubernetes Services of type LoadBalancer be created to expose STRM Privacy Applications",
+                      "Label": "Enable LoadBalancer Kubernetes Service"
+                    }
+                  },
+                  {
+                    "Key": "services.loadbalancer.internal",
+                    "Metadata": {
+                      "Obfuscate": false,
+                      "DefaultValue": "false",
+                      "Description": "Add the Cloud Platform specific annotation to make the LoadBalancer internal.",
+                      "Label": "Enable LoadBalancer annotations for type internal"
+                    }
                   }
                 ]
              }
