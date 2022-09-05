@@ -1,5 +1,5 @@
 {{ $component := .Values.components.webSocket }}
-{{ if $component.enabled }}
+{{ if and $component.enabled .Values.services.clusterIp.enabled }}
 apiVersion: v1
 kind: Service
 metadata:

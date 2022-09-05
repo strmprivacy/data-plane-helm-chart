@@ -192,6 +192,47 @@
         }
       }
     },
+    "services": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "loadbalancer",
+        "clusterIp"
+      ],
+      "properties": {
+        "loadbalancer": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled",
+            "internal"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "internal": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "clusterIp": {
+          "type": "object",
+          "default": {},
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        }
+      }
+    },
     "components": {
       "type": "object",
       "default": {},

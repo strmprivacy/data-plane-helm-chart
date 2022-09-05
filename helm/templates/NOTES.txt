@@ -1,8 +1,8 @@
 Successfully installed STRM Privacy Data Plane. In order to use the CLI with the simulate and listen commands,
 we recommend to use a configuration file. See https://github.com/strmprivacy/cli/#configuration for more information.
 
-Please note that this either requires a kubectl port forward, or a VPN (i.e. https://www.telepresence.io/) to your
+Please note that this either requires a public IP address (e.g. through a service of type LoadBalancer), kubectl port forward, or a VPN (i.e. https://www.telepresence.io/) to your
 Kubernetes cluster to properly work.
 
 If you use the included Kafka, Redis, and/or Postgres deployments, please note that it may take a few moments for
-everything to be up and running. Note that these deployments are NOT meant for production purposes.
+everything to be up and running. Note that this is NOT meant for production purposes.

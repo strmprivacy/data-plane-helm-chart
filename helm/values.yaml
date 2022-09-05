@@ -43,6 +43,16 @@ postgresql:
   enabled: true
   fullnameOverride: "postgres"
 
+services:
+  # For routing traffic from outside the cluster
+  loadbalancer:
+    enabled: false
+    internal: false
+
+  # For routing traffic in the cluster
+  clusterIp:
+    enabled: true
+
 components:
   eventGateway:
     name: event-gateway
