@@ -76,18 +76,18 @@ jq --null-input \
                   },
                   {
                     "Key": "services.loadbalancer.enabled",
+                    "DefaultValue": "false",
                     "Metadata": {
                       "Obfuscate": false,
-                      "DefaultValue": "false",
                       "Description": "Should Kubernetes Services of type LoadBalancer be created to expose STRM Privacy Applications",
                       "Label": "Enable LoadBalancer Kubernetes Service"
                     }
                   },
                   {
                     "Key": "services.loadbalancer.internal",
+                    "DefaultValue": "false",
                     "Metadata": {
                       "Obfuscate": false,
-                      "DefaultValue": "false",
                       "Description": "Add the Cloud Platform specific annotation to make the LoadBalancer internal.",
                       "Label": "Enable LoadBalancer annotations for type internal"
                     }
