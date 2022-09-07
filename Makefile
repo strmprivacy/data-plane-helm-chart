@@ -14,7 +14,7 @@ namespace:
 	kubectl create namespace ${namespace}
 install:
 	-helm status ${helm_name} --namespace  ${namespace} 2> /dev/null \
-	|| helm install ${helm_name} helm --namespace ${namespace} \
+	|| helm install --generate-name helm --namespace ${namespace} \
 	--values values.yaml --set namespace=${namespace}
 
 uninstall:
@@ -28,6 +28,9 @@ upgrade:
 
 template:
 	helm template --debug helm --values values.yaml --set namespace=${namespace}
+
+template-external-service:
+	helm template --debug helm -s templates/web-socket/service-external.yaml --values values.yaml --set namespace=${namespace}
 
 update-dependencies:
 	helm dependency update helm
