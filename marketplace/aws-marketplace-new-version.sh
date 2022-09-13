@@ -39,7 +39,7 @@ jq --null-input \
                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/strm:\($HELM_CHART_VERSION)",
                "QuickLaunchEnabled": false,
                "UsageInstructions": "For detailed instructions on how to install the STRM Privacy Data Plane, please see our documentation at https://docs.strmprivacy.io/docs/latest/concepts/ccd/.\n\nPlease note that this product requires an ongoing internet connection to STRM Privacy, as the Control Plane is managed by us. The Control Plane supports your Data Plane and manages, for example, all streams that should exist.\nAll applications of the Data Plane report their heartbeat periodically to STRM Privacy, in order for you to use all tools that STRM Privacy provides, such as the CLI and the Console. ",
-               "ReleaseName": "strmprivacy"
+               "ReleaseName": "strmprivacy",
                "Namespace": "strmprivacy",
                "OverrideParameters": [
                   {
