@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.14.0...v1.14.1) (2022-09-13)
+
+
+### Bug Fixes
+
+* **master:** publish to aws; missing comma ([8641178](https://github.com/strmprivacy/data-plane-helm-chart/commit/8641178b7557a7a6d6a08040ff7b9c2a4ad483ba))
+
 # [1.14.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.13.0...v1.14.0) (2022-09-13)
 
 
