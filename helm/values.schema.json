@@ -205,16 +205,16 @@
           "default": {},
           "required": [
             "enabled",
-            "internal"
+            "annotations"
           ],
           "properties": {
             "enabled": {
               "type": "boolean",
               "default": false
             },
-            "internal": {
-              "type": "boolean",
-              "default": false
+            "annotations": {
+              "type": "object",
+              "default": {}
             }
           }
         },

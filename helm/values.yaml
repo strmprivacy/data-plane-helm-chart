@@ -47,7 +47,8 @@ services:
   # For routing traffic from outside the cluster
   loadbalancer:
     enabled: false
-    internal: false
+    # arbitrary key value annotations that are added to every Service of type LoadBalancer
+    annotations: {}
 
   # For routing traffic in the cluster
   clusterIp:

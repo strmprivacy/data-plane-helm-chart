@@ -5,12 +5,10 @@ kind: Service
 metadata:
   name: web-socket-external
   namespace: {{ .Values.namespace }}
-  {{ if .Values.services.loadbalancer.internal}}
   annotations:
-    {{ if eq .Values.license.installationType "AWS_MARKETPLACE" }}
-    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
-    {{ end }}
-  {{ end }}
+    {{- range $key, $value := .Values.services.loadbalancer.annotations }}
+    {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 4 }}
+    {{- end }}
   labels:
     strmprivacy.io/app: web-socket
     strmprivacy.io/version: {{ .Chart.Version }}
