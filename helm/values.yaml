@@ -47,6 +47,9 @@ services:
   # For routing traffic from outside the cluster
   loadbalancer:
     enabled: false
+    port: "443"
+    # array of allowed CIDR ranges
+    loadBalancerSourceRanges: []
     # arbitrary key value annotations that are added to every Service of type LoadBalancer
     annotations: {}
 
