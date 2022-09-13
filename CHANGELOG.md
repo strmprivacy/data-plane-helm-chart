@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.13.0...v1.14.0) (2022-09-13)
+
+
+### Features
+
+* **strm-1593:** allow arbitrary annotations on the load balancer ([#22](https://github.com/strmprivacy/data-plane-helm-chart/issues/22)) ([d8c9988](https://github.com/strmprivacy/data-plane-helm-chart/commit/d8c99883203bc8b6bdd30e44b3d6ff22b46ec368))
+
 # [1.13.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.12.0...v1.13.0) (2022-09-05)
 
 
