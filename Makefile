@@ -14,7 +14,7 @@ namespace:
 	kubectl create namespace ${namespace}
 install:
 	-helm status ${helm_name} --namespace  ${namespace} 2> /dev/null \
-	|| helm install --generate-name helm --namespace ${namespace} \
+	|| helm install ${helm_name} helm --namespace ${namespace} \
 	--values values.yaml --set namespace=${namespace}
 
 uninstall:
