@@ -205,16 +205,26 @@
           "default": {},
           "required": [
             "enabled",
-            "annotations"
+            "port",
+            "annotations",
+            "loadBalancerSourceRanges"
           ],
           "properties": {
             "enabled": {
               "type": "boolean",
               "default": false
             },
+            "port": {
+              "type": "string",
+              "default": "443"
+            },
             "annotations": {
               "type": "object",
               "default": {}
+            },
+            "loadBalancerSourceRanges": {
+              "type": "array",
+              "default": []
             }
           }
         },

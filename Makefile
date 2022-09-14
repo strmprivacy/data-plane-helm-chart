@@ -30,7 +30,7 @@ template:
 	helm template --debug helm --values values.yaml --set namespace=${namespace}
 
 template-external-service:
-	helm template --debug helm -s templates/web-socket/service-external.yaml --values values.yaml --set namespace=${namespace}
+	helm template --debug helm -s templates/event-gateway/service-external.yaml --values values.yaml --set namespace=${namespace}
 
 update-dependencies:
 	helm dependency update helm
