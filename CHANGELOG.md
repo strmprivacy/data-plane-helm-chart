@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.14.1...v1.15.0) (2022-09-14)
+
+
+### Features
+
+* **strm-1615:** allow allowed client ip cidr and lb ip config ([#23](https://github.com/strmprivacy/data-plane-helm-chart/issues/23)) ([79b014b](https://github.com/strmprivacy/data-plane-helm-chart/commit/79b014b2d898493c74b97e6fa156de1c696beea4))
+
 ## [1.14.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.14.0...v1.14.1) (2022-09-13)
 
 
