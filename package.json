@@ -43,6 +43,22 @@
                 }
               ],
               "countMatches": true
+            },
+            {
+              "files": [
+                "helm/Chart.yaml"
+              ],
+              "from": "\nappVersion\\:\\s?\".*\"",
+              "to": "\nappVersion: \"${nextRelease.version}\"",
+              "results": [
+                {
+                  "file": "helm/Chart.yaml",
+                  "hasChanged": true,
+                  "numMatches": 1,
+                  "numReplacements": 1
+                }
+              ],
+              "countMatches": true
             }
           ]
         }
