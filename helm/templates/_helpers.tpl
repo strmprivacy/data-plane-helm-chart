@@ -52,7 +52,6 @@
                   name: installation-credentials
                   key: STRM_AUTH_CLIENT_SECRET
                   optional: false
-            # TODO probably not needed. Investigate and check deployments
             - name: STRM_INSTALLATION_ID
               valueFrom:
                 secretKeyRef:
@@ -113,10 +112,13 @@
 
 
 {{ define "image" -}}
-    {{ eq .values.license.installationType "SELF_HOSTED" | ternary
-    (printf "%s/%s/%s/%s:%s" .values.registry.url .values.registry.base.prefix .values.registry.base.path .component.image.name .component.image.version)
-    (printf "%s/%s:%s" .values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" .component.image.name "${1}") .component.image.version)
-    }}
+    {{ if eq .values.license.installationType "SELF_HOSTED" }}
+    {{- printf "%s/%s/%s/%s:%s" .values.registry.url .values.registry.base.prefix .values.registry.base.path .component.image.name .component.image.version | quote }}
+    {{ else if eq .values.license.installationType "AWS_MARKETPLACE" }}
+    {{- printf "%s/%s:%s" .values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" .component.image.name "${1}") .component.image.version | quote }}
+    {{ else if eq .values.license.installationType "AWS_MARKETPLACE_PAYG" }}
+    {{- printf "%s/%s:%s" .values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" .component.image.name "${1}-payg") .component.image.version | quote }}
+    {{ end }}
 {{ end }}
 
 {{- define "kafkaBootstrap" -}}

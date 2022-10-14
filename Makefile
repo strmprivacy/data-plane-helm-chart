@@ -32,6 +32,9 @@ template:
 template-external-service:
 	helm template --debug helm -s templates/event-gateway/service-external.yaml --values values.yaml --set namespace=${namespace}
 
+template-event-gateway-deployment:
+	helm template --debug helm -s templates/event-gateway/deployment.yaml --values values.yaml --set namespace=${namespace}
+
 update-dependencies:
 	helm dependency update helm
 

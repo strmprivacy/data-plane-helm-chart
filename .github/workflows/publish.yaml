@@ -42,15 +42,24 @@ jobs:
           helm gcs push strm-${tag_name}.tgz helm-bucket
                
           aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin "709825985650.dkr.ecr.us-east-1.amazonaws.com"
+
+          # AWS BYOL
           helm push strm-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/
+          
+          # AWS PAYG
+          sed -i 's/name: strm/name: strm-payg/g' helm/Chart.yaml
+          helm package helm
+          helm push strm-payg-${tag_name}.tgz oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/
       - name: Get the upload URL for a release
         id: get_release
         uses: bruceadams/get-release@v1.2.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: AWS Marketplace Release
+      - name: AWS Marketplace Releases
         env:
-          AWS_MARKETPLACE_PRODUCT_ID: ${{ secrets.AWS_MARKETPLACE_PRODUCT_ID }}
+          AWS_MARKETPLACE_BYOL_PRODUCT_ID: ${{ secrets.AWS_MARKETPLACE_BYOL_PRODUCT_ID }}
+          AWS_MARKETPLACE_PAYG_PRODUCT_ID: ${{ secrets.AWS_MARKETPLACE_PAYG_PRODUCT_ID }}
         run: |
           VERSION=$(echo "${GITHUB_REF##*/}" | sed 's/v//g')
-          ./marketplace/aws-marketplace-new-version.sh "$VERSION" "${{ steps.get_release.outputs.html_url }}" "${AWS_MARKETPLACE_PRODUCT_ID}"
+          ./marketplace/aws-marketplace-new-version.sh "$VERSION" "${{ steps.get_release.outputs.html_url }}" "${AWS_MARKETPLACE_BYOL_PRODUCT_ID}" "AWS_MARKETPLACE"
+          ./marketplace/aws-marketplace-new-version.sh "$VERSION" "${{ steps.get_release.outputs.html_url }}" "${AWS_MARKETPLACE_PAYG_PRODUCT_ID}" "AWS_MARKETPLACE_PAYG"
