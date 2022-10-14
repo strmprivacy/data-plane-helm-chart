@@ -12,7 +12,7 @@ echo "Starting AWS Marketplace Release ${HELM_CHART_VERSION} for ${PRODUCT_TITLE
 echo "==========================================================================="
 
 echo "Getting Helm Chart repository for ${PRODUCT_TITLE}"
-HELM_CHART_REPO=$(aws marketplace-catalog describe-entity --entity-id "${AWS_MARKETPLACE_PRODUCT_ID}" --catalog AWSMmarketplace--region us-east-1 | jq -r '.Details | fromjson | .Repositories[].Url) | select(. | contains("strm-privacy/strm")) | select(. | contains("strm-privacy-data-plane") | not) | match(".+?/(.+)$").captures[0].string')
+HELM_CHART_REPO=$(aws marketplace-catalog describe-entity --entity-id "${AWS_MARKETPLACE_PRODUCT_ID}" --catalog AWSMarketplace --region us-east-1 | jq -r '.Details | fromjson | .Repositories[].Url | select(. | contains("strm-privacy/strm")) | select(. | contains("strm-privacy-data-plane") | not) | match(".+?/(.+)$").captures[0].string')
 
 echo "Getting all repositories for ${PRODUCT_TITLE}"
 ECR_REPOSITORIES=$(aws marketplace-catalog describe-entity --entity-id "${AWS_MARKETPLACE_PRODUCT_ID}" --catalog AWSMarketplace --region us-east-1 | jq -r '.Details | fromjson | .Repositories[].Url | select(. | contains("strm-privacy/strm") | not) | match(".+?/(.+)$").captures[0].string')
