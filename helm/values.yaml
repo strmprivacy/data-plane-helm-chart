@@ -118,7 +118,7 @@ components:
     name: batch-exporters-agent
     image:
       name: "management/entity-agents/batch-exporters-agent"
-      version: "v1.19.0"
+      version: "v1.20.0"
     configuration:
       kafkaAuth:
         user:
