@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.15.0...v1.16.0) (2022-10-14)
+
+
+### Features
+
+* **strm-1779:** support for aws marketplace payg version ([#24](https://github.com/strmprivacy/data-plane-helm-chart/issues/24)) ([0cd859b](https://github.com/strmprivacy/data-plane-helm-chart/commit/0cd859ba80f36e68fa7f0c718ef90853d2493b57))
+
 # [1.15.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.14.1...v1.15.0) (2022-09-14)
 
 
