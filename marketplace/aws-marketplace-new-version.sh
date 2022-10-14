@@ -3,8 +3,18 @@
 HELM_CHART_VERSION=${1:?Chart version to release not provided (first argument)}
 RELEASE_NOTES_URL=${2:?Release notes URL not provided (second argument)}
 AWS_MARKETPLACE_PRODUCT_ID=${3:?AWS Marketplace Product ID not provided (third argument)}
+INSTALLATION_TYPE=${4:?Installation Type not provided (fourth argument)}
 
-echo "Getting all repositories for the STRM Privacy Data Plane AWS Marketplace listing"
+PRODUCT_TITLE=$(aws marketplace-catalog describe-entity --entity-id "${AWS_MARKETPLACE_PRODUCT_ID}" --catalog AWSMarketplace --region us-east-1 | jq -r '.Details | fromjson | .Description.ProductTitle')
+
+echo "==========================================================================="
+echo "Starting AWS Marketplace Release ${HELM_CHART_VERSION} for ${PRODUCT_TITLE}"
+echo "==========================================================================="
+
+echo "Getting Helm Chart repository for ${PRODUCT_TITLE}"
+HELM_CHART_REPO=$(aws marketplace-catalog describe-entity --entity-id "${AWS_MARKETPLACE_PRODUCT_ID}" --catalog AWSMarketplace --region us-east-1 | jq -r '.Details | fromjson | .Repositories[].Url | select(. | contains("strm-privacy/strm")) | select(. | contains("strm-privacy-data-plane") | not) | match(".+?/(.+)$").captures[0].string')
+
+echo "Getting all repositories for ${PRODUCT_TITLE}"
 ECR_REPOSITORIES=$(aws marketplace-catalog describe-entity --entity-id "${AWS_MARKETPLACE_PRODUCT_ID}" --catalog AWSMarketplace --region us-east-1 | jq -r '.Details | fromjson | .Repositories[].Url | select(. | contains("strm-privacy/strm") | not) | match(".+?/(.+)$").captures[0].string')
 
 echo "Getting latest image tag for each repository"
@@ -19,8 +29,11 @@ echo "Creating Change Set"
 CHANGE_SET=$(
 jq --null-input \
     --arg RELEASE_NOTES_URL "$RELEASE_NOTES_URL" \
+    --arg HELM_CHART_REPO "$HELM_CHART_REPO" \
     --arg HELM_CHART_VERSION "$HELM_CHART_VERSION" \
     --arg CONTAINER_IMAGES "$CONTAINER_IMAGES" \
+    --arg INSTALLATION_TYPE "$INSTALLATION_TYPE" \
+    --arg PRODUCT_TITLE "$PRODUCT_TITLE" \
     --arg AWS_MARKETPLACE_PRODUCT_ID "$AWS_MARKETPLACE_PRODUCT_ID" \
     '{
        "Version": {
@@ -36,19 +49,19 @@ jq --null-input \
                ],
                "ContainerImages": ($CONTAINER_IMAGES | split( "\n" ) | map(select(. != "" ))),
                "Description": "The STRM Privacy Data Plane is deployed in your EKS cluster with our Helm chart. The chart is open source and can be viewed at https://github.com/strmprivacy/data-plane-helm-chart.",
-               "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/strm-privacy/strm:\($HELM_CHART_VERSION)",
+               "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/\($HELM_CHART_REPO):\($HELM_CHART_VERSION)",
                "QuickLaunchEnabled": false,
-               "UsageInstructions": "For detailed instructions on how to install the STRM Privacy Data Plane, please see our documentation at https://docs.strmprivacy.io/docs/latest/concepts/ccd/.\n\nPlease note that this product requires an ongoing internet connection to STRM Privacy, as the Control Plane is managed by us. The Control Plane supports your Data Plane and manages, for example, all streams that should exist.\nAll applications of the Data Plane report their heartbeat periodically to STRM Privacy, in order for you to use all tools that STRM Privacy provides, such as the CLI and the Console. ",
+               "UsageInstructions": "For detailed instructions on how to install the STRM Privacy Data Plane, please see our documentation at https://docs.strmprivacy.io/docs/latest/concepts/deployment-modes/ccd/.\n\nPlease note that this product requires an ongoing internet connection to STRM Privacy, as the Control Plane is managed by us. The Control Plane supports your Data Plane and manages, for example, all streams that should exist.\nAll applications of the Data Plane report their heartbeat periodically to STRM Privacy, in order for you to use all tools that STRM Privacy provides, such as the CLI and the Console.",
                "ReleaseName": "strmprivacy",
                "Namespace": "strmprivacy",
                "OverrideParameters": [
                   {
                     "Key": "license.installationType",
-                    "DefaultValue": "AWS_MARKETPLACE",
+                    "DefaultValue": "\($INSTALLATION_TYPE)",
                     "Metadata": {
                       "Obfuscate": false,
                       "Label": "Installation Type",
-                      "Description": "Should be AWS_MARKETPLACE, do not change."
+                      "Description": "Should be \($INSTALLATION_TYPE), do not change."
                     }
                   },
                   {
@@ -74,20 +87,11 @@ jq --null-input \
                       "Description": "The client secret used to authenticate Data Plane applications with the STRM Privacy Control Plane, can be found at https://console.strmprivacy.io/installation/configuration",
                       "Label": "Installation Client Secret"
                     }
-                  },
-                  {
-                    "Key": "services.loadbalancer.enabled",
-                    "DefaultValue": "false",
-                    "Metadata": {
-                      "Obfuscate": false,
-                      "Description": "Should Kubernetes Services of type LoadBalancer be created to expose STRM Privacy Applications",
-                      "Label": "Enable LoadBalancer Kubernetes Service"
-                    }
                   }
                 ]
              }
            },
-           "DeliveryOptionTitle": "STRM Privacy Data Plane"
+           "DeliveryOptionTitle": "\($PRODUCT_TITLE)"
          }
        ]
      }

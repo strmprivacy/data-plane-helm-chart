@@ -74,7 +74,7 @@
         "installationType": {
           "type": "string",
           "default": "",
-          "enum": ["SELF_HOSTED", "AWS_MARKETPLACE"]
+          "enum": ["SELF_HOSTED", "AWS_MARKETPLACE", "AWS_MARKETPLACE_PAYG"]
         },
         "installationId": {
           "type": "string",
