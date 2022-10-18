@@ -1,3 +1,10 @@
+## [1.17.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.1...v1.17.2) (2022-10-18)
+
+
+### Bug Fixes
+
+* **strm-1779:** add the aws mp sa to the values.yaml ([ec67582](https://github.com/strmprivacy/data-plane-helm-chart/commit/ec67582f2a4afd5d0ec56d3f40a70f88aa23e3b5))
+
 ## [1.17.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.0...v1.17.1) (2022-10-18)
 
 
