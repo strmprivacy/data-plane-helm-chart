@@ -25,6 +25,11 @@ while read -r repo; do
     CONTAINER_IMAGES="$CONTAINER_IMAGES"$'\n'"$image_uri"
 done <<<"$ECR_REPOSITORIES"
 
+if [[ "$INSTALLATION_TYPE" == "AWS_MARKETPLACE_PAYG" ]]; then
+    echo "Adding AWSMP_SERVICE_ACCOUNT override parameter for $INSTALLATION_TYPE, as that is a requirement apparently for paid products ¯\_(ツ)_/¯"
+    AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT='{ "Key": "AWSMP_SERVICE_ACCOUNT", "DefaultValue": "${AWSMP_SERVICE_ACCOUNT}", "Metadata": { "Obfuscate": false, "Label": "AWS Marketplace Service Account", "Description": "Should be ${AWSMP_SERVICE_ACCOUNT}, do not change." } }'
+fi
+
 echo "Creating Change Set"
 CHANGE_SET=$(
 jq --null-input \
@@ -34,6 +39,7 @@ jq --null-input \
     --arg CONTAINER_IMAGES "$CONTAINER_IMAGES" \
     --arg INSTALLATION_TYPE "$INSTALLATION_TYPE" \
     --arg PRODUCT_TITLE "$PRODUCT_TITLE" \
+    --arg AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT "$AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT" \
     --arg AWS_MARKETPLACE_PRODUCT_ID "$AWS_MARKETPLACE_PRODUCT_ID" \
     '{
        "Version": {
@@ -54,7 +60,7 @@ jq --null-input \
                "UsageInstructions": "For detailed instructions on how to install the STRM Privacy Data Plane, please see our documentation at https://docs.strmprivacy.io/docs/latest/concepts/deployment-modes/ccd/.\n\nPlease note that this product requires an ongoing internet connection to STRM Privacy, as the Control Plane is managed by us. The Control Plane supports your Data Plane and manages, for example, all streams that should exist.\nAll applications of the Data Plane report their heartbeat periodically to STRM Privacy, in order for you to use all tools that STRM Privacy provides, such as the CLI and the Console.",
                "ReleaseName": "strmprivacy",
                "Namespace": "strmprivacy",
-               "OverrideParameters": [
+               "OverrideParameters": ([
                   {
                     "Key": "license.installationType",
                     "DefaultValue": "\($INSTALLATION_TYPE)",
@@ -88,7 +94,7 @@ jq --null-input \
                       "Label": "Installation Client Secret"
                     }
                   }
-                ]
+                ] + [($AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT | select(. != "") | fromjson)])
              }
            },
            "DeliveryOptionTitle": "\($PRODUCT_TITLE)"
