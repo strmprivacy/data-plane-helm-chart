@@ -1,3 +1,10 @@
+## [1.17.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.2...v1.17.3) (2022-10-18)
+
+
+### Bug Fixes
+
+* **strm-1779:** retry marketplace sa account test ([08fa7f3](https://github.com/strmprivacy/data-plane-helm-chart/commit/08fa7f3cd281f1b0b556df0832764e1afdf8fbbd))
+
 ## [1.17.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.1...v1.17.2) (2022-10-18)
 
 
