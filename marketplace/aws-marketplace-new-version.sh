@@ -26,11 +26,12 @@ while read -r repo; do
 done <<<"$ECR_REPOSITORIES"
 
 if [[ "$INSTALLATION_TYPE" == "AWS_MARKETPLACE_PAYG" ]]; then
-    echo "Adding AWSMP_SERVICE_ACCOUNT override parameter for $INSTALLATION_TYPE, as that is a requirement apparently for paid products ¯\_(ツ)_/¯"
-    AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT='{ "Key": "AWSMP_SERVICE_ACCOUNT", "DefaultValue": "\"${AWSMP_SERVICE_ACCOUNT}\"", "Metadata": { "Obfuscate": false, "Label": "AWS Marketplace Service Account", "Description": "Should be \"${AWSMP_SERVICE_ACCOUNT}\", do not change." } }'
+    echo "Adding AWS Marketplace Service Account override parameter for $INSTALLATION_TYPE, as that is a requirement for paid products"
+    AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT='{ "Key": "marketplace.aws.serviceAccount", "DefaultValue": "${AWSMP_SERVICE_ACCOUNT}", "Metadata": { "Obfuscate": false, "Label": "AWS Marketplace Service Account", "Description": "Should be ${AWSMP_SERVICE_ACCOUNT}, do not change." } }'
 fi
 
 echo "Creating Change Set"
+# For API Reference, see https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/container-products.html
 CHANGE_SET=$(
 jq --null-input \
     --arg RELEASE_NOTES_URL "$RELEASE_NOTES_URL" \

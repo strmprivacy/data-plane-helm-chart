@@ -74,7 +74,11 @@
         "installationType": {
           "type": "string",
           "default": "",
-          "enum": ["SELF_HOSTED", "AWS_MARKETPLACE", "AWS_MARKETPLACE_PAYG"]
+          "enum": [
+            "SELF_HOSTED",
+            "AWS_MARKETPLACE",
+            "AWS_MARKETPLACE_PAYG"
+          ]
         },
         "installationId": {
           "type": "string",
@@ -87,6 +91,27 @@
         "installationClientSecret": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "marketplace": {
+      "type": "object",
+      "default": {},
+      "required": [
+        "aws"
+      ],
+      "properties": {
+        "aws": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "serviceAccount": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
         }
       }
     },
@@ -167,7 +192,10 @@
           "required": [],
           "properties": {
             "redis": {
-              "type": ["object", "null"],
+              "type": [
+                "object",
+                "null"
+              ],
               "default": null
             }
           }
@@ -272,7 +300,9 @@
               "type": "boolean",
               "default": false
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "replicas": {
               "type": "integer",
               "default": 0
@@ -286,19 +316,31 @@
               ],
               "properties": {
                 "kafkaBootstrapServers": {
-                  "type": ["string", "null"],
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "default": null
                 },
                 "redisHost": {
-                  "type": ["string", "null"],
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "default": null
                 },
                 "redisUser": {
-                  "type": ["string", "null"],
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "default": null
                 },
                 "redisPassword": {
-                  "type": ["string", "null"],
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "default": null
                 },
                 "appPort": {
@@ -322,12 +364,17 @@
                       "default": ""
                     },
                     "jwtAudience": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     }
                   }
                 },
-                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
+                "kafkaAuth": {
+                  "$ref": "#/$defs/kafkaAuth"
+                }
               }
             }
           }
@@ -347,7 +394,9 @@
               "type": "boolean",
               "default": false
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "name": {
               "type": "string",
               "default": ""
@@ -364,9 +413,14 @@
                 "envoy"
               ],
               "properties": {
-                "image": { "$ref": "#/$defs/image"},
+                "image": {
+                  "$ref": "#/$defs/image"
+                },
                 "kafkaBootstrapServers": {
-                  "type": ["string", "null"],
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "default": null
                 },
                 "appPort": {
@@ -390,7 +444,10 @@
                       "default": ""
                     },
                     "jwtAudience": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     }
                   }
@@ -413,7 +470,9 @@
               "type": "boolean",
               "default": false
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "name": {
               "type": "string",
               "default": ""
@@ -433,15 +492,24 @@
                   ],
                   "properties": {
                     "host": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     },
                     "port": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     },
                     "user": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     },
                     "password": {
@@ -449,7 +517,10 @@
                       "default": ""
                     },
                     "database": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     }
                   }
@@ -476,17 +547,24 @@
               "type": "string",
               "default": ""
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "configuration": {
               "type": "object",
               "default": {},
               "required": [],
               "properties": {
                 "kafkaBootstrapServers": {
-                  "type": ["string", "null"],
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "default": null
                 },
-                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
+                "kafkaAuth": {
+                  "$ref": "#/$defs/kafkaAuth"
+                }
               }
             }
           }
@@ -504,7 +582,9 @@
               "type": "boolean",
               "default": false
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "configuration": {
               "type": "object",
               "default": {},
@@ -512,18 +592,26 @@
                 "redisSecret"
               ],
               "properties": {
-                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" },
+                "kafkaAuth": {
+                  "$ref": "#/$defs/kafkaAuth"
+                },
                 "redisSecret": {
                   "type": "object",
                   "default": {},
                   "required": [],
                   "properties": {
                     "name": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     },
                     "key": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "default": null
                     }
                   }
@@ -549,9 +637,14 @@
               "type": "string",
               "default": ""
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "configuration": {
-              "type": ["object", "null"],
+              "type": [
+                "object",
+                "null"
+              ],
               "default": null
             }
           }
@@ -573,9 +666,14 @@
               "type": "string",
               "default": ""
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "configuration": {
-              "type": ["object", "null"],
+              "type": [
+                "object",
+                "null"
+              ],
               "default": null
             }
           }
@@ -598,15 +696,22 @@
               "type": "string",
               "default": ""
             },
-            "image": { "$ref": "#/$defs/image"},
+            "image": {
+              "$ref": "#/$defs/image"
+            },
             "configuration": {
               "type": "object",
               "default": {},
               "required": [],
               "properties": {
-                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" },
+                "kafkaAuth": {
+                  "$ref": "#/$defs/kafkaAuth"
+                },
                 "kafkaBootstrapServers": {
-                  "type": ["string", "null"],
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "default": null
                 }
               }
@@ -625,11 +730,17 @@
               "default": false
             },
             "kafkaBootstrapServers": {
-              "type": ["string", "null"],
+              "type": [
+                "string",
+                "null"
+              ],
               "default": null
             },
             "redisHost": {
-              "type": ["string", "null"],
+              "type": [
+                "string",
+                "null"
+              ],
               "default": null
             },
             "configuration": {
@@ -637,7 +748,9 @@
               "default": {},
               "required": [],
               "properties": {
-                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
+                "kafkaAuth": {
+                  "$ref": "#/$defs/kafkaAuth"
+                }
               }
             }
           }
@@ -658,7 +771,9 @@
               "default": {},
               "required": [],
               "properties": {
-                "kafkaAuth": { "$ref": "#/$defs/kafkaAuth" }
+                "kafkaAuth": {
+                  "$ref": "#/$defs/kafkaAuth"
+                }
               }
             }
           }
@@ -674,10 +789,16 @@
         },
         "securityProtocol": {
           "type": "string",
-          "enum": ["PLAINTEXT", "SASL_SSL"]
+          "enum": [
+            "PLAINTEXT",
+            "SASL_SSL"
+          ]
         },
         "sslTruststoreSecretName": {
-          "type": [ "string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     }
@@ -688,16 +809,22 @@
       "additionalProperties": false,
       "properties": {
         "user": {
-          "type": [ "string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 4
         },
         "password": {
-          "type": [ "string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 4
         }
       }
     },
-    "image" : {
+    "image": {
       "type": "object",
       "default": {},
       "required": [

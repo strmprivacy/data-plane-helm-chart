@@ -20,6 +20,10 @@ license:
   installationClientId: "<client_id>"
   installationClientSecret: "<client_secret>"
 
+marketplace:
+  aws:
+    serviceAccount:
+
 api:
   host: "api.strmprivacy.io"
   port: 443
