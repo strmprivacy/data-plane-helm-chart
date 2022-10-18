@@ -25,7 +25,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_MARKETPLACE_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_MARKETPLACE_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: us-east-1 # Fixed AWS Marketplace Region
       - name: Push to Helm Chart Repositories
         env:
           STRM_HELM_CHART_SA: ${{ secrets.STRM_HELM_CHART_SA }}
