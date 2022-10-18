@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.0...v1.17.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* **strm-1779:** retry with different default value ([05a8386](https://github.com/strmprivacy/data-plane-helm-chart/commit/05a8386f8d11e50118b817dbbd6c5aff08eba651))
+
 # [1.17.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.16.0...v1.17.0) (2022-10-18)
 
 
