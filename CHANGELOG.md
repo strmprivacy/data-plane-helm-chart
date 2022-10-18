@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.16.0...v1.17.0) (2022-10-18)
+
+
+### Features
+
+* **strm-1779:** add override parameter for PAYG product listing ([e04bcb1](https://github.com/strmprivacy/data-plane-helm-chart/commit/e04bcb15e226bf0b1ba0306e2a78829aabb966f6))
+
 # [1.16.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.15.0...v1.16.0) (2022-10-14)
 
 
