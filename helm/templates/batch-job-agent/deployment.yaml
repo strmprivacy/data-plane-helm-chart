@@ -24,7 +24,6 @@ spec:
       labels:
         strmprivacy.io/app: {{$name}}
     spec:
-      automountServiceAccountToken: true
       serviceAccountName: {{$name}}
       {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:

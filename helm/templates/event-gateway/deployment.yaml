@@ -23,6 +23,7 @@ spec:
       labels:
         strmprivacy.io/app: event-gateway
     spec:
+      serviceAccountName: {{.Values.serviceAccount}}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

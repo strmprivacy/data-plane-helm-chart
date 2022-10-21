@@ -11,25 +11,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: streams-agent
+  name: {{$name}}
   namespace: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      strmprivacy.io/app: streams-agent
+      strmprivacy.io/app: {{$name}}
   template:
     metadata:
       labels:
-        strmprivacy.io/app: streams-agent
+        strmprivacy.io/app: {{$name}}
     spec:
-      automountServiceAccountToken: true
+      serviceAccountName: {{$name}}
       {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:
         - name: strmprivacy-docker-registry
       {{ end }}
       containers:
-        - name: streams-agent
+        - name: {{$name}}
           image: {{$image}}
           env:
             {{ include "kafkaSecurityEnvironmentVars" .}}
@@ -48,7 +48,6 @@ spec:
               value: {{ $redisSecretKey }}
           volumeMounts:
           {{- template "clientTruststoreVolumeMount" . }}
-      serviceAccountName: streams-agent
       volumes:
         {{- template "clientTruststoreVolume" . }}
   {{ end }}

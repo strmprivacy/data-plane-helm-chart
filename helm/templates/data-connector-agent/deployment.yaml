@@ -20,7 +20,7 @@ spec:
       labels:
         app: {{ $name }}
     spec:
-      automountServiceAccountToken: true
+      serviceAccountName: {{ $name }}
       {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:
         - name: strmprivacy-docker-registry
@@ -35,5 +35,4 @@ spec:
             {{ end }}
             - name: APP_NAMESPACE
               value: {{ .Values.namespace }}
-      serviceAccountName: {{ $name }}
 {{ end }}

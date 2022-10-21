@@ -20,6 +20,7 @@ spec:
       labels:
         strmprivacy.io/app: confluent-schema-proxy
     spec:
+      serviceAccountName: {{.Values.serviceAccount}}
       {{ if eq .Values.license.installationType "SELF_HOSTED" }}
       imagePullSecrets:
         - name: strmprivacy-docker-registry

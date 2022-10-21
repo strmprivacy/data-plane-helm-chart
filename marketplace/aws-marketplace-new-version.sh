@@ -26,8 +26,29 @@ while read -r repo; do
 done <<<"$ECR_REPOSITORIES"
 
 if [[ "$INSTALLATION_TYPE" == "AWS_MARKETPLACE_PAYG" ]]; then
-    echo "Adding AWS Marketplace Service Account override parameter for $INSTALLATION_TYPE, as that is a requirement for paid products"
-    AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT='{ "Key": "marketplace.aws.serviceAccount", "DefaultValue": "${AWSMP_SERVICE_ACCOUNT}", "Metadata": { "Obfuscate": false, "Label": "AWS Marketplace Service Account", "Description": "Should be ${AWSMP_SERVICE_ACCOUNT}, do not change." } }'
+    echo "Adding AWS Marketplace override parameters for $INSTALLATION_TYPE"
+
+    AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS='
+    [
+        {
+            "Key": "serviceAccount",
+            "DefaultValue": "${AWSMP_SERVICE_ACCOUNT}",
+            "Metadata": {
+                "Obfuscate": false,
+                "Label": "Kubernetes Service Account Name",
+                "Description": "Name of the Kubernetes Service Account that is linked to the role that has access to the AWS Marketplace Metering API."
+            }
+        },
+        {
+            "Key": "marketplace.aws.serviceAccountRoleArn",
+            "Metadata": {
+                "Obfuscate": false,
+                "Label": "ARN of the role that is allowed to access the Marketplace Metering API",
+                "Description": "ARN of the role that is allowed to access the Marketplace Metering API."
+            }
+        }
+    ]
+    '
 fi
 
 echo "Creating Change Set"
@@ -40,7 +61,7 @@ jq --null-input \
     --arg CONTAINER_IMAGES "$CONTAINER_IMAGES" \
     --arg INSTALLATION_TYPE "$INSTALLATION_TYPE" \
     --arg PRODUCT_TITLE "$PRODUCT_TITLE" \
-    --arg AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT "$AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT" \
+    --arg AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS "$AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS" \
     --arg AWS_MARKETPLACE_PRODUCT_ID "$AWS_MARKETPLACE_PRODUCT_ID" \
     '{
        "Version": {
@@ -95,7 +116,7 @@ jq --null-input \
                       "Label": "Installation Client Secret"
                     }
                   }
-                ] + [($AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT | select(. != "") | fromjson)])
+                ] + [($AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS | select(. != "") | fromjson | flatten)])
              }
            },
            "DeliveryOptionTitle": "\($PRODUCT_TITLE)"
