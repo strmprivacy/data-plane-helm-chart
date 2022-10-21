@@ -155,7 +155,7 @@ components:
     name: confluent-schema-proxy
     image:
       name: "management/entity-agents/confluent-schema-proxy"
-      version: "v1.4.0"
+      version: "v1.5.0"
     configuration:
 
   esrProxy:
