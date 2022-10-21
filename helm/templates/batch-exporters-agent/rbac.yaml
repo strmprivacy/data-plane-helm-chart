@@ -10,7 +10,6 @@ metadata:
   namespace: {{ .Values.namespace }}
   annotations:
     {{- if and (contains "AWS_" .Values.license.installationType) (((.Values.marketplace).aws).serviceAccountRoleArn) }}
-
     eks.amazonaws.com/role-arn: "{{ ((.Values.marketplace).aws).serviceAccountRoleArn }}"
     {{- end }}
 automountServiceAccountToken: true
