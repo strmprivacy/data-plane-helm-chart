@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.19.0...v1.19.1) (2022-10-24)
+
+
+### Bug Fixes
+
+* length of marketplace override parameter label > 50 ([bad4383](https://github.com/strmprivacy/data-plane-helm-chart/commit/bad43834118e48c0265a1a3304f8e8648209bcfb))
+
 # [1.19.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.18.1...v1.19.0) (2022-10-24)
 
 
