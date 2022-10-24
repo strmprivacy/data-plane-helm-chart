@@ -43,7 +43,7 @@ if [[ "$INSTALLATION_TYPE" == "AWS_MARKETPLACE_PAYG" ]]; then
             "Key": "marketplace.aws.serviceAccountRoleArn",
             "Metadata": {
                 "Obfuscate": false,
-                "Label": "ARN of the role that is allowed to access the Marketplace Metering API",
+                "Label": "Role ARN with access to Marketplace Metering API",
                 "Description": "ARN of the role that is allowed to access the Marketplace Metering API."
             }
         }
