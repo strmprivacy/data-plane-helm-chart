@@ -116,7 +116,7 @@ jq --null-input \
                       "Label": "Installation Client Secret"
                     }
                   }
-                ] + [($AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS | select(. != "") | fromjson | flatten)])
+                ] + [($AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS | select(. != "") | fromjson)] | flatten)
              }
            },
            "DeliveryOptionTitle": "\($PRODUCT_TITLE)"
