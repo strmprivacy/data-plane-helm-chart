@@ -1,3 +1,10 @@
+## [1.18.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.18.0...v1.18.1) (2022-10-24)
+
+
+### Bug Fixes
+
+* jq flatten ([9f25d3a](https://github.com/strmprivacy/data-plane-helm-chart/commit/9f25d3aac3ab937c240e545e2d4d978921d401a5))
+
 # [1.18.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.3...v1.18.0) (2022-10-24)
 
 
