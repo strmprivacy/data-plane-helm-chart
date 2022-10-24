@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.3...v1.18.0) (2022-10-24)
+
+
+### Features
+
+* **strm-1782:** add default service account ([#25](https://github.com/strmprivacy/data-plane-helm-chart/issues/25)) ([dc3d89f](https://github.com/strmprivacy/data-plane-helm-chart/commit/dc3d89fc06c48a099ca88cfdfaf21ccb5d1ccd60))
+
 ## [1.17.3](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.17.2...v1.17.3) (2022-10-18)
 
 
