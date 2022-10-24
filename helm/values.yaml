@@ -20,9 +20,10 @@ license:
   installationClientId: "<client_id>"
   installationClientSecret: "<client_secret>"
 
+serviceAccount: "strmprivacy"
+
 marketplace:
   aws:
-    serviceAccount:
 
 api:
   host: "api.strmprivacy.io"

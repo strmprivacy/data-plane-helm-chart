@@ -26,8 +26,29 @@ while read -r repo; do
 done <<<"$ECR_REPOSITORIES"
 
 if [[ "$INSTALLATION_TYPE" == "AWS_MARKETPLACE_PAYG" ]]; then
-    echo "Adding AWS Marketplace Service Account override parameter for $INSTALLATION_TYPE, as that is a requirement for paid products"
-    AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT='{ "Key": "marketplace.aws.serviceAccount", "DefaultValue": "${AWSMP_SERVICE_ACCOUNT}", "Metadata": { "Obfuscate": false, "Label": "AWS Marketplace Service Account", "Description": "Should be ${AWSMP_SERVICE_ACCOUNT}, do not change." } }'
+    echo "Adding AWS Marketplace override parameters for $INSTALLATION_TYPE"
+
+    AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS='
+    [
+        {
+            "Key": "serviceAccount",
+            "DefaultValue": "${AWSMP_SERVICE_ACCOUNT}",
+            "Metadata": {
+                "Obfuscate": false,
+                "Label": "Kubernetes Service Account Name",
+                "Description": "Name of the Kubernetes Service Account that is linked to the role that has access to the AWS Marketplace Metering API."
+            }
+        },
+        {
+            "Key": "marketplace.aws.serviceAccountRoleArn",
+            "Metadata": {
+                "Obfuscate": false,
+                "Label": "ARN of the role that is allowed to access the Marketplace Metering API",
+                "Description": "ARN of the role that is allowed to access the Marketplace Metering API."
+            }
+        }
+    ]
+    '
 fi
 
 echo "Creating Change Set"
@@ -40,7 +61,7 @@ jq --null-input \
     --arg CONTAINER_IMAGES "$CONTAINER_IMAGES" \
     --arg INSTALLATION_TYPE "$INSTALLATION_TYPE" \
     --arg PRODUCT_TITLE "$PRODUCT_TITLE" \
-    --arg AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT "$AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT" \
+    --arg AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS "$AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS" \
     --arg AWS_MARKETPLACE_PRODUCT_ID "$AWS_MARKETPLACE_PRODUCT_ID" \
     '{
        "Version": {
@@ -58,7 +79,7 @@ jq --null-input \
                "Description": "The STRM Privacy Data Plane is deployed in your EKS cluster with our Helm chart. The chart is open source and can be viewed at https://github.com/strmprivacy/data-plane-helm-chart.",
                "HelmChartUri": "709825985650.dkr.ecr.us-east-1.amazonaws.com/\($HELM_CHART_REPO):\($HELM_CHART_VERSION)",
                "QuickLaunchEnabled": false,
-               "UsageInstructions": "For detailed instructions on how to install the STRM Privacy Data Plane, please see our documentation at https://docs.strmprivacy.io/docs/latest/concepts/deployment-modes/ccd/.\n\nPlease note that this product requires an ongoing internet connection to STRM Privacy, as the Control Plane is managed by us. The Control Plane supports your Data Plane and manages, for example, all streams that should exist.\nAll applications of the Data Plane report their heartbeat periodically to STRM Privacy, in order for you to use all tools that STRM Privacy provides, such as the CLI and the Console.",
+               "UsageInstructions": "Please do not follow the instructions on the \"Launch this software\" page, as those leave out too many details. For detailed instructions and a step by step guide on how to install the STRM Privacy Data Plane, please see our documentation at https://docs.strmprivacy.io/docs/latest/quickstart/ccd/aws-marketplace/.\n\nPlease note that this product requires an ongoing internet connection to STRM Privacy, as the Control Plane is managed by us. The Control Plane supports your Data Plane and manages, for example, all streams that should exist.\nAll applications of the Data Plane report their heartbeat periodically to STRM Privacy, in order for you to use all tools that STRM Privacy provides, such as the CLI and the Console.",
                "ReleaseName": "strmprivacy",
                "Namespace": "strmprivacy",
                "OverrideParameters": ([
@@ -95,7 +116,7 @@ jq --null-input \
                       "Label": "Installation Client Secret"
                     }
                   }
-                ] + [($AWS_MARKETPLACE_PAYG_SERVICE_ACCOUNT | select(. != "") | fromjson)])
+                ] + [($AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS | select(. != "") | fromjson | flatten)])
              }
            },
            "DeliveryOptionTitle": "\($PRODUCT_TITLE)"

@@ -13,7 +13,8 @@
     "kafka",
     "redis",
     "postgresql",
-    "components"
+    "components",
+    "serviceAccount"
   ],
   "properties": {
     "enableLivenessChecks": {
@@ -94,22 +95,33 @@
         }
       }
     },
+    "serviceAccount": {
+      "type": "string",
+      "description": "The name of the Kubernetes service account that should be used by the STRM Privacy Data Plane."
+    },
     "marketplace": {
-      "type": "object",
-      "default": {},
-      "required": [
-        "aws"
+      "type": [
+        "object",
+        "null"
       ],
+      "default": {},
+      "description": "Marketplace specific configuration",
       "properties": {
         "aws": {
-          "type": "object",
+          "type": [
+            "null",
+            "object"
+          ],
           "default": {},
+          "description": "AWS Marketplace flavored deployments.",
+          "required": [
+            "serviceAccountRoleArn"
+          ],
           "properties": {
-            "serviceAccount": {
-              "type": [
-                "string",
-                "null"
-              ]
+            "serviceAccountRoleArn": {
+              "type": "string",
+              "description": "The ARN of the role that has the AWSMarketplaceMeteringRegisterUsage policy attached and the correct assume role trust policy, which should be attatched to the service account used by STRM Privacy. See STRM Privacy docs for more information.",
+              "minLength": 1
             }
           }
         }

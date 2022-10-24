@@ -26,6 +26,8 @@
 
 {{ define "installationEnvironmentVariables" }}
             # from template installationEnvironmentVariables
+            - name: STRM_DEFAULT_SERVICE_ACCOUNT
+              value: {{ .Values.serviceAccount }}
             - name: STRM_INSTALLATION_TYPE
               value: {{.Values.license.installationType}}
             - name: STRM_API_HOST
