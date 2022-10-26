@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.20.0...v1.20.1) (2022-10-26)
+
+
+### Bug Fixes
+
+* add optional service account name ([4ef857b](https://github.com/strmprivacy/data-plane-helm-chart/commit/4ef857b1d8d0ed713a38a8fb602b483c39fcd696))
+
 # [1.20.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.19.1...v1.20.0) (2022-10-24)
 
 
