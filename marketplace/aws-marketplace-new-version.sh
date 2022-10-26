@@ -5,10 +5,15 @@ RELEASE_NOTES_URL=${2:?Release notes URL not provided (second argument)}
 AWS_MARKETPLACE_PRODUCT_ID=${3:?AWS Marketplace Product ID not provided (third argument)}
 INSTALLATION_TYPE=${4:?Installation Type not provided (fourth argument)}
 
+if [[ "$CI" != "true" ]]; then
+    DRY_RUN="(dry run)"
+    export AWS_PROFILE="marketplace"
+fi
+
 PRODUCT_TITLE=$(aws marketplace-catalog describe-entity --entity-id "${AWS_MARKETPLACE_PRODUCT_ID}" --catalog AWSMarketplace --region us-east-1 | jq -r '.Details | fromjson | .Description.ProductTitle')
 
 echo "==========================================================================="
-echo "Starting AWS Marketplace Release ${HELM_CHART_VERSION} for ${PRODUCT_TITLE}"
+echo "Starting AWS Marketplace Release ${HELM_CHART_VERSION} for ${PRODUCT_TITLE} ${DRY_RUN}"
 echo "==========================================================================="
 
 echo "Getting Helm Chart repository for ${PRODUCT_TITLE}"
@@ -26,7 +31,9 @@ while read -r repo; do
 done <<<"$ECR_REPOSITORIES"
 
 if [[ "$INSTALLATION_TYPE" == "AWS_MARKETPLACE_PAYG" ]]; then
-    echo "Adding AWS Marketplace override parameters for $INSTALLATION_TYPE"
+    echo "Adding AWS Marketplace custom configuration for $INSTALLATION_TYPE"
+
+    AWS_MARKETPLACE_SERVICE_ACCOUNT_NAME="strmprivacy"
 
     AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS='
     [
@@ -62,6 +69,7 @@ jq --null-input \
     --arg INSTALLATION_TYPE "$INSTALLATION_TYPE" \
     --arg PRODUCT_TITLE "$PRODUCT_TITLE" \
     --arg AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS "$AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS" \
+    --arg AWS_MARKETPLACE_SERVICE_ACCOUNT_NAME "$AWS_MARKETPLACE_SERVICE_ACCOUNT_NAME" \
     --arg AWS_MARKETPLACE_PRODUCT_ID "$AWS_MARKETPLACE_PRODUCT_ID" \
     '{
        "Version": {
@@ -71,7 +79,7 @@ jq --null-input \
        "DeliveryOptions": [
          {
            "Details": {
-             "HelmDeliveryOptionDetails": {
+             "HelmDeliveryOptionDetails": ({
                "CompatibleServices": [
                  "EKS"
                ],
@@ -117,7 +125,7 @@ jq --null-input \
                     }
                   }
                 ] + [($AWS_MARKETPLACE_PAYG_EXTRA_OVERRIDE_PARAMETERS | select(. != "") | fromjson)] | flatten)
-             }
+             } + (($AWS_MARKETPLACE_SERVICE_ACCOUNT_NAME | select(. != "") | {"MarketplaceServiceAccountName":"\($AWS_MARKETPLACE_SERVICE_ACCOUNT_NAME)"}) // {}))
            },
            "DeliveryOptionTitle": "\($PRODUCT_TITLE)"
          }
@@ -139,5 +147,19 @@ jq --null-input \
      '
 )
 
+
+if [[ "$CI" == "true" ]]; then
 echo "Starting Change Set"
 aws marketplace-catalog start-change-set --change-set-name "Publish version v${HELM_CHART_VERSION}" --catalog "AWSMarketplace" --region us-east-1 --change-set "$CHANGE_SET"
+else
+    echo
+    echo "Full Change Set:"
+    echo "-------------------------------"
+    echo "$CHANGE_SET" | jq
+    echo
+    echo "-------------------------------"
+    echo
+    echo "Change Set Details:"
+    echo "-------------------------------"
+    echo "$CHANGE_SET" | jq '.[0].Details | fromjson'
+fi
