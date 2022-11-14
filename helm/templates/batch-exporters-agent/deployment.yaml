@@ -10,7 +10,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{$name}}
-  namespace: {{.Values.namespace}}
+  namespace: {{.Release.Namespace}}
 spec:
   replicas: 1
   selector:
@@ -33,7 +33,7 @@ spec:
           {{- include "kafkaCredentialsEnvironmentVars" $data -}}
           {{ include "installationEnvironmentVariables"  . }}
             - name: APP_NAMESPACE
-              value: {{ .Values.namespace }}
+              value: {{ .Release.Namespace }}
             - name: STRM_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
           {{ if eq .Values.license.installationType "SELF_HOSTED" }}

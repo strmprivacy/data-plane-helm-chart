@@ -3,14 +3,14 @@
 {{ $config := $component.configuration }}
 {{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $config.redisHost |
-      default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Values.namespace) }}
+      default (printf "%s-master.%s.svc.cluster.local" .Values.redis.fullnameOverride .Release.Namespace) }}
 {{ $image := include "image" (dict "values" .Values "component" $component ) }}
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: event-gateway
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     strmprivacy.io/app: event-gateway
 spec:

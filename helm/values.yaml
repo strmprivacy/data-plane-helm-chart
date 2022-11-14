@@ -1,5 +1,4 @@
 enableLivenessChecks: false
-namespace: strmprivacy
 
 registry:
   url: "europe-west4-docker.pkg.dev"

@@ -9,7 +9,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -34,5 +34,5 @@ spec:
             {{ include "selfHostedEnvironmentVariables" .}}
             {{ end }}
             - name: APP_NAMESPACE
-              value: {{ .Values.namespace }}
+              value: {{ .Release.Namespace }}
 {{ end }}

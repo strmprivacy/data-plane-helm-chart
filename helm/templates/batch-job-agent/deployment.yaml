@@ -5,7 +5,7 @@
 {{- $postgres := .Values.postgresql -}}
 {{- $name := $component.name }}
 {{- $postgresHost := $config.postgres.host |
-      default (printf "%s.%s" $postgres.fullnameOverride .Values.namespace) -}}
+      default (printf "%s.%s" $postgres.fullnameOverride .Release.Namespace) -}}
 {{ $image := include "image" (dict "values" .Values "component" $component ) }}
 
 
@@ -13,7 +13,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{$name}}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -38,7 +38,7 @@ spec:
             {{ include "selfHostedEnvironmentVariables" .}}
             {{ end }}
             - name: STRM_ENTITY_NAMESPACE
-              value: {{ .Values.namespace }}
+              value: {{ .Release.Namespace }}
             - name: STRM_DATABASE_NAME
               value: {{$config.postgres.database | default "postgres" }}
             - name: STRM_DATABASE_USERNAME
