@@ -5,7 +5,6 @@
   "default": {},
   "required": [
     "enableLivenessChecks",
-    "namespace",
     "registry",
     "license",
     "api",
