@@ -5,7 +5,6 @@
   "default": {},
   "required": [
     "enableLivenessChecks",
-    "namespace",
     "registry",
     "license",
     "api",
@@ -20,10 +19,6 @@
     "enableLivenessChecks": {
       "type": "boolean",
       "default": false
-    },
-    "namespace": {
-      "type": "string",
-      "default": ""
     },
     "registry": {
       "type": "object",

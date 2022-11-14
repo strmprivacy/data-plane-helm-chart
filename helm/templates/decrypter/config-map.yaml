@@ -3,13 +3,13 @@
 
 {{ $bootstrap := include "kafkaBootstrap" . }}
 {{ $redis := $component.redisHost |
-      default (printf "%s-headless.%s" .Values.redis.fullnameOverride .Values.namespace) }}
+      default (printf "%s-headless.%s" .Values.redis.fullnameOverride .Release.Namespace) }}
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: decrypter-config
-  namespace: {{.Values.namespace}}
+  namespace: {{.Release.Namespace}}
 data:
   BOOTSTRAP_SERVERS: "{{ $bootstrap }}"
   REDIS_HOST: {{ $redis }}

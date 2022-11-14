@@ -7,7 +7,7 @@
 {{- end }}
 
 {{- define "bootstrapServers" }}
-    {{- printf "%s.%s:%d" .Values.kafka.fullnameOverride .Values.namespace (.Values.kafka.service.ports.client | int) }}'
+    {{- printf "%s.%s:%d" .Values.kafka.fullnameOverride .Release.Namespace (.Values.kafka.service.ports.client | int) }}'
 {{- end }}
 
 {{ define "kafkaSecurityEnvironmentVars" }}
@@ -126,5 +126,5 @@
 {{- define "kafkaBootstrap" -}}
 {{ $kafka := .Values.kafka}}
 {{- $kafka.bootstrapServers |
-          default (printf "%s.%s:%s" $kafka.fullnameOverride .Values.namespace $kafka.port) }}
+          default (printf "%s.%s:%s" $kafka.fullnameOverride .Release.Namespace $kafka.port) }}
 {{end}}
