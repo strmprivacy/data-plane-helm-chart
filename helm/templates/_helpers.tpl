@@ -114,6 +114,10 @@
 
 
 {{ define "image" -}}
+    # TODO if .values.registry.url overridden is (!= europe-west4...), then
+    # base.path and base.prefix should not be appended, and the component.image.name should have all / replaced by _
+    # This function dictionary for .values can be replaced by .Values, as this is generic, the only thing that is required
+    # is component
     {{ if eq .values.license.installationType "SELF_HOSTED" }}
     {{- printf "%s/%s/%s/%s:%s" .values.registry.url .values.registry.base.prefix .values.registry.base.path .component.image.name .component.image.version | quote }}
     {{ else if eq .values.license.installationType "AWS_MARKETPLACE" }}
