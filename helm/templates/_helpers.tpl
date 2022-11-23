@@ -26,6 +26,10 @@
 
 {{ define "installationEnvironmentVariables" }}
             # from template installationEnvironmentVariables
+            {{ if and (eq .Values.license.installationType "SELF_HOSTED") (ne .Values.registry.url "europe-west4-docker.pkg.dev") }}
+            - name: STRM_REGISTRY_URL
+              value: {{ .Values.registry.url }}
+            {{ end -}}
             - name: STRM_DEFAULT_SERVICE_ACCOUNT
               value: {{ .Values.serviceAccount }}
             - name: STRM_INSTALLATION_TYPE
