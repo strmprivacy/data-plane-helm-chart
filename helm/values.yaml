@@ -122,7 +122,7 @@ components:
     name: batch-exporters-agent
     image:
       name: "management/entity-agents/batch-exporters-agent"
-      version: "v1.22.2"
+      version: "v1.22.3"
     configuration:
       kafkaAuth:
         user:
