@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.20.2...v1.21.0) (2023-01-31)
+
+
+### Features
+
+* **strm-2020:** support for private registries ([2e52b04](https://github.com/strmprivacy/data-plane-helm-chart/commit/2e52b04f005d1c210682e722767455de147d0458))
+
 ## [1.20.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.20.1...v1.20.2) (2022-11-14)
 
 
