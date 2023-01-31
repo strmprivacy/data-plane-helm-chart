@@ -26,6 +26,10 @@
 
 {{ define "installationEnvironmentVariables" }}
             # from template installationEnvironmentVariables
+            {{ if and (eq .Values.license.installationType "SELF_HOSTED") (ne .Values.registry.url "europe-west4-docker.pkg.dev") }}
+            - name: STRM_PRIVATE_REGISTRY_URL
+              value: {{ (trimSuffix "/" .Values.registry.url) }}
+            {{ end -}}
             - name: STRM_DEFAULT_SERVICE_ACCOUNT
               value: {{ .Values.serviceAccount }}
             - name: STRM_INSTALLATION_TYPE
@@ -115,7 +119,11 @@
 
 {{ define "image" -}}
     {{ if eq .values.license.installationType "SELF_HOSTED" }}
+    {{- if ne .values.registry.url "europe-west4-docker.pkg.dev" }}
+    {{- printf "%s/%s:%s" (trimSuffix "/" .values.registry.url) (.component.image.name | replace "/" "_") .component.image.version | quote -}}
+    {{- else }}
     {{- printf "%s/%s/%s/%s:%s" .values.registry.url .values.registry.base.prefix .values.registry.base.path .component.image.name .component.image.version | quote }}
+    {{ end }}
     {{ else if eq .values.license.installationType "AWS_MARKETPLACE" }}
     {{- printf "%s/%s:%s" .values.registry.awsMarketplaceUrl (regexReplaceAll ".+/(.+)$" .component.image.name "${1}") .component.image.version | quote }}
     {{ else if eq .values.license.installationType "AWS_MARKETPLACE_PAYG" }}
