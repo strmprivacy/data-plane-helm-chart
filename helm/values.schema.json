@@ -494,9 +494,7 @@
                 "postgres": {
                   "type": "object",
                   "default": {},
-                  "required": [
-                    "password"
-                  ],
+                  "required": [],
                   "properties": {
                     "host": {
                       "type": [
@@ -520,10 +518,27 @@
                       "default": null
                     },
                     "password": {
-                      "type": "string",
-                      "default": ""
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "default": null
                     },
                     "database": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "default": null
+                    },
+                    "passwordSecretName": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "default": null
+                    },
+                    "passwordSecretKeyName": {
                       "type": [
                         "string",
                         "null"

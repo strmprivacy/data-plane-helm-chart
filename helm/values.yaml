@@ -33,19 +33,27 @@ prometheus:
   enabled: true
 
 kafka:
+  # Note: disable for production usage
   enabled: true
   fullnameOverride: "kafka"
   port: "9092"
 
 redis:
+  # Note: disable for production usage
   enabled: true
   fullnameOverride: "redis-strm"
   global:
     redis:
 
 postgresql:
+  # Note: disable for production usage
   enabled: true
   fullnameOverride: "postgres"
+  auth:
+    # The postgres user's password doesn't get set correctly due to an issue with the bitnami chart, so we create a different user here
+    # See https://github.com/bitnami/charts/issues/14469
+    username: batch-jobs-user
+    password: batch-jobs-pw
 
 services:
   # For routing traffic from outside the cluster
@@ -112,8 +120,12 @@ components:
       postgres:
         host:
         port:
-        user:
-        password: ""
+        user: batch-jobs-user
+        # Alternatively, provide an existing secret containing the postgres password below
+        password:
+        # If no secret exists, a password can be specified above, and a secret will be created for it (leave these empty then)
+        passwordSecretName: postgres
+        passwordSecretKeyName: password
         database:
 
 
