@@ -44,9 +44,9 @@ spec:
             - name: STRM_DATABASE_USERNAME
               value: {{$config.postgres.user | default "postgres" }}
             - name: STRM_DATABASE_CREDENTIALS_PASSWORD_KUBERNETES_SECRET_NAME
-              value: {{ $postgres.fullnameOverride }}
+              value: {{$config.postgres.passwordSecretName | default "postgres" }}
             - name: STRM_DATABASE_CREDENTIALS_PASSWORD_KUBERNETES_SECRET_KEY_NAME
-              value: "{{ $postgres.fullnameOverride }}-password"
+              value: "{{$config.postgres.passwordSecretKeyName | default "postgres-password" }}"
             - name: STRM_DATABASE_CONNECTION_HOST
               value: "{{$postgresHost}}"
 

@@ -33,19 +33,29 @@ prometheus:
   enabled: true
 
 kafka:
+  # Note: disable for production usage
   enabled: true
   fullnameOverride: "kafka"
   port: "9092"
 
 redis:
+  # Note: disable for production usage
   enabled: true
   fullnameOverride: "redis-strm"
   global:
     redis:
 
 postgresql:
+  # Note: disable for production usage
   enabled: true
   fullnameOverride: "postgres"
+  auth:
+    # For dev purposes, using the default 'postgres' user is unpractical, since the password changes after uninstalls /
+    # fresh installs, mismatching with the Persistent Volume Claims (which are not deleted by default upon uninstall).
+    # Therefore we create a different user with static password. (Again, the built-in postgres/redis/kafka are not meant
+    # for production usage!)
+    username: batch-jobs-user
+    password: batch-jobs-pw
 
 services:
   # For routing traffic from outside the cluster
@@ -112,8 +122,12 @@ components:
       postgres:
         host:
         port:
-        user:
-        password: ""
+        user: batch-jobs-user
+        # Alternatively, provide an existing secret containing the postgres password below
+        password:
+        # If no secret exists, a password can be specified above, and a secret will be created for it (leave these empty then)
+        passwordSecretName: postgres
+        passwordSecretKeyName: password
         database:
 
 
