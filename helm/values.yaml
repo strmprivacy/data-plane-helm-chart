@@ -50,8 +50,10 @@ postgresql:
   enabled: true
   fullnameOverride: "postgres"
   auth:
-    # The postgres user's password doesn't get set correctly due to an issue with the bitnami chart, so we create a different user here
-    # See https://github.com/bitnami/charts/issues/14469
+    # For dev purposes, using the default 'postgres' user is unpractical, since the password changes after uninstalls /
+    # fresh installs, mismatching with the Persistent Volume Claims (which are not deleted by default upon uninstall).
+    # Therefore we create a different user with static password. (Again, the built-in postgres/redis/kafka are not meant
+    # for production usage!)
     username: batch-jobs-user
     password: batch-jobs-pw
 
