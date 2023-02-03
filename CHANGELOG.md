@@ -1,3 +1,10 @@
+## [1.21.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.21.0...v1.21.1) (2023-02-03)
+
+
+### Bug Fixes
+
+* **strm-2276:** add missing agent rbac & improve default postgres pw setup ([#29](https://github.com/strmprivacy/data-plane-helm-chart/issues/29)) ([dbca796](https://github.com/strmprivacy/data-plane-helm-chart/commit/dbca796f50a0f06bad7f9bacad196167c20bdcd9))
+
 # [1.21.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.20.2...v1.21.0) (2023-01-31)
 
 
