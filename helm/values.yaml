@@ -116,7 +116,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/batch-jobs-agent"
-      version: "v1.25.2"
+      version: "v1.26.0"
     name: batch-jobs-agent
     configuration:
       postgres:
