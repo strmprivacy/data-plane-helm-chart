@@ -1,3 +1,10 @@
+## [1.21.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.21.1...v1.21.2) (2023-03-31)
+
+
+### Bug Fixes
+
+* ensure servicemonitors are only installed when prometheus and the component are enabled ([960b725](https://github.com/strmprivacy/data-plane-helm-chart/commit/960b725ba81b03c00a154448b9b29b1237b16c26))
+
 ## [1.21.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.21.0...v1.21.1) (2023-02-03)
 
 
