@@ -1,4 +1,4 @@
-
+{{ if and .Values.components.eventGateway.enabled .Values.prometheus.enabled  }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -14,9 +14,7 @@ spec:
   selector:
     matchLabels:
       strmprivacy.io/app: event-gateway
-
 ---
-
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -33,3 +31,4 @@ spec:
   selector:
     matchLabels:
       strmprivacy.io/app: event-gateway
+{{ end }}
