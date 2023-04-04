@@ -155,6 +155,10 @@
         "enabled": {
           "type": "boolean",
           "default": false
+        },
+        "grafana": {
+          "type": "object",
+          "default": {}
         }
       }
     },

@@ -40,6 +40,15 @@ spec:
       containers:
         - name: event-gateway
           image: {{ $image }}
+          resources:
+            {{ if $component.resources }}
+            requests:
+              cpu: {{ $component.resources.gateway.requests.cpu }}
+              memory: {{ $component.resources.gateway.requests.memory }}
+            limits:
+              cpu: {{ $component.resources.gateway.limits.cpu }}
+              memory: {{ $component.resources.gateway.limits.memory }}
+            {{ end }}
           ports:
             - containerPort: {{ $config.appPort }}
               name: http
@@ -97,6 +106,15 @@ spec:
                 command:
                   - /bin/sleep
                   - "20"
+          resources:
+            {{ if $component.resources }}
+            requests:
+              cpu: {{ $component.resources.envoy.requests.cpu }}
+              memory: {{ $component.resources.envoy.requests.memory }}
+            limits:
+              cpu: {{ $component.resources.envoy.limits.cpu }}
+              memory: {{ $component.resources.envoy.limits.memory }}
+            {{ end }}
           ports:
             - containerPort: {{ $config.envoy.port }}
               name: envoy-proxy
