@@ -31,6 +31,10 @@ api:
 
 prometheus:
   enabled: true
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelector: {}
+      serviceMonitorSelectorNilUsesHelmValues: false
   grafana:
     dashboardProviders:
       dashboardproviders.yaml:
@@ -52,11 +56,22 @@ kafka:
   enabled: true
   fullnameOverride: "kafka"
   port: "9092"
+  metrics:
+    kafka:
+      enabled: true
+    jmx:
+      enabled: true
+    serviceMonitor:
+      enabled: true
 
 redis:
   # Note: disable for production usage
   enabled: true
   fullnameOverride: "redis-strm"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
   global:
     redis:
 
