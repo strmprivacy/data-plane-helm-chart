@@ -4435,6 +4435,117 @@
           "yaxis": {
             "align": false
           }
+        },
+        {
+          "id": 137,
+          "gridPos": {
+            "x": 0,
+            "y": 69,
+            "w": 12,
+            "h": 8
+          },
+          "type": "timeseries",
+          "title": "CPU Throttling",
+          "datasource": {
+            "uid": "prometheus",
+            "type": "prometheus"
+          },
+          "description": "CPU throttling of the Event Gateway pods.",
+          "targets": [
+            {
+              "refId": "A",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(increase(container_cpu_cfs_throttled_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", pod=~\"event-gateway-.*\", container!=\"\"}[$__rate_interval])) by (pod, container) /sum(increase(container_cpu_cfs_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", pod=~\"event-gateway-.*\", container!=\"\"}[$__rate_interval])) by (pod, container)",
+              "editorMode": "code",
+              "range": true,
+              "legendFormat": "{{pod}} {{container}}"
+            }
+          ],
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            },
+            "legend": {
+              "displayMode": "table",
+              "placement": "bottom",
+              "calcs": [
+                "last"
+              ]
+            }
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "drawStyle": "line",
+                "lineInterpolation": "linear",
+                "barAlignment": 0,
+                "lineWidth": 1,
+                "fillOpacity": 50,
+                "gradientMode": "none",
+                "spanNulls": false,
+                "showPoints": "never",
+                "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
+                },
+                "thresholdsStyle": {
+                  "mode": "line"
+                }
+              },
+              "color": {
+                "mode": "palette-classic"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "value": 0.25,
+                    "color": "dark-red"
+                  }
+                ]
+              },
+              "unit": "percentunit",
+              "max": 1,
+              "min": 0
+            },
+            "overrides": []
+          },
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "( event-gateway-envoy)",
+                "renamePattern": " (envoy)"
+              }
+            },
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "( event-gateway)",
+                "renamePattern": ""
+              }
+            }
+          ]
         }
       ],
       "targets": [
