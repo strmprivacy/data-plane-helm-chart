@@ -664,29 +664,21 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": {
-        "uid": "Prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "links": []
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
+      "id": 55,
       "gridPos": {
         "h": 8,
         "w": 8,
         "x": 0,
         "y": 17
       },
-      "hiddenSeries": false,
-      "id": 55,
+      "type": "graph",
+      "title": "Cache Size",
+      "datasource": {
+        "uid": "prometheus",
+        "type": "prometheus"
+      },
+      "thresholds": [],
+      "pluginVersion": "8.5.0",
       "legend": {
         "avg": false,
         "current": false,
@@ -696,45 +688,50 @@
         "total": false,
         "values": false
       },
+      "aliasColors": {},
+      "dashLength": 10,
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
-      "percentage": false,
-      "pluginVersion": "8.5.0",
       "pointradius": 2,
-      "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": {
             "uid": "Prometheus"
           },
-          "expr": "sum(strm_expiringmap) by (name,what)",
+          "expr": "sum by (cache) (caffeine_cache_estimated_size)",
           "interval": "",
-          "legendFormat": "{{name}} {{what}}",
-          "refId": "A"
+          "legendFormat": "{{cache}}",
+          "refId": "A",
+          "editorMode": "code",
+          "range": true
         }
       ],
-      "thresholds": [],
       "timeRegions": [],
-      "title": "Expiring Map size",
       "tooltip": {
         "shared": true,
         "sort": 0,
         "value_type": "individual"
       },
-      "type": "graph",
       "xaxis": {
         "mode": "time",
         "show": true,
-        "values": []
+        "values": [],
+        "name": null,
+        "buckets": null
       },
       "yaxes": [
         {
@@ -752,45 +749,64 @@
       ],
       "yaxis": {
         "align": false
-      }
+      },
+      "bars": false,
+      "dashes": false,
+      "fillGradient": 0,
+      "hiddenSeries": false,
+      "percentage": false,
+      "points": false,
+      "stack": false,
+      "steppedLine": false,
+      "timeFrom": null,
+      "timeShift": null
     },
     {
+      "id": 127,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 17
+      },
+      "type": "timeseries",
+      "title": "Cache Hit/Miss Rates",
       "datasource": {
-        "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "prometheus",
+        "type": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
             "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "barAlignment": 0,
+            "lineWidth": 1,
             "fillOpacity": 0,
             "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "spanNulls": false,
+            "showPoints": "auto",
             "pointSize": 5,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
             },
             "thresholdsStyle": {
               "mode": "off"
             }
+          },
+          "color": {
+            "mode": "palette-classic"
           },
           "mappings": [],
           "thresholds": {
@@ -806,27 +822,20 @@
               }
             ]
           },
-          "unit": "wps"
+          "unit": "reqps"
         },
         "overrides": []
       },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 17
-      },
-      "id": 127,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
         "tooltip": {
           "mode": "single",
           "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
         }
       },
       "targets": [
@@ -836,14 +845,26 @@
             "uid": "Prometheus"
           },
           "exemplar": true,
-          "expr": "sum(delta(strm_expiringmap{name!=\"brokenTopics\"}[$interval])) by (name, what)",
+          "expr": "sum by (cache) (rate(caffeine_cache_hit_total[$interval]))",
           "interval": "",
-          "legendFormat": "{{name}} {{what}}",
-          "refId": "A"
+          "legendFormat": "{{cache}} - hit",
+          "refId": "A",
+          "editorMode": "code",
+          "range": true
+        },
+        {
+          "datasource": {
+            "uid": "prometheus",
+            "type": "prometheus"
+          },
+          "refId": "B",
+          "hide": false,
+          "expr": "sum by (cache) (rate(caffeine_cache_miss_total[$interval]))",
+          "editorMode": "code",
+          "range": true,
+          "legendFormat": "{{cache}} - miss"
         }
-      ],
-      "title": "Expiring Map rates",
-      "type": "timeseries"
+      ]
     },
     {
       "datasource": {
