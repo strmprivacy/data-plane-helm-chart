@@ -61,6 +61,7 @@ kafka:
       enabled: true
     jmx:
       enabled: true
+      existingConfigmap: "kafka-jmx-configuration"
     serviceMonitor:
       enabled: true
 
