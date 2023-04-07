@@ -3720,9 +3720,9 @@
                 "uid": "Prometheus"
               },
               "exemplar": true,
-              "expr": "avg by (pod,container) (rate(container_cpu_usage_seconds_total{pod=~\"event-gateway.*\",container!=\"\"}[$interval]))",
+              "expr": "avg by (pod,container) (rate(container_cpu_usage_seconds_total{pod=~\"event-gateway.*\",container=\"event-gateway\"}[$interval]))",
               "interval": "",
-              "legendFormat": "{{pod}} - {{container}}",
+              "legendFormat": "{{pod}}",
               "refId": "A"
             }
           ],
