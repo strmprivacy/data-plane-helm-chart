@@ -41,7 +41,7 @@ spec:
         - name: event-gateway
           image: {{ $image }}
           resources:
-            {{ if $component.resources }}
+            {{ if $component.resources.gateway }}
             requests:
               cpu: {{ $component.resources.gateway.requests.cpu }}
               memory: {{ $component.resources.gateway.requests.memory }}
@@ -107,7 +107,7 @@ spec:
                   - /bin/sleep
                   - "20"
           resources:
-            {{ if $component.resources }}
+            {{ if $component.resources.envoy }}
             requests:
               cpu: {{ $component.resources.envoy.requests.cpu }}
               memory: {{ $component.resources.envoy.requests.memory }}
