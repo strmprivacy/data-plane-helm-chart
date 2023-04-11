@@ -77,7 +77,7 @@ components:
     enabled: true
     image:
       name: "events/event-gateway"
-      version: "v0.75.0"
+      version: "v0.76.0"
     replicas: 1
     configuration:
       kafkaAuth:
