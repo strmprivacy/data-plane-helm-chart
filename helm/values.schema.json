@@ -155,6 +155,10 @@
         "enabled": {
           "type": "boolean",
           "default": false
+        },
+        "grafana": {
+          "type": "object",
+          "default": {}
         }
       }
     },
@@ -303,6 +307,59 @@
             "configuration"
           ],
           "properties": {
+            "resources": {
+              "type": "object",
+              "default": {
+                "gateway": {},
+                "envoy": {}
+              },
+              "properties": {
+                "gateway": {
+                  "type": ["object", "null"],
+                  "required": ["requests", "limits"],
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "required": ["cpu", "memory"],
+                      "properties": {
+                        "cpu": {"type": "string"},
+                        "memory": {"type": "string"}
+                      }
+                    },
+                    "limits": {
+                      "type": "object",
+                      "required": ["cpu", "memory"],
+                      "properties": {
+                        "cpu": {"type": "string"},
+                        "memory": {"type": "string"}
+                      }
+                    }
+                  }
+                },
+                "envoy": {
+                  "type": ["object", "null"],
+                  "required": ["requests", "limits"],
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "required": ["cpu", "memory"],
+                      "properties": {
+                        "cpu": {"type": "string"},
+                        "memory": {"type": "string"}
+                      }
+                    },
+                    "limits": {
+                      "type": "object",
+                      "required": ["cpu", "memory"],
+                      "properties": {
+                        "cpu": {"type": "string"},
+                        "memory": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "enabled": {
               "type": "boolean",
               "default": false

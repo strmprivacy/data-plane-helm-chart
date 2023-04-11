@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: {{ .Release.Namespace }}
+  labels:
+    grafana_dashboard: "1"
+data:
+  event-gateway.json: |
+{{ .Files.Get "resources/event-gateway/event-gateway-dashboard.json" | indent 4 }}

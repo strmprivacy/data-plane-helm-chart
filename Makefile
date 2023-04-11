@@ -29,8 +29,8 @@ upgrade:
 template:
 	helm template --debug helm --values values.yaml --set namespace=${namespace}
 
-template-external-service:
-	helm template --debug helm -s templates/event-gateway/service-external.yaml --values values.yaml --set namespace=${namespace}
+template-dashboard:
+	helm template helm -s templates/event-gateway/dashboards.yaml --values values.yaml --set namespace=${namespace}
 
 template-event-gateway-deployment:
 	helm template --debug helm -s templates/event-gateway/deployment.yaml --values values.yaml --set namespace=${namespace}
