@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.21.2...v1.22.0) (2023-04-11)
+
+
+### Features
+
+* **strm-2343:** allow configuration of resources; add default metrics and dashboards ([6747d28](https://github.com/strmprivacy/data-plane-helm-chart/commit/6747d28cd8185defa46a555967152d75cc3f85d8))
+
 ## [1.21.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.21.1...v1.21.2) (2023-03-31)
 
 
