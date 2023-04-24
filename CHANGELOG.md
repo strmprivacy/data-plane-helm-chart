@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.22.0...v1.22.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* update version for batch-jobs-agent ([962d70e](https://github.com/strmprivacy/data-plane-helm-chart/commit/962d70ec0a36d2c0fa0988891871bbc0c5b7714c))
+
 # [1.22.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.21.2...v1.22.0) (2023-04-11)
 
 
