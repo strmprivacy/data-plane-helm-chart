@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.22.1...v1.23.0) (2023-05-30)
+
+
+### Features
+
+* update various dependencies of data plane applications ([74732fb](https://github.com/strmprivacy/data-plane-helm-chart/commit/74732fb5c06cbd2f95e724ec51f5998da6192736))
+
 ## [1.22.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.22.0...v1.22.1) (2023-04-24)
 
 
