@@ -1,3 +1,10 @@
+## [1.23.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.23.0...v1.23.1) (2023-05-30)
+
+
+### Bug Fixes
+
+* helm gcs plugin on master is broken, use fixed version ([5cb0e64](https://github.com/strmprivacy/data-plane-helm-chart/commit/5cb0e649d31bc6886e6ef0a962b0eaae9aeb7be7))
+
 # [1.23.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.22.1...v1.23.0) (2023-05-30)
 
 
