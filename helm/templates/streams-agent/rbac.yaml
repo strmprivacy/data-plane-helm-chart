@@ -31,6 +31,7 @@ rules:
       - patch
       - get
       - delete
+      - watch
   - apiGroups:
       - ""
       - apps
@@ -41,6 +42,7 @@ rules:
     verbs:
       - list
       - get
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
