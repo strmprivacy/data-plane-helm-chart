@@ -1,3 +1,10 @@
+## [1.23.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.23.1...v1.23.2) (2023-06-06)
+
+
+### Bug Fixes
+
+* **strm-2450:** add watch verb to all roles ([#31](https://github.com/strmprivacy/data-plane-helm-chart/issues/31)) ([8735bd6](https://github.com/strmprivacy/data-plane-helm-chart/commit/8735bd62a07c8d84aace1cb610669319c1f7cab1))
+
 ## [1.23.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.23.0...v1.23.1) (2023-05-30)
 
 
