@@ -195,7 +195,7 @@ components:
     name: data-connectors-agent
     image:
       name: "management/entity-agents/data-connectors-agent"
-      version: "v1.9.0"
+      version: "v1.9.2"
     configuration:
 
   confluentSchemaProxy:
