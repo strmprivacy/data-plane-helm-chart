@@ -1,3 +1,10 @@
+# [1.24.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.23.2...v1.24.0) (2023-06-09)
+
+
+### Features
+
+* various agent dependency upgrades ([663e86d](https://github.com/strmprivacy/data-plane-helm-chart/commit/663e86d214377c5bf137f2e83fcfcba6c8be4986))
+
 ## [1.23.2](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.23.1...v1.23.2) (2023-06-06)
 
 
