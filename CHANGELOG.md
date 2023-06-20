@@ -1,3 +1,10 @@
+# [1.25.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.24.0...v1.25.0) (2023-06-20)
+
+
+### Features
+
+* **release:** fixed batch-job-runner for micro-aggregations ([18283b6](https://github.com/strmprivacy/data-plane-helm-chart/commit/18283b64d13a52b7f0ed96b113b95b12723684fe))
+
 # [1.24.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.23.2...v1.24.0) (2023-06-09)
 
 
