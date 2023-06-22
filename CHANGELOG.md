@@ -1,3 +1,10 @@
+## [1.25.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.25.0...v1.25.1) (2023-06-22)
+
+
+### Bug Fixes
+
+* **release:** running batch jobs were redeployed when the image version changed ([f20cacf](https://github.com/strmprivacy/data-plane-helm-chart/commit/f20cacfeabbc03ce3f2b3737dce75bf30ac7712a))
+
 # [1.25.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.24.0...v1.25.0) (2023-06-20)
 
 
