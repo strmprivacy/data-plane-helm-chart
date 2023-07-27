@@ -181,7 +181,7 @@ components:
     enabled: true
     image:
       name: "management/entity-agents/streams-agent"
-      version: "v1.28.2"
+      version: "v1.29.0"
     configuration:
       kafkaAuth:
         user:
