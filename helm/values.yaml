@@ -133,7 +133,7 @@ components:
     enabled: true
     image:
       name: "events/web-socket"
-      version: "v1.25.0"
+      version: "v1.26.0"
     name: web-socket
     replicas: 1
     configuration:
