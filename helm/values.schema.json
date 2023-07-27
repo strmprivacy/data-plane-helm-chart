@@ -167,7 +167,8 @@
       "default": {},
       "required": [
         "enabled",
-        "fullnameOverride"
+        "fullnameOverride",
+        "serializeAsJson"
       ],
       "properties": {
         "enabled": {
@@ -177,6 +178,10 @@
         "fullnameOverride": {
           "type": "string",
           "default": ""
+        },
+        "serializeAsJson": {
+          "type": "boolean",
+          "default": false
         }
       }
     },

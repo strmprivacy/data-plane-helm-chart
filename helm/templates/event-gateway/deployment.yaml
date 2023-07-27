@@ -70,6 +70,7 @@ spec:
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
             {{ end }}
+            {{ include "serializeAsJsonEnvironmentVariable" .}}
           {{ if .Values.enableLivenessChecks }}
           livenessProbe:
             httpGet:

@@ -72,6 +72,11 @@
               value: "strmprivacy-docker-registry"
 {{ end }}
 
+{{ define "serializeAsJsonEnvironmentVariable" }}
+            - name: STRM_SERIALIZE_AS_JSON
+              value: "{{ .Values.kafka.serializeAsJson }}"
+{{ end }}
+
 {{ define "kafkaAuthData" }}
   # from template kafkaAuthData
   "kafka.user": {{ .user | default "" | b64enc | quote }}
