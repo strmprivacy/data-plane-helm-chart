@@ -1,3 +1,10 @@
+# [1.26.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.25.1...v1.26.0) (2023-07-27)
+
+
+### Features
+
+* **strm-2568:** add kafka property to enable Avro JSON serialization ([#34](https://github.com/strmprivacy/data-plane-helm-chart/issues/34)) ([a958091](https://github.com/strmprivacy/data-plane-helm-chart/commit/a958091a81f3de420a39108cab803894bd982137))
+
 ## [1.25.1](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.25.0...v1.25.1) (2023-06-22)
 
 
