@@ -33,7 +33,6 @@ spec:
           image: {{$image}}
           env:
             {{ include "kafkaSecurityEnvironmentVars" .}}
-            {{- include "kafkaCredentialsEnvironmentVars" $data -}}
             {{ include "installationEnvironmentVariables" .}}
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}

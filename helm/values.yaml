@@ -115,9 +115,6 @@ components:
       gateway:
       envoy:
     configuration:
-      kafkaAuth:
-        user:
-        password:
       redisHost:
       redisUser:
       redisPassword:
@@ -137,9 +134,6 @@ components:
     name: web-socket
     replicas: 1
     configuration:
-      kafkaAuth:
-        user:
-        password:
       # Application port, traffic goes via Envoy to the application
       appPort: "8081"
       envoy:
@@ -159,7 +153,7 @@ components:
         port:
         user: batch-jobs-user
         # Alternatively, provide an existing secret containing the postgres password below
-        password:
+        password: null
         # If no secret exists, a password can be specified above, and a secret will be created for it (leave these empty then)
         passwordSecretName: postgres
         passwordSecretKeyName: password
@@ -172,10 +166,6 @@ components:
     image:
       name: "management/entity-agents/batch-exporters-agent"
       version: "v1.28.0"
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
   streamsAgent:
     name: streams-agent
@@ -184,9 +174,6 @@ components:
       name: "management/entity-agents/streams-agent"
       version: "v1.31.0"
     configuration:
-      kafkaAuth:
-        user:
-        password:
       redisSecret:
         name:
         key:
@@ -213,30 +200,19 @@ components:
     image:
       name: "management/esr-proxy"
       version: "v1.7.0"
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
   decrypterConfig:
     name: decrypter-config
     enabled: true
     redisHost:
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
   batchExporterConfig:
     name: batch-exporter-config
     enabled: true
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
-kafkaSecurityConfig:
+# This configuration will be used for all components interacting with Kafka.
+globalKafkaSecurityConfig:
   enabled: false
   securityProtocol: "PLAINTEXT"
-  # on local file system
-  sslTruststoreSecretName: "client-truststore-jks"
+  sslTruststoreSecretName: null
+  saslJaasConfig: null
