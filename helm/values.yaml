@@ -109,7 +109,7 @@ components:
     enabled: true
     image:
       name: "events/event-gateway"
-      version: "v0.78.0"
+      version: "v0.79.0"
     replicas: 1
     resources:
       gateway:
