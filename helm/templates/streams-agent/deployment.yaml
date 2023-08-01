@@ -46,6 +46,7 @@ spec:
             - name: STRM_REDIS_SECRET_KEY
               value: {{ $redisSecretKey }}
             {{ include "serializeAsJsonEnvironmentVariable" .}}
+            {{ include "kafkaTopicConfig" .}}
           volumeMounts:
           {{- template "clientTruststoreVolumeMount" . }}
       volumes:

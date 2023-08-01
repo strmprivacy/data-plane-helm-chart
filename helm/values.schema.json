@@ -154,7 +154,8 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in Prometheus server. Also includes Grafana."
         },
         "grafana": {
           "type": "object",
@@ -173,7 +174,8 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in Kafka cluster. If false, you must provide your own Kafka cluster configuration."
         },
         "fullnameOverride": {
           "type": "string",
@@ -197,7 +199,8 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in Redis cluster. If false, you must provide your own Redis cluster configuration."
         },
         "fullnameOverride": {
           "type": "string",
@@ -229,7 +232,8 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in PostgreSQL database. If false, you must provide your own PostgreSQL database configuration."
         },
         "fullnameOverride": {
           "type": "string",

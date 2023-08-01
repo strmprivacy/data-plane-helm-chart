@@ -126,3 +126,15 @@
 {{- $kafka.bootstrapServers |
           default (printf "%s.%s:%s" $kafka.fullnameOverride .Release.Namespace $kafka.port) }}
 {{end}}
+
+{{ define "kafkaTopicConfig" }}
+{{ $kafka := .Values.kafka}}
+{{ if $kafka.defaultReplicationFactor }}
+            - name: STRM_KAFKA_TOPIC_REPLICATION_FACTOR
+              value: "{{ $kafka.defaultReplicationFactor }}"
+{{ end }}
+{{ if $kafka.numPartitions }}
+            - name: STRM_KAFKA_TOPIC_NUM_PARTITIONS
+              value: "{{ $kafka.numPartitions }}"
+{{ end }}
+{{ end }}
