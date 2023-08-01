@@ -11,6 +11,8 @@
             - name: STRM_KAFKASEC_PROTOCOL
               value: {{ .Values.globalKafkaSecurityConfig.securityProtocol }}
             {{ if .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
+            - name: STRM_KAFKASEC_TRUSTSTORE_SECRET_NAME
+              value: {{ .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
             - name: STRM_KAFKASEC_TRUSTSTORE
               value: /var/truststore/client.truststore.jks
             - name: STRM_KAFKASEC_TRUSTSTORE_PW
