@@ -82,9 +82,9 @@
               value: "strmprivacy-docker-registry"
 {{ end }}
 
-{{ define "serializeAsJsonEnvironmentVariable" }}
+{{ define "serializeAvroAsJsonEnvironmentVariable" }}
             - name: STRM_SERIALIZE_AS_JSON
-              value: "{{ .Values.kafka.serializeAsJson }}"
+              value: "{{ .Values.kafka.serializeAvroAsJson }}"
 {{ end }}
 
 {{ define "clientTruststoreVolume" }}

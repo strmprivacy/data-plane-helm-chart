@@ -65,7 +65,7 @@ kafka:
   fullnameOverride: "kafka"
   port: "9092"
   # Set to true when running on your own kafka cluster.
-  serializeAsJson: false
+  serializeAvroAsJson: false
   metrics:
     kafka:
       enabled: true
@@ -76,7 +76,7 @@ kafka:
       enabled: *prometheusEnabled
   # Example of a custom kafka cluster:
   # bootstrapServers: "my-kafka:9092"
-  # serializeAsJson: true
+  # serializeAvroAsJson: true
   # numPartitions: 6
   # replicationFactor: 3 # Note: the default replication is 1. Production use cases and Confluent Cloud probably require at least 3.
 

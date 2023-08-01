@@ -169,7 +169,7 @@
       "required": [
         "enabled",
         "fullnameOverride",
-        "serializeAsJson"
+        "serializeAvroAsJson"
       ],
       "properties": {
         "enabled": {
@@ -181,7 +181,7 @@
           "type": "string",
           "default": ""
         },
-        "serializeAsJson": {
+        "serializeAvroAsJson": {
           "type": "boolean",
           "default": false,
           "description": "If true, all Kafka producers will serialize messages as Avro JSON. If false, they will serialize messages as Avro Binary."
