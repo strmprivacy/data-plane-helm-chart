@@ -59,6 +59,8 @@ spec:
               value: "{{ $config.appPort }}"
             - name: STRM_BOOTSTRAP_SERVERS
               value: {{ $bootstrap }}
+            - name: STRM_AVRO_PRODUCER_ACKS
+              value: "1"
             - name: STRM_REDIS_HOST
               value: {{ $redis }}
             - name: STRM_REDIS_PASSWORD
@@ -70,7 +72,7 @@ spec:
             {{ if eq .Values.license.installationType "SELF_HOSTED" }}
             {{ include "selfHostedEnvironmentVariables" .}}
             {{ end }}
-            {{ include "serializeAsJsonEnvironmentVariable" .}}
+            {{ include "serializeAvroAsJsonEnvironmentVariable" .}}
           {{ if .Values.enableLivenessChecks }}
           livenessProbe:
             httpGet:
@@ -94,9 +96,6 @@ spec:
             timeoutSeconds: 1
           {{ end }}
           volumeMounts:
-            - mountPath: /home/nonroot/application.conf
-              name: application-conf
-              subPath: application.conf
           {{- template "clientTruststoreVolumeMount" . }}
 
         - name: event-gateway-envoy
@@ -143,8 +142,5 @@ spec:
           configMap:
             name: event-gateway-envoy-config
             optional: false
-        - name: application-conf
-          secret:
-            secretName: event-gateway
         {{- template "clientTruststoreVolume" . }}
 {{ end }}

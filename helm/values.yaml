@@ -35,6 +35,13 @@ prometheus:
     prometheusSpec:
       serviceMonitorSelector: {}
       serviceMonitorSelectorNilUsesHelmValues: false
+  prometheusOperator:
+    admissionWebhooks:
+      enabled: false
+      patch:
+        enabled: false
+    tls:
+      enabled: false
   grafana:
     dashboardProviders:
       dashboardproviders.yaml:
@@ -52,11 +59,13 @@ prometheus:
       default: "grafana-dashboards"
 
 kafka:
-  # Note: disable for production usage
+  # Whether to enable the built-in kafka cluster. Note: disable for production usage.
+  # When disabled, specify your cluster details, as in the example below.
   enabled: true
   fullnameOverride: "kafka"
   port: "9092"
-  serializeAsJson: false
+  # Set to true when running on your own kafka cluster.
+  serializeAvroAsJson: false
   metrics:
     kafka:
       enabled: true
@@ -65,6 +74,11 @@ kafka:
       existingConfigmap: "kafka-jmx-configuration"
     serviceMonitor:
       enabled: *prometheusEnabled
+  # Example of a custom kafka cluster:
+  # bootstrapServers: "my-kafka:9092"
+  # serializeAvroAsJson: true
+  # numPartitions: 6
+  # replicationFactor: 3 # Note: the default replication is 1. Production use cases and Confluent Cloud probably require at least 3.
 
 redis:
   # Note: disable for production usage
@@ -115,9 +129,6 @@ components:
       gateway:
       envoy:
     configuration:
-      kafkaAuth:
-        user:
-        password:
       redisHost:
       redisUser:
       redisPassword:
@@ -137,9 +148,6 @@ components:
     name: web-socket
     replicas: 1
     configuration:
-      kafkaAuth:
-        user:
-        password:
       # Application port, traffic goes via Envoy to the application
       appPort: "8081"
       envoy:
@@ -159,7 +167,7 @@ components:
         port:
         user: batch-jobs-user
         # Alternatively, provide an existing secret containing the postgres password below
-        password:
+        password: null
         # If no secret exists, a password can be specified above, and a secret will be created for it (leave these empty then)
         passwordSecretName: postgres
         passwordSecretKeyName: password
@@ -172,10 +180,6 @@ components:
     image:
       name: "management/entity-agents/batch-exporters-agent"
       version: "v1.28.0"
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
   streamsAgent:
     name: streams-agent
@@ -184,9 +188,6 @@ components:
       name: "management/entity-agents/streams-agent"
       version: "v1.33.1"
     configuration:
-      kafkaAuth:
-        user:
-        password:
       redisSecret:
         name:
         key:
@@ -213,30 +214,19 @@ components:
     image:
       name: "management/esr-proxy"
       version: "v1.7.0"
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
   decrypterConfig:
     name: decrypter-config
     enabled: true
     redisHost:
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
   batchExporterConfig:
     name: batch-exporter-config
     enabled: true
-    configuration:
-      kafkaAuth:
-        user:
-        password:
 
-kafkaSecurityConfig:
+# This configuration will be used for all components interacting with Kafka.
+globalKafkaSecurityConfig:
   enabled: false
   securityProtocol: "PLAINTEXT"
-  # on local file system
-  sslTruststoreSecretName: "client-truststore-jks"
+  sslTruststoreSecretName: null
+  saslJaasConfig: null

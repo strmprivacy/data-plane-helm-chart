@@ -6,22 +6,32 @@
     {{ end }}
 {{- end }}
 
-{{- define "bootstrapServers" }}
-    {{- printf "%s.%s:%d" .Values.kafka.fullnameOverride .Release.Namespace (.Values.kafka.service.ports.client | int) }}'
-{{- end }}
-
 {{ define "kafkaSecurityEnvironmentVars" }}
-            {{ if .Values.kafkaSecurityConfig.enabled }}
+        {{ if .Values.globalKafkaSecurityConfig.enabled }}
             - name: STRM_KAFKASEC_PROTOCOL
-              value: {{ .Values.kafkaSecurityConfig.securityProtocol }}
+              value: {{ .Values.globalKafkaSecurityConfig.securityProtocol }}
+            {{ if .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
+            - name: STRM_KAFKASEC_TRUSTSTORE_SECRET_NAME
+              value: {{ .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
             - name: STRM_KAFKASEC_TRUSTSTORE
               value: /var/truststore/client.truststore.jks
             - name: STRM_KAFKASEC_TRUSTSTORE_PW
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+                  name: {{ .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
                   key: truststore.password
             {{ end }}
+            {{ if .Values.globalKafkaSecurityConfig.saslJaasConfig }}
+            - name: STRM_KAFKASEC_SASL_JAAS_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-security-config
+                  key: sasl.jaas.config
+                  optional: false
+            - name: STRM_KAFKASEC_SECRET_NAME
+              value: kafka-security-config
+            {{ end }}
+        {{ end }}
 {{ end }}
 
 {{ define "installationEnvironmentVariables" }}
@@ -72,48 +82,23 @@
               value: "strmprivacy-docker-registry"
 {{ end }}
 
-{{ define "serializeAsJsonEnvironmentVariable" }}
+{{ define "serializeAvroAsJsonEnvironmentVariable" }}
             - name: STRM_SERIALIZE_AS_JSON
-              value: "{{ .Values.kafka.serializeAsJson }}"
+              value: "{{ .Values.kafka.serializeAvroAsJson }}"
 {{ end }}
-
-{{ define "kafkaAuthData" }}
-  # from template kafkaAuthData
-  "kafka.user": {{ .user | default "" | b64enc | quote }}
-  "kafka.password": {{ .password | default "" | b64enc | quote }}
-{{ end }}
-
-{{ define "kafkaCredentialsEnvironmentVars" }}
-
-            # from template kafkaCredentialsEnvironmentVars
-            {{ if .component.configuration.kafkaAuth.password }}
-
-            - name: STRM_KAFKASEC_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .component.name }}
-                  key: kafka.user
-            - name: STRM_KAFKASEC_PW
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .component.name }}
-                  key: kafka.password
-            {{ end }}
-{{ end }}
-
 
 {{ define "clientTruststoreVolume" }}
-        {{ if .Values.kafkaSecurityConfig.enabled }}
+        {{ if and .Values.globalKafkaSecurityConfig.enabled .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
         # from template client-truststore-volume
         - name: client-truststore
           secret:
-            secretName: {{ .Values.kafkaSecurityConfig.sslTruststoreSecretName }}
+            secretName: {{ .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
             optional: false
         {{ end }}
 {{ end }}
 
 {{ define "clientTruststoreVolumeMount" }}
-        {{ if .Values.kafkaSecurityConfig.enabled }}
+        {{ if and .Values.globalKafkaSecurityConfig.enabled .Values.globalKafkaSecurityConfig.sslTruststoreSecretName }}
             # from template client-truststore-volume-mount
             - mountPath: /var/truststore
               name: client-truststore
@@ -141,3 +126,15 @@
 {{- $kafka.bootstrapServers |
           default (printf "%s.%s:%s" $kafka.fullnameOverride .Release.Namespace $kafka.port) }}
 {{end}}
+
+{{ define "kafkaTopicConfig" }}
+{{ $kafka := .Values.kafka}}
+{{ if $kafka.defaultReplicationFactor }}
+            - name: STRM_KAFKA_TOPIC_REPLICATION_FACTOR
+              value: "{{ $kafka.defaultReplicationFactor }}"
+{{ end }}
+{{ if $kafka.numPartitions }}
+            - name: STRM_KAFKA_TOPIC_NUM_PARTITIONS
+              value: "{{ $kafka.numPartitions }}"
+{{ end }}
+{{ end }}

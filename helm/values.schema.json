@@ -154,7 +154,8 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in Prometheus server. Also includes Grafana."
         },
         "grafana": {
           "type": "object",
@@ -168,20 +169,22 @@
       "required": [
         "enabled",
         "fullnameOverride",
-        "serializeAsJson"
+        "serializeAvroAsJson"
       ],
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in Kafka cluster. If false, you must provide your own Kafka cluster configuration."
         },
         "fullnameOverride": {
           "type": "string",
           "default": ""
         },
-        "serializeAsJson": {
+        "serializeAvroAsJson": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "If true, all Kafka producers will serialize messages as Avro JSON. If false, they will serialize messages as Avro Binary."
         }
       }
     },
@@ -196,7 +199,8 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in Redis cluster. If false, you must provide your own Redis cluster configuration."
         },
         "fullnameOverride": {
           "type": "string",
@@ -228,7 +232,8 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "Enable the built-in PostgreSQL database. If false, you must provide your own PostgreSQL database configuration."
         },
         "fullnameOverride": {
           "type": "string",
@@ -384,13 +389,6 @@
                 "envoy"
               ],
               "properties": {
-                "kafkaBootstrapServers": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "default": null
-                },
                 "redisHost": {
                   "type": [
                     "string",
@@ -440,9 +438,6 @@
                       "default": null
                     }
                   }
-                },
-                "kafkaAuth": {
-                  "$ref": "#/$defs/kafkaAuth"
                 }
               }
             }
@@ -484,13 +479,6 @@
               "properties": {
                 "image": {
                   "$ref": "#/$defs/image"
-                },
-                "kafkaBootstrapServers": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "default": null
                 },
                 "appPort": {
                   "type": "string",
@@ -619,8 +607,7 @@
           "required": [
             "enabled",
             "name",
-            "image",
-            "configuration"
+            "image"
           ],
           "properties": {
             "enabled": {
@@ -633,23 +620,6 @@
             },
             "image": {
               "$ref": "#/$defs/image"
-            },
-            "configuration": {
-              "type": "object",
-              "default": {},
-              "required": [],
-              "properties": {
-                "kafkaBootstrapServers": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "default": null
-                },
-                "kafkaAuth": {
-                  "$ref": "#/$defs/kafkaAuth"
-                }
-              }
             }
           }
         },
@@ -676,9 +646,6 @@
                 "redisSecret"
               ],
               "properties": {
-                "kafkaAuth": {
-                  "$ref": "#/$defs/kafkaAuth"
-                },
                 "redisSecret": {
                   "type": "object",
                   "default": {},
@@ -768,8 +735,7 @@
           "required": [
             "enabled",
             "name",
-            "image",
-            "configuration"
+            "image"
           ],
           "properties": {
             "enabled": {
@@ -786,19 +752,7 @@
             "configuration": {
               "type": "object",
               "default": {},
-              "required": [],
-              "properties": {
-                "kafkaAuth": {
-                  "$ref": "#/$defs/kafkaAuth"
-                },
-                "kafkaBootstrapServers": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "default": null
-                }
-              }
+              "required": []
             }
           }
         },
@@ -813,29 +767,12 @@
               "type": "boolean",
               "default": false
             },
-            "kafkaBootstrapServers": {
-              "type": [
-                "string",
-                "null"
-              ],
-              "default": null
-            },
             "redisHost": {
               "type": [
                 "string",
                 "null"
               ],
               "default": null
-            },
-            "configuration": {
-              "type": "object",
-              "default": {},
-              "required": [],
-              "properties": {
-                "kafkaAuth": {
-                  "$ref": "#/$defs/kafkaAuth"
-                }
-              }
             }
           }
         },
@@ -849,24 +786,18 @@
             "enabled": {
               "type": "boolean",
               "default": false
-            },
-            "configuration": {
-              "type": "object",
-              "default": {},
-              "required": [],
-              "properties": {
-                "kafkaAuth": {
-                  "$ref": "#/$defs/kafkaAuth"
-                }
-              }
             }
           }
         }
       }
     },
-    "kafkaSecurityConfig": {
+    "globalKafkaSecurityConfig": {
       "type": "object",
       "additionalProperties": false,
+      "required" : [
+        "enabled",
+        "securityProtocol"
+      ],
       "properties": {
         "enabled": {
           "type": "boolean"
@@ -876,38 +807,27 @@
           "enum": [
             "PLAINTEXT",
             "SASL_SSL"
-          ]
+          ],
+          "description": "We currently support PLAINTEXT and SASL_SSL/PLAIN"
         },
         "sslTruststoreSecretName": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "default": null
+        },
+        "saslJaasConfig": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
         }
       }
     }
   },
   "$defs": {
-    "kafkaAuth": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "user": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "minLength": 4
-        },
-        "password": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "minLength": 4
-        }
-      }
-    },
     "image": {
       "type": "object",
       "default": {},
