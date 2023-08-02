@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.26.0...v2.0.0) (2023-08-02)
+
+
+### Features
+
+* **strm-2570:** simplify kafka security configuration and support saslJaasConfig ([#35](https://github.com/strmprivacy/data-plane-helm-chart/issues/35)) ([8476941](https://github.com/strmprivacy/data-plane-helm-chart/commit/8476941f1459ccfb1d6441b577ec5a71bc0884c8))
+
+
+### BREAKING CHANGES
+
+* **strm-2570:** The component-level kafkaAuth configurations have been removed in favour of a global kafka security config.
+
 # [1.26.0](https://github.com/strmprivacy/data-plane-helm-chart/compare/v1.25.1...v1.26.0) (2023-07-27)
 
 
